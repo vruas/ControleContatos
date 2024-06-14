@@ -1,0 +1,10 @@
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\bin\Debug\ControleContatos.exe.config
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\bin\Debug\ControleContatos.exe
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\bin\Debug\ControleContatos.pdb
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\obj\Debug\ControleContatos.csproj.AssemblyReference.cache
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\obj\Debug\ControleContatos.Form1.resources
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\obj\Debug\ControleContatos.Properties.Resources.resources
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\obj\Debug\ControleContatos.csproj.GenerateResource.cache
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\obj\Debug\ControleContatos.csproj.CoreCompileInputs.cache
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\obj\Debug\ControleContatos.exe
+C:\Users\vitor\source\repos\ControleContatos\ControleContatos\obj\Debug\ControleContatos.pdb
