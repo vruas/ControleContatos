@@ -182,6 +182,8 @@ namespace ControleContatos
             buttonExcluirTelefone.Visible = false;
             labelIDTelEditar.Visible = false;
             textBoxPesquisaIdTelefone.Visible = false;
+
+            AtualizarLista();
         }
 
 
@@ -400,6 +402,7 @@ namespace ControleContatos
             }
         }
 
+
         private void buttonRemoverTelefoneEditar_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Deseja realmente excluir o telefone selecionado?", "Excluir Telefone", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -441,27 +444,31 @@ namespace ControleContatos
                                     {
                                         idUsuario = Convert.ToInt32(resultado);
                                     }
-                                    else
-                                    {
-                                        return;
-                                    }
                                 }
 
-                                string sqlCountTelefones = "SELECT COUNT(*) FROM num_telefone WHERE id_usuario = @idUsuario";
-                                using (SqlCommand cmd = new SqlCommand(sqlCountTelefones, conn))
+                                if (idUsuario > 0)
                                 {
-                                    cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
-                                    int count = Convert.ToInt32(cmd.ExecuteScalar());
-                                    if (count == 0)
+                                    string sqlCountTelefones = "SELECT COUNT(*) FROM num_telefone WHERE id_usuario = @idUsuario";
+                                    using (SqlCommand cmd = new SqlCommand(sqlCountTelefones, conn))
                                     {
-                                        string sqlDeleteUser = "DELETE FROM contato WHERE id_usuario = @idUsuario";
-                                        using (SqlCommand cmdDeleteUser = new SqlCommand(sqlDeleteUser, conn))
+                                        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                                        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                                        if (count == 0)
                                         {
-                                            cmdDeleteUser.Parameters.AddWithValue("@idUsuario", idUsuario);
-                                            cmdDeleteUser.ExecuteNonQuery();
+                                            string sqlDeleteUser = "DELETE FROM contato WHERE id_usuario = @idUsuario";
+                                            using (SqlCommand cmdDeleteUser = new SqlCommand(sqlDeleteUser, conn))
+                                            {
+                                                cmdDeleteUser.Parameters.AddWithValue("@idUsuario", idUsuario);
+                                                cmdDeleteUser.ExecuteNonQuery();
+                                            }
                                         }
                                     }
                                 }
+
+                                // Ativar o botão após operação bem-sucedida
+                                buttonAdicionarTelefoneEditar.Enabled = true;
+                                buttonRemoverTelefoneEditar.Enabled = false;
+                                buttonEditarTelefone.Enabled = false;
 
                                 MessageBox.Show("Telefone excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
@@ -491,38 +498,171 @@ namespace ControleContatos
             }
         }
 
+
+        //private void buttonRemoverTelefoneEditar_Click(object sender, EventArgs e)
+        //{
+        //    DialogResult result = MessageBox.Show("Deseja realmente excluir o telefone selecionado?", "Excluir Telefone", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+        //    if (result == DialogResult.Yes)
+        //    {
+        //        int index = dataGridViewEditarTelefone.CurrentCell?.RowIndex ?? -1;
+
+        //        if (index >= 0)
+        //        {
+        //            DataGridViewRow selectedRow = dataGridViewEditarTelefone.Rows[index];
+
+        //            if (selectedRow.Cells["ID Telefone"].Value != null)
+        //            {
+        //                string idTelefone = selectedRow.Cells["ID Telefone"].Value.ToString();
+        //                dataGridViewEditarTelefone.Rows.RemoveAt(index);
+        //                dataGridViewEditarTelefone.Refresh();
+
+        //                using (SqlConnection conn = new SqlConnection(connectionString))
+        //                {
+        //                    try
+        //                    {
+        //                        conn.Open();
+
+        //                        string sqlDeleteTel = "DELETE FROM num_telefone WHERE id_telefone = @idTelefone";
+        //                        using (SqlCommand cmd = new SqlCommand(sqlDeleteTel, conn))
+        //                        {
+        //                            cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
+        //                            cmd.ExecuteNonQuery();
+        //                        }
+
+        //                        string sqlSelectUser = "SELECT id_usuario FROM num_telefone WHERE id_telefone = @idTelefone";
+        //                        int idUsuario = 0;
+
+        //                        using (SqlCommand cmd = new SqlCommand(sqlSelectUser, conn))
+        //                        {
+        //                            cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
+        //                            var resultado = cmd.ExecuteScalar();
+        //                            if (resultado != null)
+        //                            {
+        //                                idUsuario = Convert.ToInt32(resultado);
+        //                            }
+        //                            else
+        //                            {
+        //                                return;
+        //                            }
+        //                        }
+
+        //                        string sqlCountTelefones = "SELECT COUNT(*) FROM num_telefone WHERE id_usuario = @idUsuario";
+        //                        using (SqlCommand cmd = new SqlCommand(sqlCountTelefones, conn))
+        //                        {
+        //                            cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+        //                            int count = Convert.ToInt32(cmd.ExecuteScalar());
+        //                            if (count == 0)
+        //                            {
+        //                                string sqlDeleteUser = "DELETE FROM contato WHERE id_usuario = @idUsuario";
+        //                                using (SqlCommand cmdDeleteUser = new SqlCommand(sqlDeleteUser, conn))
+        //                                {
+        //                                    cmdDeleteUser.Parameters.AddWithValue("@idUsuario", idUsuario);
+        //                                    cmdDeleteUser.ExecuteNonQuery();
+        //                                }
+        //                            }
+        //                        }
+
+
+        //                    }
+        //                    catch (Exception ex)
+        //                    {
+        //                        MessageBox.Show("Erro: " + ex.Message);
+        //                    }
+        //                    finally
+        //                    {
+        //                        conn.Close();
+        //                    }
+        //                }
+
+        //                buttonAdicionarTelefoneEditar.Enabled = true;
+
+        //                MessageBox.Show("Telefone excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("A célula selecionada contém valores vazios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            MessageBox.Show("Selecione um telefone para excluir.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Operação cancelada");
+        //    }
+        //}
+
         private void buttonEditarContato_Click(object sender, EventArgs e)
         {
+           if (string.IsNullOrEmpty(textBoxNomeEditar.Text) || string.IsNullOrEmpty(textBoxCPFEditar.Text) || string.IsNullOrEmpty(textBoxEnderecoEditar.Text))
+            {
+                MessageBox.Show("Dados incompletos para o contato. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+           if(dtGridEditTelefone.Rows.Count == 0)
+            {
+                MessageBox.Show("Adicione pelo menos um telefone para o contato.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
-                
+                EditarContato editarContato = new EditarContato(connectionString);
 
-                List<string> editarLinhasTelefone = new List<string>();
+                string nomw = textBoxNomeEditar.Text;
+                string cpf = textBoxCPFEditar.Text;
+                string endereco = textBoxEnderecoEditar.Text;
 
-                foreach (DataGridViewRow row in dataGridViewEditarTelefone.Rows)
+                List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones = new List<(string, int, int, string)>();
+
+                foreach (DataRow row in dtGridEditTelefone.Rows)
                 {
-                    if (!row.IsNewRow && row.Cells[3].Value != null)
+                    string idTelefone = row["ID Telefone"].ToString();
+                    string tipoTel = row["Tipo"].ToString();
+                    string tipoTelefone = (valoresCombo.ContainsKey(tipoTel) ? valoresCombo[tipoTel].ToString() : "0");
+                    string ddd = row["DDD"].ToString();
+                    string telefone = row["Telefone"].ToString();
+
+                    if (string.IsNullOrEmpty(idTelefone) || string.IsNullOrEmpty(tipoTel) || string.IsNullOrEmpty(ddd) || string.IsNullOrEmpty(telefone))
                     {
-                        string idTelefone = row.Cells[0].Value?.ToString();
-                        string tipoTel = row.Cells[1].Value?.ToString();
-                        string tipoTelefone = (valoresCombo.ContainsKey(tipoTel) ? valoresCombo[tipoTel].ToString() : "0");
-                        string ddd = row.Cells[2].Value?.ToString();
-                        string telefone = row.Cells[3].Value?.ToString();
-
-                        if (string.IsNullOrEmpty(idTelefone) || string.IsNullOrEmpty(tipoTel) || string.IsNullOrEmpty(ddd) || string.IsNullOrEmpty(telefone))
-                        {
-                            MessageBox.Show("Dados incompletos para o telefone. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            continue;
-                        }
-
-                        editarLinhasTelefone.Add(telefone);
-
-                        editarContato.AtualizaContato(textBoxNomeEditar.Text,textBoxCPFEditar.Text, textBoxEnderecoEditar.Text, idTelefone, int.Parse(tipoTelefone), int.Parse(ddd), telefone);
-
-                        //editarContato.AtualizaUsuario(textBoxNomeEditar.Text, textBoxCPFEditar.Text, textBoxEnderecoEditar.Text);
-                        //editarContato.AtualizaTelefone(textBoxCPFEditar.Text, idTelefone, int.Parse(tipoTelefone), int.Parse(ddd), telefone);
+                        MessageBox.Show("Dados incompletos para o telefone. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        continue;
                     }
+
+                    telefones.Add((idTelefone, int.Parse(tipoTelefone), int.Parse(ddd), telefone));
                 }
+
+                editarContato.AtualizaContato(nomw, cpf, endereco, telefones);
+
+                //List<string> editarLinhasTelefone = new List<string>();
+
+                //foreach (DataGridViewRow row in dataGridViewEditarTelefone.Rows)
+                //{
+                //    if (!row.IsNewRow && row.Cells[3].Value != null)
+                //    {
+                //        string idTelefone = row.Cells[0].Value?.ToString();
+                //        string tipoTel = row.Cells[1].Value?.ToString();
+                //        string tipoTelefone = (valoresCombo.ContainsKey(tipoTel) ? valoresCombo[tipoTel].ToString() : "0");
+                //        string ddd = row.Cells[2].Value?.ToString();
+                //        string telefone = row.Cells[3].Value?.ToString();
+
+                //        if (string.IsNullOrEmpty(idTelefone) || string.IsNullOrEmpty(tipoTel) || string.IsNullOrEmpty(ddd) || string.IsNullOrEmpty(telefone))
+                //        {
+                //            MessageBox.Show("Dados incompletos para o telefone. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //            continue;
+                //        }
+
+                //        editarLinhasTelefone.Add(telefone);
+
+                //        editarContato.AtualizaContato(textBoxNomeEditar.Text,textBoxCPFEditar.Text, textBoxEnderecoEditar.Text, idTelefone, int.Parse(tipoTelefone), int.Parse(ddd), telefone);
+
+                //        //editarContato.AtualizaUsuario(textBoxNomeEditar.Text, textBoxCPFEditar.Text, textBoxEnderecoEditar.Text);
+                //        //editarContato.AtualizaTelefone(textBoxCPFEditar.Text, idTelefone, int.Parse(tipoTelefone), int.Parse(ddd), telefone);
+                //    }
+                //}
 
                 LimparCampos();
                 MessageBox.Show("Contato atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -603,6 +743,15 @@ namespace ControleContatos
         {
             dataGridViewAgenda.DataSource = listarContatos.GetContatos();
             LimparCampos();
+
+            buttonLinkEmail.Enabled = false;
+            buttonExcluirContato.Enabled = false;
+            buttonExcluirTelefone.Enabled = false;
+            buttonLinkEditar.Enabled = false;
+
+            buttonExcluirTelefone.Visible = false;
+            labelIDTelEditar.Visible = false;
+            textBoxPesquisaIdTelefone.Visible = false;
         }
 
         private void dataGridViewEditarTelefone_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -650,6 +799,8 @@ namespace ControleContatos
             textBoxTelefoneEditar.Text = "";
             textBoxPesquisaCPF.Text = "";
             textBoxPesquisaIdTelefone.Text = "";
+
+
 
            //limpa o datagGridEditTelefone 
             dtGridEditTelefone.Clear();

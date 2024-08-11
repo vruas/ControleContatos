@@ -21,33 +21,73 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
-        public void ImportarExcel()
+        public void ImportarExcel(int escolha)
         {
             try
             {
-                string caminhoArquivo = GetExcelFromOutlook();
-
-                if (caminhoArquivo == null)
+                if (escolha == 1)
                 {
-                    //MessageBox.Show("Nenhum arquivo Excel foi encontrado no Outlook", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                    string caminhoArquivo = null;
 
-                (DataTable dtContato, DataTable dtTelefone) = CarregarDadosDoExcel(caminhoArquivo);
-
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    if (!ValidarContato(conn, Convert.ToInt32(dtContato.Rows[0]["id_usuario"]), dtContato.Rows[0]["nome"].ToString(), dtContato.Rows[0]["cpf"].ToString(), dtContato.Rows[0]["endereco"].ToString()) ||
-                        !ValidarTelefone(conn, Convert.ToInt32(dtTelefone.Rows[0]["id_usuario"]), dtTelefone.Rows[0]["id_telefone"].ToString(), Convert.ToInt32(dtTelefone.Rows[0]["tipo_tel"]), Convert.ToInt32(dtTelefone.Rows[0]["ddd_tel"]), dtTelefone.Rows[0]["telefone"].ToString()))
+                    using (OpenFileDialog openFileDialog = new OpenFileDialog())
                     {
+                        openFileDialog.Filter = "Arquivos Excel (*.xls;*.xlsx;*.xlsm)|*.xls;*.xlsx;*.xlsm";
+                        openFileDialog.Title = "Selecione o arquivo Excel";
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            caminhoArquivo = openFileDialog.FileName;
+
+                            (DataTable dtContato, DataTable dtTelefone) = CarregarDadosDoExcel(caminhoArquivo);
+
+                            using (SqlConnection conn = new SqlConnection(connectionString))
+                            {
+                                conn.Open();
+
+                                if (!ValidarContato(conn, Convert.ToInt32(dtContato.Rows[0]["id_usuario"]), dtContato.Rows[0]["nome"].ToString(), dtContato.Rows[0]["cpf"].ToString(), dtContato.Rows[0]["endereco"].ToString()) ||
+                                    !ValidarTelefone(conn, Convert.ToInt32(dtTelefone.Rows[0]["id_usuario"]), dtTelefone.Rows[0]["id_telefone"].ToString(), Convert.ToInt32(dtTelefone.Rows[0]["tipo_tel"]), Convert.ToInt32(dtTelefone.Rows[0]["ddd_tel"]), dtTelefone.Rows[0]["telefone"].ToString()))
+                                {
+                                    return;
+                                }
+
+                                InserirDadosNoBanco(conn, dtContato, dtTelefone);
+                                MessageBox.Show("Dados importados com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }
+                        else
+                        {
+
+                           return;
+                        }
+                    }
+                }
+                else if (escolha == 2)
+                {
+                    string caminhoArquivo = GetExcelFromOutlook();
+
+                    if (caminhoArquivo == null)
+                    {
+                        //MessageBox.Show("Nenhum arquivo Excel foi encontrado no Outlook", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
-                    InserirDadosNoBanco(conn, dtContato, dtTelefone);
-                    MessageBox.Show("Dados importados com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    (DataTable dtContato, DataTable dtTelefone) = CarregarDadosDoExcel(caminhoArquivo);
+
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+
+                        if (!ValidarContato(conn, Convert.ToInt32(dtContato.Rows[0]["id_usuario"]), dtContato.Rows[0]["nome"].ToString(), dtContato.Rows[0]["cpf"].ToString(), dtContato.Rows[0]["endereco"].ToString()) ||
+                            !ValidarTelefone(conn, Convert.ToInt32(dtTelefone.Rows[0]["id_usuario"]), dtTelefone.Rows[0]["id_telefone"].ToString(), Convert.ToInt32(dtTelefone.Rows[0]["tipo_tel"]), Convert.ToInt32(dtTelefone.Rows[0]["ddd_tel"]), dtTelefone.Rows[0]["telefone"].ToString()))
+                        {
+                            return;
+                        }
+
+                        InserirDadosNoBanco(conn, dtContato, dtTelefone);
+                        MessageBox.Show("Dados importados com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
+               
             }
             catch (COMException ex)
             {
@@ -244,11 +284,14 @@ namespace ControleContatos
                     command.ExecuteNonQuery();
 
                     transaction.Commit();
+
+                    //MessageBox.Show("Dados importados com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch
                 {
                     transaction.Rollback();
-                    throw;
+                    //throw;
+                    MessageBox.Show("Erro ao importar dados: ", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

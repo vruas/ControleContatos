@@ -45,10 +45,20 @@ namespace ControleContatos
             {
                 MessageBox.Show(ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            Close();
             
         }
 
-        
+        private void buttonCancelarEnvio_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Deseja cancelar o envio do e-mail?", "Cancelar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                Close();
+            }
+
+        }
 
 
         //private void buscaCPFDestinatário(string cpfSelecionado)

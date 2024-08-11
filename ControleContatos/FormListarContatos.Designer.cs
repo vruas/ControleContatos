@@ -126,7 +126,7 @@
             this.buttonLinkEditar.BackColor = System.Drawing.Color.DarkGray;
             this.buttonLinkEditar.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLinkEditar.ForeColor = System.Drawing.Color.Black;
-            this.buttonLinkEditar.Location = new System.Drawing.Point(306, 54);
+            this.buttonLinkEditar.Location = new System.Drawing.Point(348, 54);
             this.buttonLinkEditar.Name = "buttonLinkEditar";
             this.buttonLinkEditar.Size = new System.Drawing.Size(89, 36);
             this.buttonLinkEditar.TabIndex = 6;
@@ -137,7 +137,7 @@
             // textBoxPesquisaIdTelefone
             // 
             this.textBoxPesquisaIdTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPesquisaIdTelefone.Location = new System.Drawing.Point(66, 108);
+            this.textBoxPesquisaIdTelefone.Location = new System.Drawing.Point(94, 107);
             this.textBoxPesquisaIdTelefone.Name = "textBoxPesquisaIdTelefone";
             this.textBoxPesquisaIdTelefone.Size = new System.Drawing.Size(120, 23);
             this.textBoxPesquisaIdTelefone.TabIndex = 5;
@@ -159,9 +159,9 @@
             this.buttonLinkEmail.BackColor = System.Drawing.Color.DarkGray;
             this.buttonLinkEmail.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonLinkEmail.ForeColor = System.Drawing.Color.Black;
-            this.buttonLinkEmail.Location = new System.Drawing.Point(496, 52);
+            this.buttonLinkEmail.Location = new System.Drawing.Point(549, 54);
             this.buttonLinkEmail.Name = "buttonLinkEmail";
-            this.buttonLinkEmail.Size = new System.Drawing.Size(172, 38);
+            this.buttonLinkEmail.Size = new System.Drawing.Size(172, 36);
             this.buttonLinkEmail.TabIndex = 3;
             this.buttonLinkEmail.Text = "Enviar por E-mail";
             this.buttonLinkEmail.UseVisualStyleBackColor = false;
@@ -185,7 +185,7 @@
             this.buttonExcluirContato.BackColor = System.Drawing.Color.DarkGray;
             this.buttonExcluirContato.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonExcluirContato.ForeColor = System.Drawing.Color.Black;
-            this.buttonExcluirContato.Location = new System.Drawing.Point(401, 54);
+            this.buttonExcluirContato.Location = new System.Drawing.Point(443, 54);
             this.buttonExcluirContato.Name = "buttonExcluirContato";
             this.buttonExcluirContato.Size = new System.Drawing.Size(89, 36);
             this.buttonExcluirContato.TabIndex = 3;
@@ -198,7 +198,7 @@
             this.buttonPesquisarContato.BackColor = System.Drawing.Color.DarkGray;
             this.buttonPesquisarContato.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonPesquisarContato.ForeColor = System.Drawing.Color.Black;
-            this.buttonPesquisarContato.Location = new System.Drawing.Point(192, 54);
+            this.buttonPesquisarContato.Location = new System.Drawing.Point(234, 54);
             this.buttonPesquisarContato.Name = "buttonPesquisarContato";
             this.buttonPesquisarContato.Size = new System.Drawing.Size(108, 36);
             this.buttonPesquisarContato.TabIndex = 3;
@@ -211,7 +211,7 @@
             this.buttonExcluirTelefone.BackColor = System.Drawing.Color.DarkGray;
             this.buttonExcluirTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonExcluirTelefone.ForeColor = System.Drawing.Color.Black;
-            this.buttonExcluirTelefone.Location = new System.Drawing.Point(192, 100);
+            this.buttonExcluirTelefone.Location = new System.Drawing.Point(234, 100);
             this.buttonExcluirTelefone.Name = "buttonExcluirTelefone";
             this.buttonExcluirTelefone.Size = new System.Drawing.Size(166, 36);
             this.buttonExcluirTelefone.TabIndex = 3;
@@ -223,10 +223,10 @@
             // textBoxPesquisaCPF
             // 
             this.textBoxPesquisaCPF.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxPesquisaCPF.Location = new System.Drawing.Point(66, 61);
+            this.textBoxPesquisaCPF.Location = new System.Drawing.Point(94, 61);
             this.textBoxPesquisaCPF.Mask = "00000000000";
             this.textBoxPesquisaCPF.Name = "textBoxPesquisaCPF";
-            this.textBoxPesquisaCPF.Size = new System.Drawing.Size(114, 23);
+            this.textBoxPesquisaCPF.Size = new System.Drawing.Size(120, 23);
             this.textBoxPesquisaCPF.TabIndex = 2;
             this.textBoxPesquisaCPF.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxPesquisaCPF_Validating);
             // 
@@ -234,7 +234,7 @@
             // 
             this.labelIDTelEditar.AutoSize = true;
             this.labelIDTelEditar.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelIDTelEditar.Location = new System.Drawing.Point(8, 110);
+            this.labelIDTelEditar.Location = new System.Drawing.Point(26, 110);
             this.labelIDTelEditar.Name = "labelIDTelEditar";
             this.labelIDTelEditar.Size = new System.Drawing.Size(56, 16);
             this.labelIDTelEditar.TabIndex = 1;
@@ -245,7 +245,7 @@
             // 
             this.labelPesquisaCPF.AutoSize = true;
             this.labelPesquisaCPF.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPesquisaCPF.Location = new System.Drawing.Point(8, 61);
+            this.labelPesquisaCPF.Location = new System.Drawing.Point(26, 61);
             this.labelPesquisaCPF.Name = "labelPesquisaCPF";
             this.labelPesquisaCPF.Size = new System.Drawing.Size(38, 16);
             this.labelPesquisaCPF.TabIndex = 1;
@@ -379,7 +379,7 @@
             // 
             this.comboBoxTipoEditar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxTipoEditar.FormattingEnabled = true;
-            this.comboBoxTipoEditar.Location = new System.Drawing.Point(493, 112);
+            this.comboBoxTipoEditar.Location = new System.Drawing.Point(526, 113);
             this.comboBoxTipoEditar.Name = "comboBoxTipoEditar";
             this.comboBoxTipoEditar.Size = new System.Drawing.Size(121, 24);
             this.comboBoxTipoEditar.TabIndex = 6;
@@ -395,7 +395,7 @@
             // 
             // textBoxTelefoneEditar
             // 
-            this.textBoxTelefoneEditar.Location = new System.Drawing.Point(238, 112);
+            this.textBoxTelefoneEditar.Location = new System.Drawing.Point(249, 114);
             this.textBoxTelefoneEditar.Mask = "000000000";
             this.textBoxTelefoneEditar.Name = "textBoxTelefoneEditar";
             this.textBoxTelefoneEditar.Size = new System.Drawing.Size(101, 23);
@@ -415,7 +415,7 @@
             // 
             this.labelNovoTelefone.AutoSize = true;
             this.labelNovoTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelNovoTelefone.Location = new System.Drawing.Point(366, 116);
+            this.labelNovoTelefone.Location = new System.Drawing.Point(388, 115);
             this.labelNovoTelefone.Name = "labelNovoTelefone";
             this.labelNovoTelefone.Size = new System.Drawing.Size(121, 16);
             this.labelNovoTelefone.TabIndex = 4;

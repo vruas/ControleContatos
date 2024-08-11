@@ -51,7 +51,7 @@ namespace ControleContatos
 
         private void buttonImportarExcel_Click(object sender, EventArgs e)
         {
-            importarExcel.ImportarExcel();
+            importarExcel.ImportarExcel(1); // 1 - Importar Excel
             AtualizarGridImportacao();
 
             buttonConcluirImpExcel.Enabled = true;
@@ -60,6 +60,16 @@ namespace ControleContatos
 
             //MessageBox.Show("Importação realizada com sucesso!", "Importação", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void buttonImportarEmailExcel_Click(object sender, EventArgs e)
+        {
+            importarExcel.ImportarExcel(2); // 2 - Importar ExcelOutlook
+            AtualizarGridImportacao();
+
+            buttonConcluirImpExcel.Enabled = true;
+        }
+
+
 
         private void AtualizarGridImportacao()
         {
@@ -90,5 +100,7 @@ namespace ControleContatos
             this.Close();
             main.Show();
         }
+
+       
     }
 }

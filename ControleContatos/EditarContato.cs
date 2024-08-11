@@ -18,7 +18,7 @@ namespace ControleContatos
 
 
 
-        public void AtualizaContato(string nome, string cpf, string endereco, string idTelefone, int tipoTel, int ddd, string telefone)
+        public void AtualizaContato(string nome, string cpf, string endereco, List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones/*string idTelefone, int tipoTel, int ddd, string telefone*/)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -38,71 +38,141 @@ namespace ControleContatos
                             cmdUpdateContato.ExecuteNonQuery();
                         }
 
-                        // Verificar existência do telefone
-                        string sqlCheckExistence = "SELECT COUNT(*) FROM num_telefone WHERE id_telefone = @idTelefone";
+                        // Obter o id_usuario do contato
+                        string sqlCheckUser = "SELECT id_usuario FROM contato WHERE cpf = @cpf";
+                        int userCount = 0;
 
-                        using (SqlCommand cmdCheckExistence = new SqlCommand(sqlCheckExistence, conn, transaction))
+                        using (SqlCommand cmdCheckUser = new SqlCommand(sqlCheckUser, conn, transaction))
                         {
-                            cmdCheckExistence.Parameters.AddWithValue("@idTelefone", idTelefone);
-                            int count = (int)cmdCheckExistence.ExecuteScalar();
+                            cmdCheckUser.Parameters.AddWithValue("@cpf", cpf);
 
-                            if (count == 0)
+                            using (SqlDataReader reader = cmdCheckUser.ExecuteReader())
                             {
-                                // Obter o id_usuario do contato
-                                string sqlCheckUser = "SELECT id_usuario FROM contato WHERE cpf = @cpf";
-                                int userCount = 0;
-
-                                using (SqlCommand cmdCheckUser = new SqlCommand(sqlCheckUser, conn, transaction))
+                                if (reader.Read())
                                 {
-                                    cmdCheckUser.Parameters.AddWithValue("@cpf", cpf);
-
-                                    using (SqlDataReader reader = cmdCheckUser.ExecuteReader())
-                                    {
-                                        if (reader.Read())
-                                        {
-                                            userCount = reader.GetInt32(0);
-                                        }
-                                    }
-                                }
-
-                                if (userCount == 0)
-                                {
-                                    throw new Exception("Usuário não encontrado.");
-                                }
-
-                                // Inserir novo telefone
-                                string sqlInsertTelefone = @"
-                            INSERT INTO num_telefone (id_telefone, id_usuario, tipo_tel, ddd_tel, telefone) 
-                            VALUES (@idTelefone, @idUsuario, @tipo, @ddd, @telefone)";
-
-                                using (SqlCommand cmdInsertTelefone = new SqlCommand(sqlInsertTelefone, conn, transaction))
-                                {
-                                    cmdInsertTelefone.Parameters.AddWithValue("@idTelefone", idTelefone);
-                                    cmdInsertTelefone.Parameters.AddWithValue("@idUsuario", userCount);
-                                    cmdInsertTelefone.Parameters.AddWithValue("@tipo", tipoTel);
-                                    cmdInsertTelefone.Parameters.AddWithValue("@ddd", ddd);
-                                    cmdInsertTelefone.Parameters.AddWithValue("@telefone", telefone);
-                                    cmdInsertTelefone.ExecuteNonQuery();
-                                }
-                            }
-                            else
-                            {
-                                // Atualizar telefone existente
-                                string sqlUpdateTelefone = @"
-                            UPDATE num_telefone 
-                            SET tipo_tel = @tipo, ddd_tel = @ddd, telefone = @telefone 
-                            WHERE id_telefone = @idTelefone";
-
-                                using (SqlCommand cmdUpdateTelefone = new SqlCommand(sqlUpdateTelefone, conn, transaction))
-                                {
-                                    cmdUpdateTelefone.Parameters.AddWithValue("@idTelefone", idTelefone);
-                                    cmdUpdateTelefone.Parameters.AddWithValue("@tipo", tipoTel);
-                                    cmdUpdateTelefone.Parameters.AddWithValue("@ddd", ddd);
-                                    cmdUpdateTelefone.Parameters.AddWithValue("@telefone", telefone);
-                                    cmdUpdateTelefone.ExecuteNonQuery();
+                                    userCount = reader.GetInt32(0);
                                 }
                             }
                         }
+
+                        if (userCount == 0)
+                        {
+                            throw new Exception("Usuário não encontrado.");
+                        }
+
+
+                        //foreach (var (idTelefone, tipoTelefone, ddd, telefone) in telefones)
+                        //{
+                        //    string checkTelefoneExists = "SELECT COUNT(*) FROM num_telefone WHERE id_usuario = @id_usuario AND telefone = @telefone";
+                        //    using (SqlCommand cmdCheckTelefone = new SqlCommand(checkTelefoneExists, conn, transaction))
+                        //    {
+                        //        cmdCheckTelefone.Parameters.AddWithValue("@id_usuario", userId);
+                        //        cmdCheckTelefone.Parameters.AddWithValue("@telefone", telefone);
+                        //        int count = (int)cmdCheckTelefone.ExecuteScalar();
+
+                        //        if (count > 0)
+                        //        {
+                        //            throw new Exception("Um ou mais números de telefone já estão cadastrados para este usuário.");
+                        //        }
+                        //    }
+                        //}
+
+
+
+                        //Verificar existência do telefone
+
+                        foreach (var (idTelefone, tipoTelefone, ddd, telefone) in telefones)
+                        {
+                            string sqlCheckExistence = "SELECT COUNT(*) FROM num_telefone WHERE id_telefone = @idTelefone";
+
+                            using (SqlCommand cmdCheckTelefone = new SqlCommand(sqlCheckExistence, conn, transaction))
+                            {
+                                cmdCheckTelefone.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                int count = (int)cmdCheckTelefone.ExecuteScalar();
+
+                                if (count == 0)
+                                {
+                                    string sqlInsertTelefone = @"
+                                               INSERT INTO num_telefone (id_telefone, id_usuario, tipo_tel, ddd_tel, telefone) 
+                                                    VALUES (@idTelefone, @idUsuario, @tipo, @ddd, @telefone)";
+
+                                    using (SqlCommand cmdInsertTelefone = new SqlCommand(sqlInsertTelefone, conn, transaction))
+                                    {
+                                        cmdInsertTelefone.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                        cmdInsertTelefone.Parameters.AddWithValue("@idUsuario", userCount);
+                                        cmdInsertTelefone.Parameters.AddWithValue("@tipo", tipoTelefone);
+                                        cmdInsertTelefone.Parameters.AddWithValue("@ddd", ddd);
+                                        cmdInsertTelefone.Parameters.AddWithValue("@telefone", telefone);
+                                        cmdInsertTelefone.ExecuteNonQuery();
+                                    }
+                                }
+                                else
+                                {
+                                    // Atualizar telefone existente
+                                    string sqlUpdateTelefone = @"
+                                        UPDATE num_telefone 
+                                        SET tipo_tel = @tipo, ddd_tel = @ddd, telefone = @telefone 
+                                        WHERE id_telefone = @idTelefone";
+
+                                    using (SqlCommand cmdUpdateTelefone = new SqlCommand(sqlUpdateTelefone, conn, transaction))
+                                    {
+                                        cmdUpdateTelefone.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                        cmdUpdateTelefone.Parameters.AddWithValue("@tipo", tipoTelefone);
+                                        cmdUpdateTelefone.Parameters.AddWithValue("@ddd", ddd);
+                                        cmdUpdateTelefone.Parameters.AddWithValue("@telefone", telefone);
+                                        cmdUpdateTelefone.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                        }
+                        
+
+                      
+
+                   
+
+                        //using (SqlCommand cmdCheckExistence = new SqlCommand(sqlCheckExistence, conn, transaction))
+                        //{
+                        //    cmdCheckExistence.Parameters.AddWithValue("@idTelefone", idTelefone);
+                        //    int count = (int)cmdCheckExistence.ExecuteScalar();
+
+                        //    if (count == 0)
+                        //    {
+
+
+                        //        // Inserir novo telefone
+                        //        string sqlInsertTelefone = @"
+                        //    INSERT INTO num_telefone (id_telefone, id_usuario, tipo_tel, ddd_tel, telefone) 
+                        //    VALUES (@idTelefone, @idUsuario, @tipo, @ddd, @telefone)";
+
+                        //        using (SqlCommand cmdInsertTelefone = new SqlCommand(sqlInsertTelefone, conn, transaction))
+                        //        {
+                        //            cmdInsertTelefone.Parameters.AddWithValue("@idTelefone", idTelefone);
+                        //            cmdInsertTelefone.Parameters.AddWithValue("@idUsuario", userCount);
+                        //            cmdInsertTelefone.Parameters.AddWithValue("@tipo", tipoTel);
+                        //            cmdInsertTelefone.Parameters.AddWithValue("@ddd", ddd);
+                        //            cmdInsertTelefone.Parameters.AddWithValue("@telefone", telefone);
+                        //            cmdInsertTelefone.ExecuteNonQuery();
+                        //        }
+                        //    }
+                        //    else
+                        //    {
+                        //        // Atualizar telefone existente
+                        //        string sqlUpdateTelefone = @"
+                        //    UPDATE num_telefone 
+                        //    SET tipo_tel = @tipo, ddd_tel = @ddd, telefone = @telefone 
+                        //    WHERE id_telefone = @idTelefone";
+
+                        //        using (SqlCommand cmdUpdateTelefone = new SqlCommand(sqlUpdateTelefone, conn, transaction))
+                        //        {
+                        //            cmdUpdateTelefone.Parameters.AddWithValue("@idTelefone", idTelefone);
+                        //            cmdUpdateTelefone.Parameters.AddWithValue("@tipo", tipoTel);
+                        //            cmdUpdateTelefone.Parameters.AddWithValue("@ddd", ddd);
+                        //            cmdUpdateTelefone.Parameters.AddWithValue("@telefone", telefone);
+                        //            cmdUpdateTelefone.ExecuteNonQuery();
+                        //        }
+                        //    }
+                        //}
 
                         // Confirmar a transação
                         transaction.Commit();

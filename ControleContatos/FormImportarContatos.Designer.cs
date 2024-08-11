@@ -38,9 +38,10 @@
             this.tabImportarExcel = new System.Windows.Forms.TabPage();
             this.buttonCancelarImpExcel = new System.Windows.Forms.Button();
             this.buttonConcluirImpExcel = new System.Windows.Forms.Button();
-            this.buttonImportarExcel = new System.Windows.Forms.Button();
+            this.buttonImportarEmailExcel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridViewImportarExcel = new System.Windows.Forms.DataGridView();
+            this.button1 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabImportarTXT.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewImportarTxt)).BeginInit();
@@ -144,7 +145,8 @@
             this.tabImportarExcel.BackColor = System.Drawing.Color.Silver;
             this.tabImportarExcel.Controls.Add(this.buttonCancelarImpExcel);
             this.tabImportarExcel.Controls.Add(this.buttonConcluirImpExcel);
-            this.tabImportarExcel.Controls.Add(this.buttonImportarExcel);
+            this.tabImportarExcel.Controls.Add(this.button1);
+            this.tabImportarExcel.Controls.Add(this.buttonImportarEmailExcel);
             this.tabImportarExcel.Controls.Add(this.label1);
             this.tabImportarExcel.Controls.Add(this.dataGridViewImportarExcel);
             this.tabImportarExcel.Location = new System.Drawing.Point(4, 25);
@@ -182,19 +184,19 @@
             this.buttonConcluirImpExcel.UseVisualStyleBackColor = false;
             this.buttonConcluirImpExcel.Click += new System.EventHandler(this.buttonConcluirImpExcel_Click);
             // 
-            // buttonImportarExcel
+            // buttonImportarEmailExcel
             // 
-            this.buttonImportarExcel.BackColor = System.Drawing.Color.DarkGray;
-            this.buttonImportarExcel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonImportarExcel.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonImportarExcel.ForeColor = System.Drawing.Color.Black;
-            this.buttonImportarExcel.Location = new System.Drawing.Point(13, 55);
-            this.buttonImportarExcel.Name = "buttonImportarExcel";
-            this.buttonImportarExcel.Size = new System.Drawing.Size(111, 48);
-            this.buttonImportarExcel.TabIndex = 12;
-            this.buttonImportarExcel.Text = "Importar";
-            this.buttonImportarExcel.UseVisualStyleBackColor = false;
-            this.buttonImportarExcel.Click += new System.EventHandler(this.buttonImportarExcel_Click);
+            this.buttonImportarEmailExcel.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonImportarEmailExcel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonImportarEmailExcel.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonImportarEmailExcel.ForeColor = System.Drawing.Color.Black;
+            this.buttonImportarEmailExcel.Location = new System.Drawing.Point(130, 55);
+            this.buttonImportarEmailExcel.Name = "buttonImportarEmailExcel";
+            this.buttonImportarEmailExcel.Size = new System.Drawing.Size(166, 48);
+            this.buttonImportarEmailExcel.TabIndex = 12;
+            this.buttonImportarEmailExcel.Text = "Importar do Outlook";
+            this.buttonImportarEmailExcel.UseVisualStyleBackColor = false;
+            this.buttonImportarEmailExcel.Click += new System.EventHandler(this.buttonImportarEmailExcel_Click);
             // 
             // label1
             // 
@@ -217,6 +219,20 @@
             this.dataGridViewImportarExcel.RowTemplate.Height = 24;
             this.dataGridViewImportarExcel.Size = new System.Drawing.Size(770, 250);
             this.dataGridViewImportarExcel.TabIndex = 10;
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.DarkGray;
+            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.button1.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Location = new System.Drawing.Point(13, 55);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(111, 48);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Importar";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.buttonImportarExcel_Click);
             // 
             // FormImportarContatos
             // 
@@ -247,12 +263,13 @@
         private System.Windows.Forms.Button buttonImportarTXT;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridViewImportarTxt;
-        private System.Windows.Forms.Button buttonImportarExcel;
+        private System.Windows.Forms.Button buttonImportarEmailExcel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridViewImportarExcel;
         private System.Windows.Forms.Button buttonCancelarImpTXT;
         private System.Windows.Forms.Button buttonConcluirImpTXT;
         private System.Windows.Forms.Button buttonCancelarImpExcel;
         private System.Windows.Forms.Button buttonConcluirImpExcel;
+        private System.Windows.Forms.Button button1;
     }
 }

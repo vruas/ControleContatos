@@ -126,6 +126,9 @@ namespace ControleContatos
 
         }
 
+
+
+
         private void buttonAdicionarContato_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxNomeNovo.Text) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text))
@@ -135,6 +138,7 @@ namespace ControleContatos
                     MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
                 try
                 {
                     NovoContato novoContato = new NovoContato(connectionString);
@@ -145,8 +149,10 @@ namespace ControleContatos
 
                     if (novoContato.VerificaCPFExistente(cpf) == false)
                     {
-                       
+                        // Lista para armazenar os números de telefone
+                        List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones = new List<(string, int, int, string)>();
 
+                        // Coleta todos os telefones do DataGridView
                         foreach (DataRow row in dtGridAddTelefone.Rows)
                         {
                             string idTelefone = Convert.ToString(row["ID Telefone"]);
@@ -155,44 +161,195 @@ namespace ControleContatos
                             int ddd = Convert.ToInt32(row["DDD"]);
                             string telefone = Convert.ToString(row["Telefone"]);
 
-                            novoContato.AdicionarContato(nome, cpf, endereco, idTelefone, tipoTelefone, ddd, telefone);
+                            telefones.Add((idTelefone, tipoTelefone, ddd, telefone));
                         }
+
+                        // Adiciona o contato com todos os telefones
+                        novoContato.AdicionarContato(nome, cpf, endereco, telefones);
 
                         buttonAdicionarTelefoneNovo.Enabled = true;
                         buttonEditarTelefoneNovo.Enabled = false;
                         buttonRemoverTelefoneNovo.Enabled = false;
 
-                        // fecha o formulário após adicionar o contato
-
+                        // Fecha o formulário após adicionar o contato
                         this.Close();
-                        
                         main.Show();
-
-
 
                         MessageBox.Show("Contato adicionado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
                         MessageBox.Show("CPF já cadastrado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
                     }
-
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Erro: " + ex.Message);
                 }
-               
-                
             }
             else
             {
                 MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-
         }
+
+
+
+
+        //private void buttonAdicionarContato_Click(object sender, EventArgs e)
+        //{
+        //    if (!string.IsNullOrEmpty(textBoxNomeNovo.Text) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text))
+        //    {
+        //        string idTelefone = string.Empty;
+        //        string tipoTel = string.Empty;
+        //        int tipoTelefone = 0;
+        //        int ddd = 0;
+        //        string telefone = string.Empty;
+
+        //        int telefonesVerificados = 0;
+
+
+        //        if (dtGridAddTelefone.Rows.Count == 0)
+        //        {
+        //            MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            return;
+        //        }
+        //        try
+        //        {
+        //            NovoContato novoContato = new NovoContato(connectionString);
+
+        //            string nome = textBoxNomeNovo.Text;
+        //            string cpf = textBoxCPFNovo.Text;
+        //            string endereco = textBoxEnderecoNovo.Text;
+
+        //            if (novoContato.VerificaCPFExistente(cpf) == false)
+        //            {
+
+        //                foreach (DataRow row in dtGridAddTelefone.Rows)
+        //                {
+        //                    idTelefone = Convert.ToString(row["ID Telefone"]);
+        //                    tipoTel = Convert.ToString(row["Tipo"]);
+        //                    tipoTelefone = Convert.ToInt32(valoresCombo[tipoTel]);
+        //                    ddd = Convert.ToInt32(row["DDD"]);
+        //                    telefone = Convert.ToString(row["Telefone"]);
+
+        //                    telefonesVerificados++;
+
+        //                }
+
+        //                foreach (DataRow row in dtGridAddTelefone.Rows)
+        //                {
+        //                    idTelefone = Convert.ToString(row["ID Telefone"]);
+        //                    tipoTel = Convert.ToString(row["Tipo"]);
+        //                    tipoTelefone = Convert.ToInt32(valoresCombo[tipoTel]);
+        //                    ddd = Convert.ToInt32(row["DDD"]);
+        //                    telefone = Convert.ToString(row["Telefone"]);
+
+
+        //                    novoContato.AdicionarContato(nome, cpf, endereco, idTelefone, tipoTelefone, ddd, telefone, telefonesVerificados);
+        //                }
+
+
+        //                buttonAdicionarTelefoneNovo.Enabled = true;
+        //                buttonEditarTelefoneNovo.Enabled = false;
+        //                buttonRemoverTelefoneNovo.Enabled = false;
+
+        //                // fecha o formulário após adicionar o contato
+
+        //                this.Close();
+
+        //                main.Show();
+
+
+
+        //                MessageBox.Show("Contato adicionado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("CPF já cadastrado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //                return;
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show("Erro: " + ex.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //    }
+
+        //}
+
+        //private void buttonAdicionarContato_Click(object sender, EventArgs e)
+        //{
+        //    if (!string.IsNullOrEmpty(textBoxNomeNovo.Text) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text))
+        //    {
+        //        if (dtGridAddTelefone.Rows.Count == 0)
+        //        {
+        //            MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //            return;
+        //        }
+        //        try
+        //        {
+        //            NovoContato novoContato = new NovoContato(connectionString);
+
+        //            string nome = textBoxNomeNovo.Text;
+        //            string cpf = textBoxCPFNovo.Text;
+        //            string endereco = textBoxEnderecoNovo.Text;
+
+        //            if (novoContato.VerificaCPFExistente(cpf) == false)
+        //            {
+        //                // Lista para armazenar os telefones a serem inseridos
+        //                List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones = new List<(string idTelefone, int tipoTelefone, int ddd, string telefone)>();
+
+        //                foreach (DataGridViewRow row in dtGridAddTelefone.Rows)
+        //                {
+        //                    if (row.IsNewRow) continue; // Ignorar a linha de inserção
+
+        //                    string idTelefone = Convert.ToString(row.Cells["ID Telefone"].Value);
+        //                    string tipoTel = Convert.ToString(row.Cells["Tipo"].Value);
+        //                    int tipoTelefone = Convert.ToInt32(valoresCombo[tipoTel]);
+        //                    int ddd = Convert.ToInt32(row.Cells["DDD"].Value);
+        //                    string telefone = Convert.ToString(row.Cells["Telefone"].Value);
+
+        //                    telefones.Add((idTelefone, tipoTelefone, ddd, telefone));
+        //                }
+
+        //                // Chama o método de adicionar contato com a lista de telefones
+        //                novoContato.AdicionarContato(nome, cpf, endereco, telefones);
+
+        //                buttonAdicionarTelefoneNovo.Enabled = true;
+        //                buttonEditarTelefoneNovo.Enabled = false;
+        //                buttonRemoverTelefoneNovo.Enabled = false;
+
+        //                // Fecha o formulário após adicionar o contato
+        //                this.Close();
+        //                main.Show();
+
+        //                MessageBox.Show("Contato adicionado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        //            }
+        //            else
+        //            {
+        //                MessageBox.Show("CPF já cadastrado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //                return;
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show("Erro: " + ex.Message);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        //    }
+        //}
+
+
+
 
         private void CarregarLista()
         {

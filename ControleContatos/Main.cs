@@ -121,7 +121,8 @@ namespace ControleContatos
 
         private void buttonFechar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            // encerra totalmente a aplicação
+            Application.Exit();
         }
     }
 }
