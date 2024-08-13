@@ -12,6 +12,8 @@ namespace ControleContatos
 {
     public class ValidacaoLinhaException : Exception
     {
+        // Exceção personalizada para validação de linhas inválidas
+
         public ValidacaoLinhaException() { }
         public ValidacaoLinhaException(string message) : base(message) { }
         public ValidacaoLinhaException(string message, Exception inner) : base(message, inner) { }
@@ -25,6 +27,8 @@ namespace ControleContatos
         {
             this.connectionString = connectionString;
         }
+
+        // método para importar contatos de arquivo txt
 
         public void ImportarTxt()
         {
@@ -162,6 +166,7 @@ namespace ControleContatos
             }
         }
 
+        // método para registrar contato
         private void RegistrarContato(SqlCommand command, string linha, DataTable dtContato)
         {
             if (!ValidarContato(command, linha))
@@ -177,6 +182,7 @@ namespace ControleContatos
             dtContato.Rows.Add(row);
         }
 
+        // método para registrar telefone
         private void RegistrarTelefone(SqlCommand command, string linha, DataTable dtTelefone)
         {
             if (!ValidarTelefone(command, linha))
@@ -193,6 +199,7 @@ namespace ControleContatos
             dtTelefone.Rows.Add(row);
         }
 
+        // método para validar contato
         private bool ValidarContato(SqlCommand command, string linha)
         {
             if (linha.Trim().Length > 53)
@@ -229,6 +236,7 @@ namespace ControleContatos
             return true;
         }
 
+        // método para validar telefone
         private bool ValidarTelefone(SqlCommand command, string linha)
         {
             if (linha.Trim().Length > 41)
@@ -256,6 +264,7 @@ namespace ControleContatos
             return true;
         }
 
+        // método para validar rodapé
         private void ValidarRodape(string[] linhas, int linhasContato, int linhasTelefone)
         {
             if (linhas == null || linhas.Length == 0)
@@ -297,6 +306,7 @@ namespace ControleContatos
             }
         }
 
+        // método para validar CPF
         public bool IsValidCPF(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };

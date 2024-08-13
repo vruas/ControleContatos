@@ -1,13 +1,17 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ControleContatos
 {
     public partial class FormListarContatos : Form
     {
+        // declaração de variáveis, objetos e instâncias
+
         Main main = new Main();
 
         int index = 0;
@@ -18,10 +22,12 @@ namespace ControleContatos
         private ExportarExcel exportarExcel;
         private EditarContato editarContato;
 
-
+        
 
         private DataTable dtGridEditTelefone;
 
+
+        
         public FormListarContatos()
         {
             InitializeComponent();
@@ -32,12 +38,15 @@ namespace ControleContatos
             editarContato = new EditarContato(connectionString);
         }
 
+        // Propriedade para obter e definir o valor do TextBox de pesquisa de CPF
         public string TextBoxValue
         {
             get { return textBoxPesquisaCPF.Text; }
 
             set { textBoxPesquisaCPF.Text = value; }
         }
+
+        // Evento de carregamento do formulário, inicializa o DataTable e desabilita os botões de exclusão e edição
 
         private void FormListarContatos_Load(object sender, EventArgs e)
         {
@@ -60,14 +69,29 @@ namespace ControleContatos
             buttonEditarTelefone.Enabled = false;
             buttonEditarContato.Enabled = false;
 
+            tabControl1.SelectTab("tabPageListarContatos");
+       
+            //tabEditarContatos.Enabled = false; // Desabilita a aba 
+
 
         }
+
+        // botão de pesquisa de contato, verifica se o campo de CPF está vazio e exibe uma mensagem de aviso
 
         private void buttonPesquisarContato_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxPesquisaCPF.Text))
             {
                 MessageBox.Show("Informe um CPF para pesquisar o contato.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                buttonExcluirContato.Enabled = false;
+                buttonExcluirTelefone.Enabled = false;
+                buttonLinkEditar.Enabled = false;
+                buttonLinkEmail.Enabled = false;
+
+                buttonExcluirTelefone.Visible = false;
+                labelIDTelEditar.Visible = false;
+                textBoxPesquisaIdTelefone.Visible = false;
                 return;
             }
             string cpf = textBoxPesquisaCPF.Text;
@@ -85,6 +109,8 @@ namespace ControleContatos
             textBoxPesquisaIdTelefone.Visible = true;
             buttonExcluirTelefone.Visible = true;
         }
+
+        // botão de exclusão de telefone, verifica se o campo de ID do telefone está vazio e exibe uma mensagem de aviso
 
         private void buttonExcluirTelefone_Click(object sender, EventArgs e)
         {
@@ -126,8 +152,24 @@ namespace ControleContatos
 
         }
 
+        // botão de exclusão de contato, verifica se o campo de CPF está vazio e exibe uma mensagem de aviso
         private void buttonExcluirContato_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(textBoxPesquisaCPF.Text))
+            {
+                MessageBox.Show("Informe um CPF para excluir o contato.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                buttonExcluirContato.Enabled = false;
+                buttonExcluirTelefone.Enabled = false;
+                buttonLinkEditar.Enabled = false;
+                buttonLinkEmail.Enabled = false;
+
+                buttonExcluirTelefone.Visible = false;
+                labelIDTelEditar.Visible = false;
+                textBoxPesquisaIdTelefone.Visible = false;
+                return;
+            }
+
             DialogResult result = MessageBox.Show("Deseja realmente excluir o contato selecionado?", "Excluir Contato", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -157,8 +199,25 @@ namespace ControleContatos
             }
         }
 
+        // botão de envio de e-mail, verifica se o campo de CPF está vazio e exibe uma mensagem de aviso
+
         private void buttonEnviarEmail_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(textBoxPesquisaCPF.Text))
+            {
+                MessageBox.Show("Informe o CPF do destinatário antes de enviar o contato.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                buttonExcluirContato.Enabled = false;
+                buttonExcluirTelefone.Enabled = false;
+                buttonLinkEditar.Enabled = false;
+                buttonLinkEmail.Enabled = false;
+
+                buttonExcluirTelefone.Visible = false;
+                labelIDTelEditar.Visible = false;
+                textBoxPesquisaIdTelefone.Visible = false;
+                return;
+            }
+
             FormEnviarEmail formEnviarEmail = new FormEnviarEmail();
 
             formEnviarEmail.CPFSelecionado = textBoxPesquisaCPF.Text;
@@ -186,9 +245,24 @@ namespace ControleContatos
             AtualizarLista();
         }
 
-
+        // botão de link para edição de contato, verifica se o campo de CPF está vazio e exibe uma mensagem de aviso
         private void buttonLinkEditar_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(textBoxPesquisaCPF.Text))
+            {
+                MessageBox.Show("Informe um CPF para editar o contato.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                buttonExcluirContato.Enabled = false;
+                buttonExcluirTelefone.Enabled = false;
+                buttonLinkEditar.Enabled = false;
+                buttonLinkEmail.Enabled = false;
+
+                buttonExcluirTelefone.Visible = false;
+                labelIDTelEditar.Visible = false;
+                textBoxPesquisaIdTelefone.Visible = false;
+                return;
+            }
+
             try
             {
                 string cpfSelecionado = textBoxPesquisaCPF.Text;
@@ -290,6 +364,7 @@ namespace ControleContatos
         }
 
 
+        // botão de adição de telefone, verifica se os campos de telefone, DDD e tipo estão vazios e exibe uma mensagem de aviso
         private void buttonAdicionarTelefoneEditar_Click(object sender, EventArgs e)
         {
             dtGridEditTelefone = dataGridViewEditarTelefone.DataSource as DataTable;
@@ -353,13 +428,19 @@ namespace ControleContatos
             }
         }
 
+
+        // botão de edição de telefone, verifica se os campos de telefone, DDD e tipo estão vazios e exibe uma mensagem de aviso
         private void buttonEditarTelefone_Click(object sender, EventArgs e)
         {
+            
+
             if (!string.IsNullOrEmpty(textBoxTelefoneEditar.Text) &&
                 !string.IsNullOrEmpty(textBoxDDDEditar.Text) &&
                 !string.IsNullOrEmpty(comboBoxTipoEditar.Text))
             {
                 int index = dataGridViewEditarTelefone.CurrentCell?.RowIndex ?? -1;
+
+                
 
                 if (index >= 0)
                 {
@@ -367,15 +448,32 @@ namespace ControleContatos
                     {
                         DataGridViewRow selectedRow = dataGridViewEditarTelefone.Rows[index];
 
+                   
                         if (selectedRow.Cells[0].Value != null &&
                             selectedRow.Cells[1].Value != null &&
                             selectedRow.Cells[2].Value != null &&
                             selectedRow.Cells[3].Value != null)
                         {
+
+                            string originalDDD = selectedRow.Cells[2].Value.ToString();
+                            string originalTelefone = selectedRow.Cells[3].Value.ToString();
+
+                            string verificaValorDDD = textBoxDDDEditar.Text;
+                            string verificaValorTelefone = textBoxTelefoneEditar.Text;
+
+
+                            if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone)
+                            {
+                                throw new Exception("Não houve alteração nos campos de DDD e Telefone.");
+
+                            }
+
                             selectedRow.Cells[0].Value = textBoxIdTelefoneEditar.Text;
                             selectedRow.Cells[1].Value = comboBoxTipoEditar.Text;
                             selectedRow.Cells[2].Value = textBoxDDDEditar.Text;
                             selectedRow.Cells[3].Value = textBoxTelefoneEditar.Text;
+
+
 
                             MessageBox.Show("Telefone editado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
@@ -390,6 +488,12 @@ namespace ControleContatos
                     }
 
                     buttonEditarContato.Enabled = true;
+                    buttonAdicionarTelefoneEditar.Enabled = true;
+                    buttonRemoverTelefoneEditar.Enabled = false;
+                    buttonEditarTelefone.Enabled = false;
+
+                    textBoxDDDEditar.Text = "";
+                    textBoxTelefoneEditar.Text = "";
                 }
                 else
                 {
@@ -402,13 +506,37 @@ namespace ControleContatos
             }
         }
 
-
+        // botão de remoção de telefone, verifica se o campo de ID do telefone está vazio e exibe uma mensagem de aviso
         private void buttonRemoverTelefoneEditar_Click(object sender, EventArgs e)
         {
+            // conta quantas linhas do grid estão preenchidas
+            int linhasPreenchidas = 0;
+
+            foreach (DataGridViewRow row in dataGridViewEditarTelefone.Rows)
+            {
+                // primira linha do grid posição 0, verificação se há registros
+                if (!string.IsNullOrWhiteSpace(row.Cells[0].Value?.ToString()))
+                {
+                    linhasPreenchidas++;
+                }
+            }
+
+            // se tiver apenas uma linha preenchida (posição 0), exibe a mensagem e desativa o botão
+            if (linhasPreenchidas == 1)
+            {
+                MessageBox.Show("Não é possível excluir todos os telefones.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                buttonRemoverTelefoneEditar.Enabled = false;
+                buttonAdicionarTelefoneEditar.Enabled = true;
+                return;
+            }
+
             DialogResult result = MessageBox.Show("Deseja realmente excluir o telefone selecionado?", "Excluir Telefone", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
                 int index = dataGridViewEditarTelefone.CurrentCell?.RowIndex ?? -1;
+
+               
 
                 if (index >= 0)
                 {
@@ -469,6 +597,12 @@ namespace ControleContatos
                                 buttonAdicionarTelefoneEditar.Enabled = true;
                                 buttonRemoverTelefoneEditar.Enabled = false;
                                 buttonEditarTelefone.Enabled = false;
+
+                                textBoxDDDEditar.Text = "";
+                                textBoxTelefoneEditar.Text = "";
+
+                                buttonEditarContato.Enabled = true;
+
 
                                 MessageBox.Show("Telefone excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
@@ -594,15 +728,74 @@ namespace ControleContatos
         //    }
         //}
 
+
+        // **************************************************************************************************************************************************************************************************************************
+        //private bool nomeAlterado = false;
+        //private bool enderecoAlterado = false;
+
+
+        // Novo método para verificar se as informações de contato foram alteradas
+
+
+        // Verificar condição 
+
+        //if (!string.IsNullOrEmpty(textBoxNomeEditar.Text) && !string.IsNullOrEmpty(textBoxCPFEditar.Text) && !string.IsNullOrEmpty(textBoxEnderecoEditar.Text) && nomeAlterado && enderecoAlterado)
+        //   {
+        //        string novoValorNome = textBoxNomeEditar.Text;
+        //string novoValorEndereco = textBoxEnderecoEditar.Text;
+
+        //        if (valorCarregadoNome == novoValorNome && valorCarregadoEndereco == novoValorEndereco)
+        //        {
+        //            buttonEditarContato.Enabled = false;
+        //        }
+        //        else
+        //        {
+
+        //           buttonEditarContato.Enabled = true;
+        //        }
+        //   }
+
+        // *******************************************************************************************************************************************************************************************************************************
+
+
+
+        // botão de edição de contato, verifica se os campos de nome, CPF e endereço estão vazios e exibe uma mensagem de aviso
         private void buttonEditarContato_Click(object sender, EventArgs e)
         {
+            string valorCarregadoNome = textBoxNomeEditar.Text;
+            string valorCarregadoEndereco = textBoxEnderecoEditar.Text;
+
            if (string.IsNullOrEmpty(textBoxNomeEditar.Text) || string.IsNullOrEmpty(textBoxCPFEditar.Text) || string.IsNullOrEmpty(textBoxEnderecoEditar.Text))
-            {
+           {
                 MessageBox.Show("Dados incompletos para o contato. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+           }
+
+           
+
+            bool hasValues = false;
+
+            // Percorre todas as linhas do DataGridView
+            foreach (DataGridViewRow row in dataGridViewEditarTelefone.Rows)
+            {
+                // Verifica se a linha não é nova e se contém alguma célula preenchida
+                if (!row.IsNewRow)
+                {
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
+                        {
+                            hasValues = true;
+                            break; // Sai do loop se encontrar algum valor
+                        }
+                    }
+                }
+
+                if (hasValues)
+                    break; // Sai do loop se encontrar algum valor
             }
 
-           if(dtGridEditTelefone.Rows.Count == 0)
+            if (!hasValues)
             {
                 MessageBox.Show("Adicione pelo menos um telefone para o contato.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -664,16 +857,27 @@ namespace ControleContatos
                 //    }
                 //}
 
+                
+
                 LimparCampos();
                 MessageBox.Show("Contato atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                AtualizarLista();
+               
 
-                buttonEditarContato.Enabled = false;
+                buttonPesquisarContato.Enabled = true;
+
+                buttonExcluirContato.Enabled = false;
+                buttonExcluirTelefone.Enabled = false;
                 buttonLinkEditar.Enabled = false;
                 buttonLinkEmail.Enabled = false;
-                buttonExcluirTelefone.Enabled = false;
-                buttonExcluirContato.Enabled = false;
+
+                buttonExcluirTelefone.Visible = false;
+                labelIDTelEditar.Visible = false;
+                textBoxPesquisaIdTelefone.Visible = false;
+
+                AtualizarLista();
+
+                tabControl1.SelectTab("tabPageListarContatos");
             }
             catch (Exception ex)
             {
@@ -683,6 +887,7 @@ namespace ControleContatos
            
         }
 
+        // método para carregar a lista de tipos de telefone no ComboBox
         private void CarregarLista()
         {
             try
@@ -720,11 +925,14 @@ namespace ControleContatos
             }
         }
 
+        // dicionário para armazenar os valores do ComboBox de tipos de telefone
+
         private Dictionary<string, int> valoresCombo = new Dictionary<string, int>
         {
             {"Celular", 1 }, {"Telefone", 2}, {"Emergência", 3}
         };
 
+         
         private void comboBoxTipoEditar_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (valoresCombo.ContainsKey(comboBoxTipoEditar.Text))
@@ -733,11 +941,15 @@ namespace ControleContatos
             }
         }
 
+
+        // botão para atualizar a lista de contatos
         private void AtualizarGridLista_Click(object sender, EventArgs e)
         {
             AtualizarLista();
             dataGridViewAgenda.AutoResizeColumns();
         }
+
+        // método para atualizar a lista de contatos
 
         private void AtualizarLista()
         {
@@ -753,6 +965,8 @@ namespace ControleContatos
             labelIDTelEditar.Visible = false;
             textBoxPesquisaIdTelefone.Visible = false;
         }
+
+        // evento de clique na célula do DataGridView de contatos, habilita os botões de exclusão e edição
 
         private void dataGridViewEditarTelefone_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -788,6 +1002,8 @@ namespace ControleContatos
             }
         }
 
+        // evento de clique na célula do DataGridView de contatos, habilita os botões de exclusão e edição
+
         public void LimparCampos()
         {
             textBoxNomeEditar.Text = "";
@@ -807,13 +1023,15 @@ namespace ControleContatos
             dataGridViewEditarTelefone.DataSource = dtGridEditTelefone;
         }
 
+        // botão para concluir uma consulta e retornar ao menu principal
+
         private void buttonConcluirConsulta_Click(object sender, EventArgs e)
         {
             this.Close();
             main.Show();
         }
 
-
+        // verifica se o CPF é válido, cálculo de digito verificador
         private bool IsValidCPF(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
@@ -863,6 +1081,7 @@ namespace ControleContatos
             return cpf.EndsWith(digito);
         }
 
+        // evento de validação do campo de CPF, exibe uma mensagem de aviso se o CPF for inválido
         private void textBoxPesquisaCPF_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
 
@@ -876,6 +1095,8 @@ namespace ControleContatos
             
         }
 
+
+        // botão cancelar edição de contato, retorna à aba de listagem de contatos
         private void buttonCancelarEditar_Click(object sender, EventArgs e)
         {
             //this.Close();
@@ -895,5 +1116,40 @@ namespace ControleContatos
             textBoxPesquisaIdTelefone.Visible = false;
 
         }
+
+        //private bool isTextChanged = false;
+
+        private void textBoxDDDEditar_TextChanged(object sender, EventArgs e)
+        {
+            //isTextChanged = true;
+            //BloqueiaDesbloqueiaEditarTelefone();
+        }
+
+        private void textBoxTelefoneEditar_TextChanged(object sender, EventArgs e)
+        {
+        //    isTextChanged = true;
+        //    BloqueiaDesbloqueiaEditarTelefone();
+           
+        }
+
+        private void textBoxNomeEditar_TextChanged(object sender, EventArgs e)
+        {
+            //nomeAlterado = true;
+            buttonEditarContato.Enabled = true;
+        }
+
+        private void textBoxEnderecoEditar_TextChanged(object sender, EventArgs e)
+        {
+            //enderecoAlterado = true;
+            buttonEditarContato.Enabled = true;
+        }
+
+
+
+
+        //private void BloqueiaDesbloqueiaEditarTelefone()
+        //{
+        //    buttonEditarTelefone.Enabled = isTextChanged;
+        //}
     }
 }

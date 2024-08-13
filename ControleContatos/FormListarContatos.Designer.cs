@@ -333,7 +333,7 @@
             this.textBoxIdTelefoneEditar.Enabled = false;
             this.textBoxIdTelefoneEditar.Location = new System.Drawing.Point(97, 74);
             this.textBoxIdTelefoneEditar.Name = "textBoxIdTelefoneEditar";
-            this.textBoxIdTelefoneEditar.Size = new System.Drawing.Size(103, 23);
+            this.textBoxIdTelefoneEditar.Size = new System.Drawing.Size(111, 23);
             this.textBoxIdTelefoneEditar.TabIndex = 7;
             // 
             // buttonAdicionarTelefoneEditar
@@ -392,6 +392,7 @@
             this.textBoxDDDEditar.Name = "textBoxDDDEditar";
             this.textBoxDDDEditar.Size = new System.Drawing.Size(23, 23);
             this.textBoxDDDEditar.TabIndex = 5;
+            this.textBoxDDDEditar.TextChanged += new System.EventHandler(this.textBoxDDDEditar_TextChanged);
             // 
             // textBoxTelefoneEditar
             // 
@@ -400,6 +401,7 @@
             this.textBoxTelefoneEditar.Name = "textBoxTelefoneEditar";
             this.textBoxTelefoneEditar.Size = new System.Drawing.Size(101, 23);
             this.textBoxTelefoneEditar.TabIndex = 5;
+            this.textBoxTelefoneEditar.TextChanged += new System.EventHandler(this.textBoxTelefoneEditar_TextChanged);
             // 
             // label1
             // 
@@ -446,6 +448,7 @@
             this.textBoxNomeEditar.Name = "textBoxNomeEditar";
             this.textBoxNomeEditar.Size = new System.Drawing.Size(188, 23);
             this.textBoxNomeEditar.TabIndex = 2;
+            this.textBoxNomeEditar.TextChanged += new System.EventHandler(this.textBoxNomeEditar_TextChanged);
             // 
             // textBoxEnderecoEditar
             // 
@@ -453,6 +456,7 @@
             this.textBoxEnderecoEditar.Name = "textBoxEnderecoEditar";
             this.textBoxEnderecoEditar.Size = new System.Drawing.Size(230, 23);
             this.textBoxEnderecoEditar.TabIndex = 2;
+            this.textBoxEnderecoEditar.TextChanged += new System.EventHandler(this.textBoxEnderecoEditar_TextChanged);
             // 
             // labelNovoEndereco
             // 

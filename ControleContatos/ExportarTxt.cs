@@ -18,6 +18,7 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
+        // método para exportar contatos para arquivo txt
         public void ExportaTxt()
         {
             string sqlContato = "SELECT id_usuario, nome, cpf, endereco FROM contato";

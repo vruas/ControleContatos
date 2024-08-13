@@ -18,6 +18,8 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
+
+        // método para enviar e-mail com anexo
         public void EnviarEmailOutlook(string cpfSelecionado, string emailDestinatario)
         {
             try

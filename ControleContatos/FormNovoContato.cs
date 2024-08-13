@@ -8,8 +8,10 @@ namespace ControleContatos
 {
     public partial class FormNovoContato : Form
     {
+        // form main
         Main main = new Main();
 
+        // declarção de variáveis, datatable e conexão com o banco de dados
         int index;
         private string connectionString = @"Data Source=LAPTOP-QIJFUNJ0;Initial Catalog=master;Integrated Security=True";
         DataTable dtGridAddTelefone = new DataTable();
@@ -23,6 +25,8 @@ namespace ControleContatos
 
         }
 
+        // criação do grid de telefones e bloqueio dos botões Editar e Remover Telefone
+
         private void FormNovoContato_Load(object sender, EventArgs e)
         {
             dtGridAddTelefone.Columns.Add("ID Telefone", typeof(string));
@@ -35,6 +39,8 @@ namespace ControleContatos
             buttonEditarTelefoneNovo.Enabled = false;
             buttonRemoverTelefoneNovo.Enabled = false;
         }
+
+        // botão para adicionar telefone novo ao grid de telefones
 
         private void buttonAdicionarTelefoneNovo_Click(object sender, EventArgs e)
         {
@@ -71,6 +77,8 @@ namespace ControleContatos
             }
         }
 
+        // botão para editar telefone novo no grid de telefones
+
         private void buttonEditarTelefoneNovo_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxTelefoneNovo.Text) && !string.IsNullOrEmpty(textBoxDDDNovo.Text) && !string.IsNullOrEmpty(comboBoxTipoNovo.Text))
@@ -80,10 +88,24 @@ namespace ControleContatos
                     DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
                     if (index >= 0)
                     {
+                        string originalDDD = selectedRow.Cells[2].Value.ToString();
+                        string originalTelefone = selectedRow.Cells[3].Value.ToString();
+
+                        string verificaValorDDD = textBoxDDDNovo.Text;
+                        string verificaValorTelefone = textBoxTelefoneNovo.Text;
+
+                        if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone)
+                        {
+                            throw new Exception("Não houve alteração nos campos de DDD e Telefone.");
+
+                        }
+
                         selectedRow.Cells[1].Value = comboBoxTipoNovo.Text;
                         selectedRow.Cells[2].Value = textBoxDDDNovo.Text;
                         selectedRow.Cells[3].Value = textBoxTelefoneNovo.Text;
                     }
+
+
 
                     textBoxDDDNovo.Text = "";
                     textBoxTelefoneNovo.Text = "";
@@ -101,6 +123,8 @@ namespace ControleContatos
             }
 
         }
+
+        // botão para remover telefone novo do grid de telefones
 
         private void buttonRemoverTelefoneNovo_Click(object sender, EventArgs e)
         {
@@ -127,17 +151,46 @@ namespace ControleContatos
         }
 
 
-
+        // botão para adicionar um novo contato, valida campos, extrai valores dos campos do grid de telefones e chama o método de adicionar contato
 
         private void buttonAdicionarContato_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxNomeNovo.Text) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text))
             {
-                if (dtGridAddTelefone.Rows.Count == 0)
+                //if (dtGridAddTelefone.Rows.Count == 0)
+                //{
+                //    MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                //    return;
+                //}
+
+                bool hasValues = false;
+
+                // Percorre todas as linhas do DataGridView
+                foreach (DataGridViewRow row in dataGridViewTelefoneNovo.Rows)
                 {
-                    MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    // Verifica se a linha não é nova e se contém alguma célula preenchida
+                    if (!row.IsNewRow)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            if (cell.Value != null && !string.IsNullOrWhiteSpace(cell.Value.ToString()))
+                            {
+                                hasValues = true;
+                                break; // Sai do loop se encontrar algum valor
+                            }
+                        }
+                    }
+
+                    if (hasValues)
+                        break; // Sai do loop se encontrar algum valor
+                }
+
+                if (!hasValues)
+                {
+                    MessageBox.Show("Adicione pelo menos um telefone para o contato.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
 
                 try
                 {
@@ -350,7 +403,7 @@ namespace ControleContatos
 
 
 
-
+        // método para carregar a lista de tipos de telefone no combobox
         private void CarregarLista()
         {
             try
@@ -388,11 +441,15 @@ namespace ControleContatos
             }
         }
 
+        // dicionário para armazenar os valores do combobox
+
         private Dictionary<string, int> valoresCombo = new Dictionary<string, int> 
         {
             {"Celular", 1 }, {"Telefone", 2}, {"Emergência", 3}
         };
 
+
+        // 
         private void comboBoxTipoNovo_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (valoresCombo.ContainsKey(comboBoxTipoNovo.Text))
@@ -400,6 +457,8 @@ namespace ControleContatos
                 int valorSelecionado = valoresCombo[comboBoxTipoNovo.Text];
             }
         }
+
+        // evento para selecionar um telefone no grid de telefones, habilita botões Editar e Remover Telefone e preenche os campos com os valores do telefone selecionado
 
         private void dataGridViewTelefoneNovo_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -432,6 +491,8 @@ namespace ControleContatos
             }
 
         }
+
+        // método para validar o CPF, cáculo do dígito verificador
 
         private bool IsValidCPF(string cpf)
         {
@@ -482,6 +543,7 @@ namespace ControleContatos
             return cpf.EndsWith(digito);
         }
 
+        // evento para validar o CPF, se o CPF for inválido, exibe mensagem de erro e limpa o campo
         private void textBoxCPFNovo_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!IsValidCPF(textBoxCPFNovo.Text) && textBoxCPFNovo.Text != "")
@@ -491,6 +553,8 @@ namespace ControleContatos
                 textBoxCPFNovo.Focus();
             }
         }
+
+        // evento para cancelar a operação de adicionar novo contato, fecha o formulário e exibe o form main
 
         private void buttonCancelarNovo_Click(object sender, EventArgs e)
         {

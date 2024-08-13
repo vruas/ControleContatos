@@ -17,6 +17,8 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
+
+        // método para listar contatos
         public DataTable GetContatos()
         {
             DataTable agenda = new DataTable();
@@ -62,6 +64,7 @@ namespace ControleContatos
             return agenda;
         }
 
+        // método para pesquisar contato pelo CPF
         public DataTable PesquisarContato(string cpf)
         {
             DataTable contato = new DataTable();

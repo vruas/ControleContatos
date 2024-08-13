@@ -7,6 +7,8 @@ namespace ControleContatos
 {
     public partial class FormEnviarEmail : Form
     {
+        // declaração de variáveis, objetos e instâncias e conexão com o banco de dados
+
         private string connectionString = @"Data Source=LAPTOP-QIJFUNJ0;Initial Catalog=master;Integrated Security=True";
         private EnviarEmail enviarEmail;
 
@@ -16,17 +18,21 @@ namespace ControleContatos
             enviarEmail = new EnviarEmail(connectionString);
         }
 
+        // propriedade para receber o CPF selecionado
+
         public string CPFSelecionado
         {
             get { return textBoxCPFSelecionado.Text; }
             set { textBoxCPFSelecionado.Text = value; }
         }
 
+        // método para carregar o formulário
         private void FormEnviarEmail_Load(object sender, EventArgs e)
         {
            textBoxCPFSelecionado.Enabled = false;
         }
 
+        // botão para enviar e-mail
         private void buttonEnviarEmail_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(textBoxEmailDestinatario.Text))
@@ -50,6 +56,7 @@ namespace ControleContatos
             
         }
 
+        // botão para cancelar envio de e-mail
         private void buttonCancelarEnvio_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show("Deseja cancelar o envio do e-mail?", "Cancelar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

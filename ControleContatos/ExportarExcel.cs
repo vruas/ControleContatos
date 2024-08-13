@@ -18,6 +18,8 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
+
+        // método para exportar contatos para arquivo excel, ou enviar por e-mail
         public void ExportaExcel(int escolha, string cpfSelecionado = null)
         {
 
@@ -28,22 +30,22 @@ namespace ControleContatos
                 string sqlTelefones = "";
 
 
-                if (escolha == 1)
+                if (escolha == 1) //  todos os contatos da base 
                 {
                     sqlContato = "SELECT id_usuario, nome, cpf, endereco FROM contato";
                     sqlTelefones = "SELECT id_usuario, id_telefone, tipo_tel, ddd_tel, telefone FROM num_telefone ORDER BY id_usuario";
                 }
-                else if (escolha == 2)
+                else if (escolha == 2) //  contato filtrado por CPF
                 {
                     sqlContato = "SELECT id_usuario, nome, cpf, endereco FROM contato WHERE cpf = @cpf";
                     sqlTelefones = "SELECT b.id_usuario, b.id_telefone, b.tipo_tel, b.ddd_tel, b.telefone FROM num_telefone b JOIN contato a ON b.id_usuario = a.id_usuario WHERE a.cpf = @cpf";
                 }
 
 
-                string caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Relatórios";
+                string caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Relatórios"; // caminho padrão para salvar o arquivo Excel
                 if (escolha == 2)
                 {
-                    caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Relatórios\E-mail";
+                    caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Relatórios\E-mail"; // caminho padrão para salvar o arquivo Excel e enviar por e-mail
                 }
                 string nomeArquivo = "baseContato" + DateTime.Now.ToString("ddMMyyyyHHmmss") + ".xlsx";
                 string caminhoCompleto = Path.Combine(caminhoPasta, nomeArquivo);
@@ -162,11 +164,11 @@ namespace ControleContatos
 
                     //MessageBox.Show("Arquivo Excel exportado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    if (escolha == 2)
-                    {
-                        string emailDestinatario = Prompt.ShowDialog("Digite o e-mail do destinatário", "E-mail destinatário");
-                        EnviarEmailOutlook(emailDestinatario, caminhoCompleto);
-                    }
+                    //if (escolha == 2) // enviar por e-mail
+                    //{
+                    //    string emailDestinatario = Prompt.ShowDialog("Digite o e-mail do destinatário", "E-mail destinatário");
+                    //    EnviarEmailOutlook(emailDestinatario, caminhoCompleto);
+                    //}
 
 
                 }

@@ -12,6 +12,8 @@ namespace ControleContatos
 {
     public partial class FormImportarContatos : Form
     {
+        // declaração de variáveis, objetos e instâncias e conexão com o banco de dados
+
         Main main = new Main();
 
         private string connectionString = @"Data Source=LAPTOP-QIJFUNJ0;Initial Catalog=master;Integrated Security=True";
@@ -28,6 +30,8 @@ namespace ControleContatos
 
         }
 
+        // método para carregar o formulário e atualizar o grid de importação
+
         private void FormImportarContatos_Load(object sender, EventArgs e)
         {
             AtualizarGridImportacao();
@@ -36,6 +40,8 @@ namespace ControleContatos
             buttonConcluirImpExcel.Enabled = false;
 
         }
+
+        // botão para importar contatos de arquivo txt
 
         private void buttonImportarTXT_Click(object sender, EventArgs e)
         {
@@ -49,6 +55,8 @@ namespace ControleContatos
 
         }
 
+        // botão para importar contatos de arquivo excel
+
         private void buttonImportarExcel_Click(object sender, EventArgs e)
         {
             importarExcel.ImportarExcel(1); // 1 - Importar Excel
@@ -61,6 +69,8 @@ namespace ControleContatos
             //MessageBox.Show("Importação realizada com sucesso!", "Importação", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        // método para atualizar grid de importação
+
         private void buttonImportarEmailExcel_Click(object sender, EventArgs e)
         {
             importarExcel.ImportarExcel(2); // 2 - Importar ExcelOutlook
@@ -69,7 +79,7 @@ namespace ControleContatos
             buttonConcluirImpExcel.Enabled = true;
         }
 
-
+        // método para atualizar grid de importação
 
         private void AtualizarGridImportacao()
         {
@@ -77,24 +87,28 @@ namespace ControleContatos
             dataGridViewImportarExcel.DataSource = listarContatos.GetContatos();
         }
 
+        // botão para cancelar a importação de contatos de arquivo txt
         private void buttonCancelarImpTXT_Click(object sender, EventArgs e)
         {
             this.Close();
             main.Show();
         }
 
+        // botão para concluir a importação de contatos de arquivo txt
         private void buttonConcluirImpTXT_Click(object sender, EventArgs e)
         {
             this.Close();
             main.Show();
         }
 
+        // botão para cancelar a importação de contatos de arquivo excel
         private void buttonCancelarImpExcel_Click(object sender, EventArgs e)
         {
             this.Close();
             main.Show();
         }
 
+        // botão para concluir a importação de contatos de arquivo excel
         private void buttonConcluirImpExcel_Click(object sender, EventArgs e)
         {
             this.Close();

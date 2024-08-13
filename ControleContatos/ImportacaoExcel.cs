@@ -21,10 +21,13 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
+        // método para importar contatos de arquivo excel
         public void ImportarExcel(int escolha)
         {
             try
             {
+
+                // escolha de importação de arquivo Excel
                 if (escolha == 1)
                 {
                     string caminhoArquivo = null;
@@ -61,6 +64,8 @@ namespace ControleContatos
                         }
                     }
                 }
+
+                // escolha de importação de arquivo Excel do Outlook
                 else if (escolha == 2)
                 {
                     string caminhoArquivo = GetExcelFromOutlook();
@@ -95,6 +100,7 @@ namespace ControleContatos
             }
         }
 
+        // método para validar os dados do contato
         private bool ValidarContato(SqlConnection conn, int idUsuario, string nome, string cpf, string endereco)
         {
             using (SqlCommand command = new SqlCommand())
@@ -134,6 +140,7 @@ namespace ControleContatos
             }
         }
 
+        // método para validar os dados do telefone
         private bool ValidarTelefone(SqlConnection conn, int idUsuario, string idTelefone, int tipoTel, int dddTel, string telefone)
         {
             using (SqlCommand command = new SqlCommand())
@@ -174,6 +181,7 @@ namespace ControleContatos
             }
         }
 
+        // método para carregar os dados do arquivo Excel
         private (DataTable, DataTable) CarregarDadosDoExcel(string caminhoArquivo)
         {
             using (var workbook = new XLWorkbook(caminhoArquivo))
@@ -239,6 +247,7 @@ namespace ControleContatos
             }
         }
 
+        // método para inserir os dados no banco de dados
         private void InserirDadosNoBanco(SqlConnection conn, DataTable dtContato, DataTable dtTelefone)
         {
             using (SqlTransaction transaction = conn.BeginTransaction())
@@ -296,6 +305,7 @@ namespace ControleContatos
             }
         }
 
+        // método para obter arquivo Excel do Outlook
         private string GetExcelFromOutlook()
         {
             Application outlookApp = new Application();

@@ -16,7 +16,7 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
-
+        // Método para atualizar informações de um contato
 
         public void AtualizaContato(string nome, string cpf, string endereco, List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones/*string idTelefone, int tipoTel, int ddd, string telefone*/)
         {
@@ -183,6 +183,8 @@ namespace ControleContatos
                         throw new Exception("Erro ao atualizar contato: " + ex.Message);
                     }
                 }
+
+                conn.Close();
             }
         }
     }

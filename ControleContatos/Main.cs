@@ -19,6 +19,8 @@ namespace ControleContatos
             InitializeComponent();
         }
 
+        // Bloqueia Funções de Exportar e Listar Contatos caso não haja registros no banco de dados, em seguida verifica se há registros no banco de dados (toda vez que o formulário é carregado)
+
         private void Main_Load(object sender, EventArgs e)
         {
             buttonNovoContato.Enabled = true;
@@ -30,7 +32,7 @@ namespace ControleContatos
 
         }
 
-        // método para verificar se há algum registro no banco de dados
+        // método para verificar se há algum registro no banco de dados, se tiver, libera o restante das funções
 
         private bool verificarRegistros()
         {
@@ -82,6 +84,8 @@ namespace ControleContatos
             return false;
         }
 
+        //Acesso ao cadastro de um novo contato
+
         private void NovoContato_Click(object sender, EventArgs e)
         {
             // Chama o formulário de novo contato
@@ -92,6 +96,8 @@ namespace ControleContatos
 
         }
 
+        //Acesso aos contatos cadastrados (listagem, exclusão, edição e enviar por e-mail)
+
         private void Contatos_Click(object sender, EventArgs e)
         {
             // Chama o formulário de listagem de contatos
@@ -101,6 +107,8 @@ namespace ControleContatos
             verificarRegistros();
         }
 
+        //Acesso a exportação de contatos (.txt e .xlsx)
+
         private void ExportarContatos_Click(object sender, EventArgs e)
         {
             FormExportarContatos formExportarContatos = new FormExportarContatos();
@@ -109,6 +117,7 @@ namespace ControleContatos
             verificarRegistros();
         }
 
+        //Acesso a importação de contatos (.txt e .xlsx)
         private void ImportarContatos_Click(object sender, EventArgs e)
         {
             // Chama o formulário de importação de contatos
@@ -118,6 +127,8 @@ namespace ControleContatos
             
             verificarRegistros();
         }
+
+        // Encerra a aplicação
 
         private void buttonFechar_Click(object sender, EventArgs e)
         {

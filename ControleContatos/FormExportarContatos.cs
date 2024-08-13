@@ -5,6 +5,7 @@ namespace ControleContatos
 {
     public partial class FormExportarContatos : Form
     {
+        // declaração de variáveis, objetos e instâncias e conexão com o banco de dados
         Main main = new Main();
 
         private string connectionString = @"Data Source=LAPTOP-QIJFUNJ0;Initial Catalog=master;Integrated Security=True";
@@ -19,6 +20,7 @@ namespace ControleContatos
             listarContatos = new ListarContatos(connectionString);
         }
 
+        // método para carregar o formulário e atualizar o grid de exportação
         private void FormExportarContatos_Load(object sender, EventArgs e)
         {
            AtualizarGridExportacao();
@@ -27,6 +29,8 @@ namespace ControleContatos
            buttonConcluirExpExcel.Enabled = false;
             
         }
+
+        // método para exportar contatos para arquivo txt
 
         private void buttonExportarTXT_Click(object sender, EventArgs e)
         {
@@ -37,6 +41,8 @@ namespace ControleContatos
 
             buttonConcluirExpTXT.Enabled = true;
         }
+
+        // método para exportar contatos para arquivo excel
 
         private void buttonExportarExcel_Click(object sender, EventArgs e)
         {
@@ -49,11 +55,15 @@ namespace ControleContatos
             buttonConcluirExpExcel.Enabled = true;
         }
 
+        // método para atualizar grid de exportação
+
         private void AtualizarGridExportacao()
         {
             dataGridViewExportaTXT.DataSource = listarContatos.GetContatos();
             dataGridViewExportaExcel.DataSource = listarContatos.GetContatos();
         }
+
+        // botão para cancelar a exportação de contatos para arquivo txt
 
         private void buttonCancelarExpTXT_Click(object sender, EventArgs e)
         {
@@ -61,18 +71,21 @@ namespace ControleContatos
             main.Show();
         }
 
+        // botão para concluir a exportação de contatos para arquivo txt
         private void buttonConcluirExpTXT_Click(object sender, EventArgs e)
         {
             this.Close();
             main.Show();
         }
 
+        // botão para cancelar a exportação de contatos para arquivo excel
         private void buttonCancelarExpExcel_Click(object sender, EventArgs e)
         {
             this.Close();
             main.Show();
         }
 
+        // botão para concluir a exportação de contatos para arquivo excel
         private void buttonConcluirExpExcel_Click(object sender, EventArgs e)
         {
             this.Close();

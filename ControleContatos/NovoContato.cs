@@ -15,6 +15,8 @@ namespace ControleContatos
 
         private int newId;
 
+        // método para verificar se o CPF já está cadastrado no banco de dados
+
         public bool VerificaCPFExistente(string cpf)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -44,7 +46,7 @@ namespace ControleContatos
 
 
 
-
+        // método para adicionar novo contato
         public void AdicionarContato(string nome, string cpf, string endereco, List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones)
         {
             if (!IsValidCPF(cpf))
@@ -683,6 +685,8 @@ namespace ControleContatos
         //    }
         //}
 
+
+        // método para verificar se o CPF é válido
         public bool IsValidCPF(string cpf)
         {
             int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
