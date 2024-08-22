@@ -139,9 +139,10 @@
             this.textBoxPesquisaIdTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxPesquisaIdTelefone.Location = new System.Drawing.Point(94, 107);
             this.textBoxPesquisaIdTelefone.Name = "textBoxPesquisaIdTelefone";
-            this.textBoxPesquisaIdTelefone.Size = new System.Drawing.Size(120, 23);
+            this.textBoxPesquisaIdTelefone.Size = new System.Drawing.Size(167, 23);
             this.textBoxPesquisaIdTelefone.TabIndex = 5;
             this.textBoxPesquisaIdTelefone.Visible = false;
+            this.textBoxPesquisaIdTelefone.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxPesquisaIdTelefone_Validating);
             // 
             // label3
             // 
@@ -211,7 +212,7 @@
             this.buttonExcluirTelefone.BackColor = System.Drawing.Color.DarkGray;
             this.buttonExcluirTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonExcluirTelefone.ForeColor = System.Drawing.Color.Black;
-            this.buttonExcluirTelefone.Location = new System.Drawing.Point(234, 100);
+            this.buttonExcluirTelefone.Location = new System.Drawing.Point(292, 100);
             this.buttonExcluirTelefone.Name = "buttonExcluirTelefone";
             this.buttonExcluirTelefone.Size = new System.Drawing.Size(166, 36);
             this.buttonExcluirTelefone.TabIndex = 3;
@@ -333,7 +334,7 @@
             this.textBoxIdTelefoneEditar.Enabled = false;
             this.textBoxIdTelefoneEditar.Location = new System.Drawing.Point(97, 74);
             this.textBoxIdTelefoneEditar.Name = "textBoxIdTelefoneEditar";
-            this.textBoxIdTelefoneEditar.Size = new System.Drawing.Size(111, 23);
+            this.textBoxIdTelefoneEditar.Size = new System.Drawing.Size(153, 23);
             this.textBoxIdTelefoneEditar.TabIndex = 7;
             // 
             // buttonAdicionarTelefoneEditar

@@ -94,20 +94,47 @@ namespace ControleContatos
                 textBoxPesquisaIdTelefone.Visible = false;
                 return;
             }
-            string cpf = textBoxPesquisaCPF.Text;
-            dataGridViewAgenda.DataSource = listarContatos.PesquisarContato(cpf);
+            string cpfSelecionado = textBoxPesquisaCPF.Text;
 
-            dataGridViewAgenda.AutoResizeColumns();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
 
-            buttonLinkEmail.Enabled = true;
-            buttonExcluirContato.Enabled = true;
-            buttonExcluirTelefone.Enabled = true;
-            buttonLinkEditar.Enabled = true;
-            buttonLinkEmail.Enabled = true;
+                // Obtém as informações do contato
+                string sqlContato = "SELECT * FROM contato WHERE cpf = @cpf";
+               
 
-            labelIDTelEditar.Visible = true;
-            textBoxPesquisaIdTelefone.Visible = true;
-            buttonExcluirTelefone.Visible = true;
+                using (SqlCommand cmdContato = new SqlCommand(sqlContato, conn))
+                {
+                    cmdContato.Parameters.AddWithValue("@cpf", cpfSelecionado);
+
+                    using (SqlDataReader reader = cmdContato.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            dataGridViewAgenda.DataSource = listarContatos.PesquisarContato(cpfSelecionado);
+
+                            dataGridViewAgenda.AutoResizeColumns();
+
+                            buttonLinkEmail.Enabled = true;
+                            buttonExcluirContato.Enabled = true;
+                            buttonExcluirTelefone.Enabled = true;
+                            buttonLinkEditar.Enabled = true;
+                            buttonLinkEmail.Enabled = true;
+
+                            labelIDTelEditar.Visible = true;
+                            textBoxPesquisaIdTelefone.Visible = true;
+                            buttonExcluirTelefone.Visible = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Contato não encontrado.");
+                            return;
+                        }
+                    }
+                }
+            }
+           
         }
 
         // botão de exclusão de telefone, verifica se o campo de ID do telefone está vazio e exibe uma mensagem de aviso
@@ -140,8 +167,11 @@ namespace ControleContatos
                 buttonLinkEditar.Enabled = false;
                 buttonLinkEmail.Enabled = false;
 
-
-                MessageBox.Show("Telefone excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (excluirContatos.telefoneExlcuido == true)
+                {
+                    MessageBox.Show("Telefone excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                
 
 
             }
@@ -176,6 +206,10 @@ namespace ControleContatos
             {
 
                 string cpf = textBoxPesquisaCPF.Text;
+
+
+
+
                 excluirContatos.ExcluirContato(cpf);
                 AtualizarLista();
 
@@ -455,16 +489,19 @@ namespace ControleContatos
                             selectedRow.Cells[3].Value != null)
                         {
 
+                            string originalTipo = selectedRow.Cells[1].Value.ToString();
                             string originalDDD = selectedRow.Cells[2].Value.ToString();
                             string originalTelefone = selectedRow.Cells[3].Value.ToString();
 
+                            string verificaValorTipo = comboBoxTipoEditar.Text;
                             string verificaValorDDD = textBoxDDDEditar.Text;
                             string verificaValorTelefone = textBoxTelefoneEditar.Text;
 
 
-                            if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone)
+                            if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone && originalTipo == verificaValorTipo)
                             {
-                                throw new Exception("Não houve alteração nos campos de DDD e Telefone.");
+                                MessageBox.Show("Não houve alteração nos campos de Tipo, DDD e Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                return;
 
                             }
 
@@ -554,44 +591,58 @@ namespace ControleContatos
                             {
                                 conn.Open();
 
-                                string sqlDeleteTel = "DELETE FROM num_telefone WHERE id_telefone = @idTelefone";
-                                using (SqlCommand cmd = new SqlCommand(sqlDeleteTel, conn))
-                                {
-                                    cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
-                                    cmd.ExecuteNonQuery();
-                                }
+                               // verificar existencia do telefone no banco antes de executar um delete
 
-                                string sqlSelectUser = "SELECT id_usuario FROM num_telefone WHERE id_telefone = @idTelefone";
-                                int idUsuario = 0;
+                                string sqlCheckTelefone = "SELECT COUNT(*) FROM num_telefone WHERE id_telefone = @idTelefone";
 
-                                using (SqlCommand cmd = new SqlCommand(sqlSelectUser, conn))
+                                using (SqlCommand cmdCheck = new SqlCommand(sqlCheckTelefone, conn))
                                 {
-                                    cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
-                                    var resultado = cmd.ExecuteScalar();
-                                    if (resultado != null)
+                                    cmdCheck.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                    int countTelefones = Convert.ToInt32(cmdCheck.ExecuteScalar());
+                                    if (countTelefones > 0)
                                     {
-                                        idUsuario = Convert.ToInt32(resultado);
-                                    }
-                                }
-
-                                if (idUsuario > 0)
-                                {
-                                    string sqlCountTelefones = "SELECT COUNT(*) FROM num_telefone WHERE id_usuario = @idUsuario";
-                                    using (SqlCommand cmd = new SqlCommand(sqlCountTelefones, conn))
-                                    {
-                                        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
-                                        int count = Convert.ToInt32(cmd.ExecuteScalar());
-                                        if (count == 0)
+                                        string sqlDeleteTel = "DELETE FROM num_telefone WHERE id_telefone = @idTelefone";
+                                        using (SqlCommand cmd = new SqlCommand(sqlDeleteTel, conn))
                                         {
-                                            string sqlDeleteUser = "DELETE FROM contato WHERE id_usuario = @idUsuario";
-                                            using (SqlCommand cmdDeleteUser = new SqlCommand(sqlDeleteUser, conn))
-                                            {
-                                                cmdDeleteUser.Parameters.AddWithValue("@idUsuario", idUsuario);
-                                                cmdDeleteUser.ExecuteNonQuery();
-                                            }
+                                            cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                            cmd.ExecuteNonQuery();
                                         }
+
+                                        //string sqlSelectUser = "SELECT id_usuario FROM num_telefone WHERE id_telefone = @idTelefone";
+                                        //int idUsuario = 0;
+
+                                        //using (SqlCommand cmd = new SqlCommand(sqlSelectUser, conn))
+                                        //{
+                                        //    cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                        //    var resultado = cmd.ExecuteScalar();
+                                        //    if (resultado != null)
+                                        //    {
+                                        //        idUsuario = Convert.ToInt32(resultado);
+                                        //    }
+                                        //}
+
+                                        //if (idUsuario > 0)
+                                        //{
+                                        //    string sqlCountTelefones = "SELECT COUNT(*) FROM num_telefone WHERE id_usuario = @idUsuario";
+                                        //    using (SqlCommand cmd = new SqlCommand(sqlCountTelefones, conn))
+                                        //    {
+                                        //        cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                                        //        int count = Convert.ToInt32(cmd.ExecuteScalar());
+                                        //        if (count == 0)
+                                        //        {
+                                        //            string sqlDeleteUser = "DELETE FROM contato WHERE id_usuario = @idUsuario";
+                                        //            using (SqlCommand cmdDeleteUser = new SqlCommand(sqlDeleteUser, conn))
+                                        //            {
+                                        //                cmdDeleteUser.Parameters.AddWithValue("@idUsuario", idUsuario);
+                                        //                cmdDeleteUser.ExecuteNonQuery();
+                                        //            }
+                                        //        }
+                                        //    }
+                                        //}
                                     }
                                 }
+
+                               
 
                                 // Ativar o botão após operação bem-sucedida
                                 buttonAdicionarTelefoneEditar.Enabled = true;
@@ -765,7 +816,7 @@ namespace ControleContatos
             string valorCarregadoNome = textBoxNomeEditar.Text;
             string valorCarregadoEndereco = textBoxEnderecoEditar.Text;
 
-           if (string.IsNullOrEmpty(textBoxNomeEditar.Text) || string.IsNullOrEmpty(textBoxCPFEditar.Text) || string.IsNullOrEmpty(textBoxEnderecoEditar.Text))
+           if (string.IsNullOrEmpty(textBoxNomeEditar.Text.Trim()) || string.IsNullOrEmpty(textBoxCPFEditar.Text) || string.IsNullOrEmpty(textBoxEnderecoEditar.Text.Trim()))
            {
                 MessageBox.Show("Dados incompletos para o contato. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -775,7 +826,7 @@ namespace ControleContatos
 
             bool hasValues = false;
 
-            // Percorre todas as linhas do DataGridView
+            //Percorre todas as linhas do DataGridView
             foreach (DataGridViewRow row in dataGridViewEditarTelefone.Rows)
             {
                 // Verifica se a linha não é nova e se contém alguma célula preenchida
@@ -805,30 +856,37 @@ namespace ControleContatos
             {
                 EditarContato editarContato = new EditarContato(connectionString);
 
-                string nomw = textBoxNomeEditar.Text;
+                string nome = textBoxNomeEditar.Text.Trim();
                 string cpf = textBoxCPFEditar.Text;
-                string endereco = textBoxEnderecoEditar.Text;
+                string endereco = textBoxEnderecoEditar.Text.Trim();
 
                 List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones = new List<(string, int, int, string)>();
 
-                foreach (DataRow row in dtGridEditTelefone.Rows)
+                // Itera sobre as linhas do DataGridView para extrair os dados dos telefones
+                foreach (DataGridViewRow row in dataGridViewEditarTelefone.Rows)
                 {
-                    string idTelefone = row["ID Telefone"].ToString();
-                    string tipoTel = row["Tipo"].ToString();
-                    string tipoTelefone = (valoresCombo.ContainsKey(tipoTel) ? valoresCombo[tipoTel].ToString() : "0");
-                    string ddd = row["DDD"].ToString();
-                    string telefone = row["Telefone"].ToString();
-
-                    if (string.IsNullOrEmpty(idTelefone) || string.IsNullOrEmpty(tipoTel) || string.IsNullOrEmpty(ddd) || string.IsNullOrEmpty(telefone))
+                    if (!row.IsNewRow)
                     {
-                        MessageBox.Show("Dados incompletos para o telefone. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        continue;
-                    }
+                        string idTelefone = row.Cells["ID Telefone"]?.Value?.ToString();
+                        string tipoTel = row.Cells["Tipo"]?.Value?.ToString();
+                        int tipoTelefone = valoresCombo.TryGetValue(tipoTel, out int tipoTelValue) ? tipoTelValue : 0;
+                        string dddString = row.Cells["DDD"]?.Value?.ToString();
+                        string telefone = row.Cells["Telefone"]?.Value?.ToString();
 
-                    telefones.Add((idTelefone, int.Parse(tipoTelefone), int.Parse(ddd), telefone));
+                        // Verifica se os dados são válidos
+                        if (string.IsNullOrEmpty(idTelefone) || string.IsNullOrEmpty(tipoTel) || string.IsNullOrEmpty(dddString) || string.IsNullOrEmpty(telefone) || !int.TryParse(dddString, out int ddd))
+                        {
+                            MessageBox.Show("Dados incompletos ou inválidos para o telefone. Verifique as entradas.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            continue;
+                        }
+
+                        telefones.Add((idTelefone, tipoTelefone, ddd, telefone));
+                    }
                 }
 
-                editarContato.AtualizaContato(nomw, cpf, endereco, telefones);
+                // Se chegou até aqui, os dados são válidos; então atualiza o contato
+                editarContato.AtualizarContato(nome, cpf, endereco, telefones);
+
 
                 //List<string> editarLinhasTelefone = new List<string>();
 
@@ -857,27 +915,30 @@ namespace ControleContatos
                 //    }
                 //}
 
-                
+                if (editarContato.queryExecutada)
+                {
+                    LimparCampos();
+                    buttonPesquisarContato.Enabled = true;
 
-                LimparCampos();
-                MessageBox.Show("Contato atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    buttonExcluirContato.Enabled = false;
+                    buttonExcluirTelefone.Enabled = false;
+                    buttonLinkEditar.Enabled = false;
+                    buttonLinkEmail.Enabled = false;
+
+                    buttonExcluirTelefone.Visible = false;
+                    labelIDTelEditar.Visible = false;
+                    textBoxPesquisaIdTelefone.Visible = false;
+
+                    AtualizarLista();
+
+                    tabControl1.SelectTab("tabPageListarContatos");
+                }
+
+                //MessageBox.Show("Contato atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                
 
-                buttonPesquisarContato.Enabled = true;
-
-                buttonExcluirContato.Enabled = false;
-                buttonExcluirTelefone.Enabled = false;
-                buttonLinkEditar.Enabled = false;
-                buttonLinkEmail.Enabled = false;
-
-                buttonExcluirTelefone.Visible = false;
-                labelIDTelEditar.Visible = false;
-                textBoxPesquisaIdTelefone.Visible = false;
-
-                AtualizarLista();
-
-                tabControl1.SelectTab("tabPageListarContatos");
+               
             }
             catch (Exception ex)
             {
@@ -1091,6 +1152,31 @@ namespace ControleContatos
                 textBoxPesquisaCPF.Text = "";
                 textBoxPesquisaCPF.Focus();
             }
+            else
+            {
+                string cpfSelecionado = textBoxPesquisaCPF.Text;
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string sqlVerificaCPF = "SELECT cpf FROM contato WHERE cpf = @cpf";
+
+                    using (SqlCommand cmd = new SqlCommand(sqlVerificaCPF, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@cpf", cpfSelecionado);
+
+                        var resultado = cmd.ExecuteScalar();
+
+                        if (resultado == null && !string.IsNullOrEmpty(textBoxPesquisaCPF.Text))
+                        {
+                            MessageBox.Show("Contato não encontrado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            textBoxPesquisaCPF.Text = "";
+                            textBoxPesquisaCPF.Focus();
+                        }
+                    }
+                }
+            }
 
             
         }
@@ -1142,6 +1228,33 @@ namespace ControleContatos
         {
             //enderecoAlterado = true;
             buttonEditarContato.Enabled = true;
+        }
+
+        private void textBoxPesquisaIdTelefone_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            string cpfFiltrado = textBoxPesquisaCPF.Text;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sqlVerificaIdTelefone = "SELECT id_telefone FROM num_telefone WHERE id_telefone = @idTelefone AND id_usuario = (SELECT id_usuario FROM contato WHERE cpf = @cpfFiltrado)";
+
+                using (SqlCommand cmd = new SqlCommand(sqlVerificaIdTelefone, conn))
+                {
+                    conn.Open();
+
+                    cmd.Parameters.AddWithValue("@idTelefone", textBoxPesquisaIdTelefone.Text);
+                    cmd.Parameters.AddWithValue("@cpfFiltrado", cpfFiltrado);
+
+                    var resultado = cmd.ExecuteScalar();
+
+                    if (resultado == null && !string.IsNullOrEmpty(textBoxPesquisaIdTelefone.Text))
+                    {
+                        MessageBox.Show("ID de telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        textBoxPesquisaIdTelefone.Text = "";
+                        textBoxPesquisaIdTelefone.Focus();
+                    }
+                }
+            }
         }
 
 

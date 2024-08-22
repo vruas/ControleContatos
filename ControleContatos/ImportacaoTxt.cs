@@ -96,12 +96,14 @@ namespace ControleContatos
                     dtTelefone.Columns.Add("ddd_tel", typeof(int));
                     dtTelefone.Columns.Add("telefone", typeof(string));
 
+                  
+
                     int linhasContato = 0;
                     int linhasTelefone = 0;
 
                     try
                     {
-                        foreach (string linha in linhas)
+                        foreach(string linha in linhas)
                         {
                             if (linha.Length > 0)
                             {
@@ -116,7 +118,64 @@ namespace ControleContatos
                                     linhasTelefone++;
                                 }
                             }
+
+                           
                         }
+
+                        var telefonesPorUsario = new Dictionary<int, int>();
+
+                      
+                        foreach (DataRow linhaContato in dtContato.Rows)
+                        {
+                            //int idUsuarioContato = Convert.ToInt32(linhaContato["id_usuario"]);
+
+                            string idUsuarioContatoStr = linhaContato["id_usuario"].ToString().Trim();
+
+                            int idUsuarioContato = Convert.ToInt32(idUsuarioContatoStr);
+                            telefonesPorUsario[idUsuarioContato] = 0; // Inicializa a contagem com zero
+
+                            var telefonesRelacionados = dtTelefone.AsEnumerable()
+                                .Where(row => row.Field<int>("id_usuario") == idUsuarioContato);
+
+                            if (telefonesRelacionados.Count() == 0)
+                            {
+                                throw new ValidacaoLinhaException("ID de usuário não encontrado na tabela de telefones: " + idUsuarioContato);
+                            }
+                        }
+
+                        
+                        foreach (DataRow linhaTelefone in dtTelefone.Rows)
+                        {
+                            //int idUsuarioTelefone = Convert.ToInt32(linhaTelefone["id_usuario"]);
+
+                            string idUsuarioTelefoneStr = linhaTelefone["id_usuario"].ToString().Trim();
+
+                            int idUsuarioTelefone = Convert.ToInt32(idUsuarioTelefoneStr);
+
+                            var contatosRelacionados = dtContato.AsEnumerable()
+                                .Where(row => row.Field<int>("id_usuario") == idUsuarioTelefone);
+
+                            if (telefonesPorUsario.ContainsKey(idUsuarioTelefone))
+                            {
+                                telefonesPorUsario[idUsuarioTelefone]++;
+                            }
+
+                            if (contatosRelacionados.Count() == 0)
+                            {
+                                throw new ValidacaoLinhaException("ID de usuário não encontrado na tabela de contatos: " + idUsuarioTelefone);
+                            }
+                        }
+
+                    
+                        foreach (var item in telefonesPorUsario)
+                        {
+                            if (item.Value == 0)
+                            {
+                                throw new ValidacaoLinhaException("O usuário com ID: " + item.Key + " não possui telefones associados.");
+                            }
+                        }
+
+
 
                         ValidarRodape(linhas, linhasContato, linhasTelefone);
 
@@ -182,6 +241,8 @@ namespace ControleContatos
             dtContato.Rows.Add(row);
         }
 
+      
+
         // método para registrar telefone
         private void RegistrarTelefone(SqlCommand command, string linha, DataTable dtTelefone)
         {
@@ -189,6 +250,8 @@ namespace ControleContatos
             {
                 return;
             }
+
+            
 
             DataRow row = dtTelefone.NewRow();
             row["id_usuario"] = int.Parse(linha.Substring(1, 10).Trim());
@@ -198,6 +261,47 @@ namespace ControleContatos
             row["telefone"] = linha.Substring(28).Trim();
             dtTelefone.Rows.Add(row);
         }
+
+        //private void VerificarIdUsuario(string linha, DataTable dtContato, DataTable dtTelefone)
+        //{
+        //    int idUsuario = int.Parse(linha.Substring(1, 10).Trim());
+
+        //    // Verifica se o id_usuario existe em dtContato
+        //    bool idUsuarioExisteEmContato = false;
+        //    foreach (DataRow row in dtContato.Rows)
+        //    {
+        //        if ((int)row["id_usuario"] == idUsuario)
+        //        {
+        //            idUsuarioExisteEmContato = true;
+        //            break;
+        //        }
+        //    }
+
+        //    // Se id_usuario não for encontrado em dtContato, lança uma exceção
+        //    if (!idUsuarioExisteEmContato)
+        //    {
+        //        throw new ValidacaoLinhaException("ID de usuário não encontrado na tabela de contatos: " + idUsuario);
+        //    }
+
+        //    // Verifica se o id_usuario existe em dtTelefone
+        //    bool idUsuarioExisteEmTelefone = false;
+        //    foreach (DataRow row in dtTelefone.Rows)
+        //    {
+        //        if ((int)row["id_usuario"] == idUsuario)
+        //        {
+        //            idUsuarioExisteEmTelefone = true;
+        //            break;
+        //        }
+        //    }
+
+        //    // Se id_usuario não for encontrado em dtTelefone, lança uma exceção
+        //    if (!idUsuarioExisteEmTelefone)
+        //    {
+        //        throw new ValidacaoLinhaException("ID de usuário não encontrado na tabela de telefones: " + idUsuario);
+        //    }
+        //}
+
+
 
         // método para validar contato
         private bool ValidarContato(SqlCommand command, string linha)
@@ -214,6 +318,11 @@ namespace ControleContatos
 
             int idUsuario = int.Parse(linha.Substring(1, 10).Trim());
 
+            if (idUsuario == 0)
+            {
+                throw new ValidacaoLinhaException("ID de usuário inválido: " + idUsuario);
+            }
+
             command.CommandText = "SELECT COUNT(*) FROM contato WHERE id_usuario = @idUsuario";
             command.Parameters.Clear();
             command.Parameters.AddWithValue("@idUsuario", idUsuario);
@@ -226,11 +335,30 @@ namespace ControleContatos
                 return false;
             }
 
+            string nome = linha.Substring(11, 20).Trim();
+
+            if (string.IsNullOrEmpty(nome) || (string.IsNullOrWhiteSpace(nome)))
+            {
+                throw new ValidacaoLinhaException("Nome do contato inválido ou vazio");
+            }
+
             string cpf = linha.Substring(31, 11).Trim();
+
+            if (string.IsNullOrEmpty(cpf) || (string.IsNullOrWhiteSpace(cpf)))
+            {
+                throw new ValidacaoLinhaException("CPF do contato inválido ou vazio");
+            }
 
             if (!IsValidCPF(cpf))
             {
                 throw new ValidacaoLinhaException("CPF do contato inválido: " + cpf);
+            }
+
+            string endereco = linha.Substring(42).Trim();
+
+            if (string.IsNullOrEmpty(endereco) || (string.IsNullOrWhiteSpace(endereco)))
+            {
+                throw new ValidacaoLinhaException("Endereço do contato inválido ou vazio");
             }
 
             return true;
@@ -239,6 +367,32 @@ namespace ControleContatos
         // método para validar telefone
         private bool ValidarTelefone(SqlCommand command, string linha)
         {
+            // verificar se o id usuário é igual na linha de telefone e na linha de contato
+
+           
+
+            //string idUsuarioTelefone = linha.Substring(1, 10).Trim();
+            //string idUsuarioContato = linha.Substring(1, 10).Trim();
+
+            //if (idUsuarioTelefone != idUsuarioContato)
+            //{
+            //    throw new ValidacaoLinhaException("ID de usuário diferente entre a linha de contato e a linha de telefone: " + idUsuarioContato + " / " + idUsuarioTelefone);
+            //}
+
+            //command.CommandText = "SELECT COUNT(*) FROM #contato_temp WHERE id_usuario = @idUsuario";
+            //command.Parameters.Clear();
+            //command.Parameters.AddWithValue("@idUsuario", idUsuarioTelefone);
+
+            //int countUsuario = (int)command.ExecuteScalar();
+
+            //if (countUsuario == 0)
+            //{
+            //    throw new ValidacaoLinhaException("ID de usuário não encontrado na tabela de contatos: " + idUsuarioTelefone);
+            //}
+
+
+
+
             if (linha.Trim().Length > 41)
             {
                 throw new ValidacaoLinhaException("Linha de telefone inválida: " + linha);
@@ -249,7 +403,61 @@ namespace ControleContatos
                 throw new ValidacaoLinhaException("Tipo de linha de telefone inválido: " + linha.Substring(0, 1));
             }
 
+            int idUsuario = int.Parse(linha.Substring(1, 10).Trim());
+
+            if (idUsuario == 0)
+            {
+                throw new ValidacaoLinhaException("ID de usuário inválido: " + idUsuario);
+            }
+
             string idTelefone = linha.Substring(11, 14).Trim();
+
+            if (string.IsNullOrEmpty(idTelefone) && (string.IsNullOrWhiteSpace(idTelefone)))
+            {
+                throw new ValidacaoLinhaException("ID de telefone inválido ou vazio" );
+            }
+
+            string tipoTelefone = linha.Substring(25, 1).Trim();
+
+            if (string.IsNullOrEmpty(tipoTelefone) && (string.IsNullOrWhiteSpace(tipoTelefone)))
+            {
+                throw new ValidacaoLinhaException("Tipo de telefone inválido ou vazio");
+            }
+
+            int codigoTelefone = int.Parse(tipoTelefone);
+
+            if (codigoTelefone < 1 || codigoTelefone > 3)
+            {
+                throw new ValidacaoLinhaException("Tipo de telefone inválido: " + tipoTelefone);
+            }
+
+            string dddTelefone = linha.Substring(26, 2).Trim();
+
+            if (string.IsNullOrEmpty(dddTelefone) || (string.IsNullOrWhiteSpace(dddTelefone)))
+            {
+                throw new ValidacaoLinhaException("DDD de telefone inválido ou vazio");
+            }
+
+            int ddd = int.Parse(dddTelefone);
+
+            if (ddd < 11 || ddd > 99)
+            {
+                throw new ValidacaoLinhaException("DDD de telefone inválido: " + ddd);
+            }
+
+            string telefone = linha.Substring(28).Trim();
+
+            if (telefone.Length < 8 || telefone.Length > 9)
+            {
+                throw new ValidacaoLinhaException("Número de telefone inválido: " + telefone);
+            }
+
+            if (string.IsNullOrEmpty(telefone) || (string.IsNullOrWhiteSpace(telefone)))
+            {
+                throw new ValidacaoLinhaException("Número de telefone inválido ou vazio");
+            }
+
+
             command.CommandText = "SELECT COUNT(*) FROM num_telefone WHERE id_telefone = @idTelefone";
             command.Parameters.Clear();
             command.Parameters.AddWithValue("@idTelefone", idTelefone);

@@ -35,7 +35,7 @@ namespace ControleContatos
         // botão para enviar e-mail
         private void buttonEnviarEmail_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textBoxEmailDestinatario.Text))
+            if (string.IsNullOrEmpty(textBoxEmailDestinatario.Text.Trim()))
             {
                 MessageBox.Show("Informe o e-mail do destinatário", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;

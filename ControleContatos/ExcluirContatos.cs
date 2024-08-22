@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ControleContatos
 {
@@ -92,7 +93,7 @@ namespace ControleContatos
             }
         }
 
-
+        public bool telefoneExlcuido = false;
         public void DeletarTelefone(string idTelefone)
         {
             try
@@ -101,15 +102,87 @@ namespace ControleContatos
                 {
                     conn.Open();
 
-                    string sql = "DELETE FROM num_telefone WHERE id_telefone = @id_telefone";
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    using (SqlTransaction transaction = conn.BeginTransaction())
                     {
-                        cmd.Parameters.AddWithValue("@id_telefone", idTelefone);
-                        cmd.ExecuteNonQuery();
-                    }
+                        try
+                        {
+                            // Primeiro, obtenha o id_usuario associado ao telefone
+                            string sqlSelectUser = "SELECT id_usuario FROM num_telefone WHERE id_telefone = @idTelefone";
+                            int idUsuario = 0;
 
-                    conn.Close();
+                            using (SqlCommand cmd = new SqlCommand(sqlSelectUser, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                var resultado = cmd.ExecuteScalar();
+                                if (resultado != null)
+                                {
+                                    idUsuario = Convert.ToInt32(resultado);
+                                }
+                            }
+
+                            string sqlCountTelefones = "SELECT COUNT(*) FROM num_telefone WHERE id_usuario = @idUsuario";
+                            using (SqlCommand cmd = new SqlCommand(sqlCountTelefones, conn, transaction))
+                            {
+                                cmd.Parameters.AddWithValue("@idUsuario", idUsuario);
+                                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                                if (count == 1)
+                                {
+                                    MessageBox.Show("Não é possível excluir o último telefone do usuário.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    return;
+
+                                    //DialogResult result = MessageBox.Show("Este é o último telefone do usuário. Se você excluir este telefone, o contato será excluído. Deseja excluir o contato?", "Excluir contato", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                                    //if (result == DialogResult.Yes)
+                                    //{
+                                    //    // Excluir o contato
+                                    //    string sqlDeleteUser = "DELETE FROM contato WHERE id_usuario = @idUsuario";
+                                    //    using (SqlCommand cmdDeleteUser = new SqlCommand(sqlDeleteUser, conn, transaction))
+                                    //    {
+                                    //        cmdDeleteUser.Parameters.AddWithValue("@idUsuario", idUsuario);
+                                    //        cmdDeleteUser.ExecuteNonQuery();
+                                    //    }
+                                    //}
+
+                                    // Excluir o contato do usuário se ele não tiver mais telefones
+                                    //string sqlDeleteUser = "DELETE FROM contato WHERE id_usuario = @idUsuario";
+                                    //using (SqlCommand cmdDeleteUser = new SqlCommand(sqlDeleteUser, conn, transaction))
+                                    //{
+                                    //    cmdDeleteUser.Parameters.AddWithValue("@idUsuario", idUsuario);
+                                    //    cmdDeleteUser.ExecuteNonQuery();
+                                    //}
+                                }
+                                else
+                                {
+                                    if (idUsuario > 0)
+                                    {
+                                        // Excluir o telefone
+                                        string sql = "DELETE FROM num_telefone WHERE id_telefone = @id_telefone";
+                                        using (SqlCommand cmdDelete = new SqlCommand(sql, conn, transaction))
+                                        {
+                                            cmdDelete.Parameters.AddWithValue("@id_telefone", idTelefone);
+                                            cmdDelete.ExecuteNonQuery();
+
+                                            telefoneExlcuido = true;
+                                        }
+
+                                        // Verificar se o usuário ainda possui outros telefones
+
+                                    }
+                                }
+                            }
+
+                            
+
+                            // Commit da transação se tudo ocorrer bem
+                            transaction.Commit();
+                        }
+                        catch
+                        {
+                            // Rollback da transação em caso de erro
+                            transaction.Rollback();
+                            throw;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -117,5 +190,6 @@ namespace ControleContatos
                 throw new Exception("Erro ao excluir telefone: " + ex.Message);
             }
         }
+
     }
 }

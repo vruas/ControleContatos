@@ -88,15 +88,17 @@ namespace ControleContatos
                     DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
                     if (index >= 0)
                     {
+                        string originalTipo = selectedRow.Cells[1].Value.ToString();
                         string originalDDD = selectedRow.Cells[2].Value.ToString();
                         string originalTelefone = selectedRow.Cells[3].Value.ToString();
 
+                        string verificaValorTipo = comboBoxTipoNovo.Text;
                         string verificaValorDDD = textBoxDDDNovo.Text;
                         string verificaValorTelefone = textBoxTelefoneNovo.Text;
 
-                        if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone)
+                        if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone && originalTipo == verificaValorTipo)
                         {
-                            throw new Exception("Não houve alteração nos campos de DDD e Telefone.");
+                            throw new Exception("Não houve alteração nos campos de Tipo, DDD e Telefone.");
 
                         }
 
@@ -155,7 +157,7 @@ namespace ControleContatos
 
         private void buttonAdicionarContato_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxNomeNovo.Text) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text))
+            if (!string.IsNullOrEmpty(textBoxNomeNovo.Text.Trim()) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text.Trim()))
             {
                 //if (dtGridAddTelefone.Rows.Count == 0)
                 //{
@@ -196,9 +198,9 @@ namespace ControleContatos
                 {
                     NovoContato novoContato = new NovoContato(connectionString);
 
-                    string nome = textBoxNomeNovo.Text;
+                    string nome = textBoxNomeNovo.Text.Trim();
                     string cpf = textBoxCPFNovo.Text;
-                    string endereco = textBoxEnderecoNovo.Text;
+                    string endereco = textBoxEnderecoNovo.Text.Trim();
 
                     if (novoContato.VerificaCPFExistente(cpf) == false)
                     {

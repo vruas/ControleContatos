@@ -32,7 +32,7 @@ namespace ControleContatos
 
                 if (escolha == 1) //  todos os contatos da base 
                 {
-                    sqlContato = "SELECT id_usuario, nome, cpf, endereco FROM contato";
+                    sqlContato = "SELECT id_usuario, nome, cpf, endereco FROM contato ORDER BY id_usuario";
                     sqlTelefones = "SELECT id_usuario, id_telefone, tipo_tel, ddd_tel, telefone FROM num_telefone ORDER BY id_usuario";
                 }
                 else if (escolha == 2) //  contato filtrado por CPF
