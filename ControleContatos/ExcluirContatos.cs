@@ -128,6 +128,7 @@ namespace ControleContatos
                                 if (count == 1)
                                 {
                                     MessageBox.Show("Não é possível excluir o último telefone do usuário.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    telefoneExlcuido = false;
                                     return;
 
                                     //DialogResult result = MessageBox.Show("Este é o último telefone do usuário. Se você excluir este telefone, o contato será excluído. Deseja excluir o contato?", "Excluir contato", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

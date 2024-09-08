@@ -34,7 +34,7 @@ namespace ControleContatos
             CarregarLista();
             listarContatos = new ListarContatos(connectionString);
             excluirContatos = new ExcluirContatos(connectionString);
-            exportarExcel = new ExportarExcel(connectionString);
+            //exportarExcel = new ExportarExcel(connectionString);
             editarContato = new EditarContato(connectionString);
         }
 
@@ -76,6 +76,32 @@ namespace ControleContatos
 
         }
 
+
+        // método para verificar se o CPF digitado é igual ao cpf exibido no grid
+
+        //private void dataGridViewAgenda_CellClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    if (e.RowIndex >= 0)
+        //    {
+        //        DataGridViewRow row = dataGridViewAgenda.Rows[e.RowIndex];
+        //        textBoxPesquisaCPF.Text = row.Cells["CPF"].Value.ToString();
+        //    }
+        //}
+
+        private bool ValidaCPFInformado()
+        {
+            DataGridViewRow row = dataGridViewAgenda.Rows[index];
+            string cpfDigitado = textBoxPesquisaCPF.Text;
+
+            if (cpfDigitado != row.Cells["CPF"].Value.ToString())
+            {
+                MessageBox.Show("CPF informado não corresponde ao CPF do contato selecionado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
         // botão de pesquisa de contato, verifica se o campo de CPF está vazio e exibe uma mensagem de aviso
 
         private void buttonPesquisarContato_Click(object sender, EventArgs e)
@@ -92,6 +118,7 @@ namespace ControleContatos
                 buttonExcluirTelefone.Visible = false;
                 labelIDTelEditar.Visible = false;
                 textBoxPesquisaIdTelefone.Visible = false;
+                
                 return;
             }
             string cpfSelecionado = textBoxPesquisaCPF.Text;
@@ -116,7 +143,7 @@ namespace ControleContatos
 
                             dataGridViewAgenda.AutoResizeColumns();
 
-                            buttonLinkEmail.Enabled = true;
+                            //buttonLinkEmail.Enabled = true;
                             buttonExcluirContato.Enabled = true;
                             buttonExcluirTelefone.Enabled = true;
                             buttonLinkEditar.Enabled = true;
@@ -125,6 +152,8 @@ namespace ControleContatos
                             labelIDTelEditar.Visible = true;
                             textBoxPesquisaIdTelefone.Visible = true;
                             buttonExcluirTelefone.Visible = true;
+
+
                         }
                         else
                         {
@@ -167,6 +196,7 @@ namespace ControleContatos
                 buttonLinkEditar.Enabled = false;
                 buttonLinkEmail.Enabled = false;
 
+
                 if (excluirContatos.telefoneExlcuido == true)
                 {
                     MessageBox.Show("Telefone excluído com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -200,12 +230,19 @@ namespace ControleContatos
                 return;
             }
 
+            if (!ValidaCPFInformado())
+            {
+                return;
+            }
+
             DialogResult result = MessageBox.Show("Deseja realmente excluir o contato selecionado?", "Excluir Contato", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
 
                 string cpf = textBoxPesquisaCPF.Text;
+
+                
 
 
 
@@ -214,6 +251,7 @@ namespace ControleContatos
                 AtualizarLista();
 
                 textBoxPesquisaCPF.Text = "";
+                //textBoxPesquisaCPF.ReadOnly = false;
 
                 buttonExcluirContato.Enabled = false;
                 buttonExcluirTelefone.Enabled = false;
@@ -252,6 +290,11 @@ namespace ControleContatos
                 return;
             }
 
+            if (!ValidaCPFInformado())
+            {
+                return;
+            }
+
             FormEnviarEmail formEnviarEmail = new FormEnviarEmail();
 
             formEnviarEmail.CPFSelecionado = textBoxPesquisaCPF.Text;
@@ -261,9 +304,12 @@ namespace ControleContatos
 
             string cpf = textBoxPesquisaCPF.Text;
 
+            
+
             //exportarExcel.ExportaExcel(2, cpf);
 
             textBoxPesquisaCPF.Text = "";
+            //textBoxPesquisaCPF.ReadOnly = false;
 
             buttonPesquisarContato.Enabled = true;
 
@@ -297,9 +343,16 @@ namespace ControleContatos
                 return;
             }
 
+            if (!ValidaCPFInformado())
+            {
+                return;
+            }
+
             try
             {
                 string cpfSelecionado = textBoxPesquisaCPF.Text;
+
+                
 
                 // Inicializa o DataTable
                 DataTable telefone = new DataTable();
@@ -529,6 +582,7 @@ namespace ControleContatos
                     buttonRemoverTelefoneEditar.Enabled = false;
                     buttonEditarTelefone.Enabled = false;
 
+                    textBoxIdTelefoneEditar.Text = "";
                     textBoxDDDEditar.Text = "";
                     textBoxTelefoneEditar.Text = "";
                 }
@@ -565,6 +619,9 @@ namespace ControleContatos
 
                 buttonRemoverTelefoneEditar.Enabled = false;
                 buttonAdicionarTelefoneEditar.Enabled = true;
+                textBoxIdTelefoneEditar.Text = "";
+                textBoxDDDEditar.Text = "";
+                textBoxTelefoneEditar.Text = "";
                 return;
             }
 
@@ -649,6 +706,7 @@ namespace ControleContatos
                                 buttonRemoverTelefoneEditar.Enabled = false;
                                 buttonEditarTelefone.Enabled = false;
 
+                                textBoxIdTelefoneEditar.Text = "";
                                 textBoxDDDEditar.Text = "";
                                 textBoxTelefoneEditar.Text = "";
 
@@ -919,6 +977,7 @@ namespace ControleContatos
                 {
                     LimparCampos();
                     buttonPesquisarContato.Enabled = true;
+                    textBoxPesquisaCPF.ReadOnly = false;
 
                     buttonExcluirContato.Enabled = false;
                     buttonExcluirTelefone.Enabled = false;
@@ -1025,6 +1084,8 @@ namespace ControleContatos
             buttonExcluirTelefone.Visible = false;
             labelIDTelEditar.Visible = false;
             textBoxPesquisaIdTelefone.Visible = false;
+
+            textBoxPesquisaCPF.ReadOnly = false;
         }
 
         // evento de clique na célula do DataGridView de contatos, habilita os botões de exclusão e edição
@@ -1154,7 +1215,9 @@ namespace ControleContatos
             }
             else
             {
-                string cpfSelecionado = textBoxPesquisaCPF.Text;
+               
+
+                        string cpfSelecionado = textBoxPesquisaCPF.Text;
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {

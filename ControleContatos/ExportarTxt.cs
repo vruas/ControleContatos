@@ -124,13 +124,13 @@ namespace ControleContatos
                             string linhaFinal = $"FIM{linhasContato.ToString("D7")}{linhasTelefone.ToString("D7")}{linhasTotal.ToString("D7")}";
                             sw.WriteLine(linhaFinal);
 
-                            MessageBox.Show($"Contatos: {linhasContato}\nTelefones: {linhasTelefone}");
                         }
 
                         conn.Close();
                     }
                 }
             }
+                            MessageBox.Show($"Contatos: {linhasContato}\nTelefones: {linhasTelefone}");
         }
     }
 }

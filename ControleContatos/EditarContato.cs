@@ -169,6 +169,7 @@ namespace ControleContatos
 
                         }
 
+                        transaction.Commit();
                         if (queryExecutada)
                         {
                             MessageBox.Show("Contato atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -179,7 +180,6 @@ namespace ControleContatos
                             return;
                         }
 
-                        transaction.Commit();
 
                     }
                     catch (Exception ex)

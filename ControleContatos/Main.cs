@@ -26,6 +26,7 @@ namespace ControleContatos
             buttonNovoContato.Enabled = true;
             buttonContatos.Enabled = false;
             buttonExportarContatos.Enabled = false;
+            buttonImportarContatos.Enabled = true;
            
 
             verificarRegistros();

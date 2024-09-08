@@ -98,7 +98,9 @@ namespace ControleContatos
 
                         if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone && originalTipo == verificaValorTipo)
                         {
-                            throw new Exception("Não houve alteração nos campos de Tipo, DDD e Telefone.");
+                            //throw new Exception("Não houve alteração nos campos de Tipo, DDD e Telefone.");
+                            MessageBox.Show("Não houve alteração nos campos de Tipo, DDD e Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
 
                         }
 
@@ -122,6 +124,11 @@ namespace ControleContatos
                 {
                     MessageBox.Show("Erro: " + ex.Message);
                 }
+            }
+            else 
+            { 
+                MessageBox.Show("Informe um telefone para editar.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
             }
 
         }
