@@ -24,7 +24,7 @@ namespace ControleContatos
             string sqlContato = "SELECT id_usuario, nome, cpf, endereco FROM contato ORDER BY id_usuario";
             string sqlTelefones = "SELECT id_usuario, id_telefone, tipo_tel, ddd_tel, telefone FROM num_telefone ORDER BY id_usuario";
 
-            string caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Relatórios";
+            string caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Agenda\Relatórios";
             string nomeArquivo = "baseContato" + DateTime.Now.ToString("ddMMyyyyHHmmss") + ".txt";
             string caminhoCompleto = Path.Combine(caminhoPasta, nomeArquivo);
 

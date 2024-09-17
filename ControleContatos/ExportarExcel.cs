@@ -42,10 +42,10 @@ namespace ControleContatos
                 }
 
 
-                string caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Relatórios"; // caminho padrão para salvar o arquivo Excel
+                string caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Agenda\Relatórios"; // caminho padrão para salvar o arquivo Excel
                 if (escolha == 2)
                 {
-                    caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Relatórios\E-mail"; // caminho padrão para salvar o arquivo Excel e enviar por e-mail
+                    caminhoPasta = @"C:\Users\vitor\Desktop\Ikonas\Agenda\Relatórios\E-mail"; // caminho padrão para salvar o arquivo Excel e enviar por e-mail
                 }
                 string nomeArquivo = "baseContato" + DateTime.Now.ToString("ddMMyyyyHHmmss") + ".xlsx";
                 string caminhoCompleto = Path.Combine(caminhoPasta, nomeArquivo);

@@ -36,7 +36,7 @@ namespace ControleContatos
 
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = @"C:\Users\vitor\Desktop\Ikonas\Relatórios";
+                openFileDialog.InitialDirectory = @"C:\Users\vitor\Desktop\Ikonas\Agenda\Relatórios";
                 openFileDialog.Filter = "Arquivos de Texto (*.txt)|*.txt|Todos os Arquivos (*.*)|*.*";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
@@ -399,6 +399,11 @@ namespace ControleContatos
                 throw new ValidacaoLinhaException("Nome do contato inválido ou vazio");
             }
 
+            if (!nome.All(char.IsLetter))
+            {
+                throw new ValidacaoLinhaException("Nome do contato inválido: " + nome);
+            }
+
             string cpf = linha.Substring(31, 11).Trim();
 
             if (string.IsNullOrEmpty(cpf) || (string.IsNullOrWhiteSpace(cpf)))
@@ -545,19 +550,34 @@ namespace ControleContatos
                 throw new ValidacaoLinhaException("Número de telefone inválido: " + telefone);
             }
 
-            if (telefone.Length < 8 || telefone.Length > 9)
+            if (telefone.Length < 3 || telefone.Length > 9)
             {
                 throw new ValidacaoLinhaException("Número de telefone inválido: " + telefone);
             }
 
-            if ((codigoTelefone == 1 || codigoTelefone == 3) && telefone.Length < 9)
+            if (codigoTelefone == 1 && telefone.Length < 9)
             {
                 throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
             }
-            else if (codigoTelefone == 2 && telefone.Length != 8)
+
+            if (codigoTelefone == 2 && telefone.Length != 8)
             {
                 throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
             }
+
+            if (codigoTelefone == 3 && (telefone.Length < 3 || telefone.Length > 9)) 
+            {
+                throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
+            }
+
+            //if ((codigoTelefone == 1 || codigoTelefone == 3) && telefone.Length < 9)
+            //{
+            //    throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
+            //}
+            //else if (codigoTelefone == 2 && telefone.Length != 8)
+            //{
+            //    throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
+            //}
 
 
 

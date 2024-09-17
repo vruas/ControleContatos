@@ -47,13 +47,12 @@ namespace ControleContatos
                     if (ValidarDados(dtContato, dtTelefone))
                     {
                         InserirDadosNoBanco(dtContato, dtTelefone);
-                        
-
                     }
                 }
                 catch (COMException ex)
                 {
                     MessageBox.Show($"Erro ao importar dados do arquivo Excel: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
             }
             else if (escolha == 2)
@@ -94,8 +93,11 @@ namespace ControleContatos
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
+                
+                openFileDialog.InitialDirectory = @"C:\Users\vitor\Desktop\Ikonas\Agenda\Relatórios";
                 openFileDialog.Filter = "Arquivos Excel (*.xls;*.xlsx;*.xlsm)|*.xls;*.xlsx;*.xlsm";
                 openFileDialog.Title = "Selecione o arquivo Excel";
+
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -204,6 +206,7 @@ namespace ControleContatos
             catch (COMException ex)
             {
                 MessageBox.Show($"Erro ao carregar dados do arquivo Excel: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
         }
 
@@ -216,7 +219,13 @@ namespace ControleContatos
             // Verifica contatos
             foreach (DataRow contato in dtContato.Rows)
             {
-                int idUsuario = Convert.ToInt32(contato["id_usuario"]);
+                //int idUsuario = Convert.ToInt32(contato["id_usuario"]);
+
+                if (!int.TryParse(contato["id_usuario"].ToString(), out int idUsuario))
+                {
+                    MessageBox.Show($"ID de usuário inválido: {contato["id_usuario"].ToString()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
 
                 if (!idUsuariosContato.Add(idUsuario))
                 {
@@ -244,7 +253,14 @@ namespace ControleContatos
             // Verifica telefones
             foreach (DataRow telefone in dtTelefone.Rows)
             {
-                int idUsuario = Convert.ToInt32(telefone["id_usuario"]);
+                //int idUsuario = Convert.ToInt32(telefone["id_usuario"]);
+
+                if (!int.TryParse(telefone["id_usuario"].ToString(), out int idUsuario))
+                {
+                    MessageBox.Show($"ID de usuário inválido: {telefone["id_usuario"].ToString()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
                 string idTelefone = telefone["id_telefone"].ToString();
 
                 if (!idTelefones.Add(idTelefone))
@@ -262,7 +278,15 @@ namespace ControleContatos
                 }
 
                 int tipoTelefone = Convert.ToInt32(telefone["tipo_tel"]);
-                int ddd = Convert.ToInt32(telefone["ddd_tel"]);
+                //int ddd = Convert.ToInt32(telefone["ddd_tel"]);
+
+                if (!int.TryParse(telefone["ddd_tel"].ToString(), out int ddd))
+                {
+                    MessageBox.Show($"DDD inválido: {telefone["ddd_tel"].ToString()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+
                 string numTelefone = telefone["telefone"].ToString();
 
                 if (!ValidarTelefone(idUsuario, idTelefone, tipoTelefone, ddd, numTelefone))
@@ -534,7 +558,13 @@ namespace ControleContatos
 
                 if (string.IsNullOrWhiteSpace(nome))
                 {
-                    MessageBox.Show($"Nome do contato com ID {idUsuario} é inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Nome do contato vazio ou inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                if (!nome.All(char.IsLetter))
+                {
+                    MessageBox.Show($"Nome do contato  é inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 
@@ -567,13 +597,13 @@ namespace ControleContatos
 
                 if (string.IsNullOrWhiteSpace(endereco))
                 {
-                    MessageBox.Show($"Endereço do contato com ID {idUsuario} é inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Endereço do contato com ID vazio ou inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 
                 if (endereco.Length > 50)
                 {
-                    MessageBox.Show($"Endereço do contato com ID {idUsuario} é muito longo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Endereço do contato  é muito longo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 
@@ -636,11 +666,11 @@ namespace ControleContatos
                     return false;
                 }
 
-                if (ddd < 11 || ddd > 99)
-                {
-                    MessageBox.Show($"DDD inválido: {ddd}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
+                //if (ddd < 11 || ddd > 99)
+                //{
+                //    MessageBox.Show($"DDD inválido: {ddd}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //    return false;
+                //}
 
                 if (string.IsNullOrWhiteSpace(telefone) || string.IsNullOrEmpty(telefone))
                 {
@@ -648,9 +678,27 @@ namespace ControleContatos
                     return false;
                 }
 
-                if (telefone.Length < 8 || telefone.Length > 9)
+                if (telefone.Length < 3 || telefone.Length > 9)
                 {
                     MessageBox.Show($"Número de telefone inválido: {telefone}.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                if (tipoTelefone == 1 && telefone.Length < 9)
+                {
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                if (tipoTelefone == 2 && telefone.Length != 8)
+                {
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+
+                if (tipoTelefone == 3 && (telefone.Length < 3 || telefone.Length > 9))
+                {
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
 
@@ -659,6 +707,26 @@ namespace ControleContatos
                     MessageBox.Show($"Número de telefone inválido: {telefone}.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
+
+                //if (telefone.Length < 3 || telefone.Length > 9)
+                //{
+                //    throw new ValidacaoLinhaException("Número de telefone inválido: " + telefone);
+                //}
+
+                //if (codigoTelefone == 1 && telefone.Length < 9)
+                //{
+                //    throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
+                //}
+
+                //if (codigoTelefone == 2 && telefone.Length != 8)
+                //{
+                //    throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
+                //}
+
+                //if (codigoTelefone == 3 && telefone.Length < 3 || telefone.Length > 9)
+                //{
+                //    throw new ValidacaoLinhaException("Número de telefone " + telefone + " inválido para tipo: " + tipoTelefone);
+                //}
 
                 conn.Close();
             }
