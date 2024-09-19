@@ -51,7 +51,7 @@ namespace ControleContatos
                 }
                 catch (COMException ex)
                 {
-                    MessageBox.Show($"Erro ao importar dados do arquivo Excel: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Erro ao importar dados do arquivo Excel: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
             }
@@ -77,13 +77,13 @@ namespace ControleContatos
                     }
                     else
                     {
-                        MessageBox.Show("Erro ao importar dados", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Erro ao importar dados", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                 }
                 catch (COMException ex)
                 {
-                    MessageBox.Show($"Erro ao importar dados do arquivo Excel: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Erro ao importar dados do arquivo Excel: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
             }
@@ -134,7 +134,7 @@ namespace ControleContatos
 
                         if (!int.TryParse(row.Cell(1).GetValue<string>(), out idUsuario))
                         {
-                            MessageBox.Show($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
 
                             //throw new COMException($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}");
@@ -158,7 +158,7 @@ namespace ControleContatos
 
                         if (!int.TryParse(row.Cell(1).GetValue<string>(), out idUsuario))
                         {
-                            //MessageBox.Show($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //MessageBox.Show($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             //return;
 
                             throw new COMException($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}");
@@ -180,13 +180,13 @@ namespace ControleContatos
                         }
                         //else
                         //{
-                        //    MessageBox.Show($"Tipo de telefone inválido: {tipoTelStr}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //    MessageBox.Show($"Tipo de telefone inválido: {tipoTelStr}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                         //}
 
                         if (!int.TryParse(row.Cell(4).GetValue<string>(), out ddd))
                         {
-                            //MessageBox.Show($"DDD inválido: {row.Cell(4).GetValue<string>()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //MessageBox.Show($"DDD inválido: {row.Cell(4).GetValue<string>()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             //return;
 
                             throw new COMException($"DDD inválido: {row.Cell(4).GetValue<string>()}");
@@ -205,7 +205,7 @@ namespace ControleContatos
             }
             catch (COMException ex)
             {
-                MessageBox.Show($"Erro ao carregar dados do arquivo Excel: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao carregar dados do arquivo Excel: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
         }
@@ -223,13 +223,21 @@ namespace ControleContatos
 
                 if (!int.TryParse(contato["id_usuario"].ToString(), out int idUsuario))
                 {
-                    MessageBox.Show($"ID de usuário inválido: {contato["id_usuario"].ToString()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"ID de usuário inválido: {contato["id_usuario"].ToString()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (!idUsuariosContato.Add(idUsuario))
                 {
-                    MessageBox.Show($"Contato com o ID duplicado: {idUsuario}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Contato com o ID duplicado: {idUsuario}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                var telefonesRelacionados = dtTelefone.AsEnumerable().Where(row => row.Field<int>("id_usuario") == idUsuario);
+
+                if (telefonesRelacionados.Count() == 0)
+                {
+                    MessageBox.Show($"Contato com ID {idUsuario} não possui telefone associado", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -238,7 +246,7 @@ namespace ControleContatos
 
                 if (!cpfs.Add(cpf))
                 {
-                    MessageBox.Show($"Contato com o CPF duplicado: {cpf}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Contato com o CPF duplicado: {cpf}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -252,12 +260,13 @@ namespace ControleContatos
 
             // Verifica telefones
             foreach (DataRow telefone in dtTelefone.Rows)
+
             {
                 //int idUsuario = Convert.ToInt32(telefone["id_usuario"]);
 
                 if (!int.TryParse(telefone["id_usuario"].ToString(), out int idUsuario))
                 {
-                    MessageBox.Show($"ID de usuário inválido: {telefone["id_usuario"].ToString()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"ID de usuário inválido: {telefone["id_usuario"].ToString()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -265,7 +274,7 @@ namespace ControleContatos
 
                 if (!idTelefones.Add(idTelefone))
                 {
-                    MessageBox.Show($"Telefone com o ID duplicado: {idTelefone}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Telefone com o ID duplicado: {idTelefone}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -273,19 +282,19 @@ namespace ControleContatos
 
                 if (contatosRelacionados.Count() == 0)
                 {
-                    MessageBox.Show($"Telefone com ID {idUsuario} não possui contato associado", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Telefone com ID {idUsuario} não possui contato associado", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
+
 
                 int tipoTelefone = Convert.ToInt32(telefone["tipo_tel"]);
                 //int ddd = Convert.ToInt32(telefone["ddd_tel"]);
 
                 if (!int.TryParse(telefone["ddd_tel"].ToString(), out int ddd))
                 {
-                    MessageBox.Show($"DDD inválido: {telefone["ddd_tel"].ToString()}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"DDD inválido: {telefone["ddd_tel"].ToString()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
-
 
                 string numTelefone = telefone["telefone"].ToString();
 
@@ -361,7 +370,7 @@ namespace ControleContatos
                     {
                         transaction.Rollback();
                         //throw;
-                        MessageBox.Show("Erro ao importar dados: ", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Erro ao importar dados: ", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
 
@@ -531,9 +540,9 @@ namespace ControleContatos
 
         public bool ValidarContato(int idUsuario, string nome, string cpf, string endereco)
         {
-            if (idUsuario == 0)
+            if (idUsuario < 1)
             {
-                MessageBox.Show("ID de usuário inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("ID de usuário inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -551,32 +560,38 @@ namespace ControleContatos
 
                     if (countIdUsuario > 0)
                     {
-                        MessageBox.Show($"Já existe um contato com o ID {idUsuario}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Já existe um contato com o ID {idUsuario}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
                     }
                 }
 
                 if (string.IsNullOrWhiteSpace(nome))
                 {
-                    MessageBox.Show($"Nome do contato vazio ou inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Nome do contato vazio ou inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
-                if (!nome.All(char.IsLetter))
+                if (nome.Contains("'"))
                 {
-                    MessageBox.Show($"Nome do contato  é inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Nome do contato  é inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                if (!nome.All(char.IsLetter) && !nome.Any(char.IsWhiteSpace))
+                {
+                    MessageBox.Show($"Nome do contato  é inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (string.IsNullOrWhiteSpace(cpf) || cpf.Length != 11)
                 {
-                    MessageBox.Show($"CPF do contato com ID {idUsuario} é inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"CPF do contato com ID {idUsuario} é inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (!IsValidCPF(cpf))
                 {
-                    MessageBox.Show($"CPF {cpf} é inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"CPF {cpf} é inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -590,20 +605,35 @@ namespace ControleContatos
 
                     if (countCpf > 0)
                     {
-                        MessageBox.Show($"Já existe um contato com o CPF {cpf}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Já existe um contato com o CPF {cpf}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
                     }
                 }
 
                 if (string.IsNullOrWhiteSpace(endereco))
                 {
-                    MessageBox.Show($"Endereço do contato com ID vazio ou inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Endereço do contato com ID vazio ou inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
+                }
+
+                if (endereco.Contains("'"))
+                {
+                    //throw new ValidacaoLinhaException("Endereço do contato inválido: " + endereco);
+                    MessageBox.Show($"Endereço do contato inválido " + endereco, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                if (!endereco.Any(char.IsLetter) &&
+                    !endereco.Any(char.IsNumber) &&
+                    !endereco.Any(char.IsPunctuation))
+                {
+                    //throw new ValidacaoLinhaException("Endereco do contato inválido " + endereco);
+                    MessageBox.Show($"Endereço do contato inválido " + endereco, "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
 
                 if (endereco.Length > 50)
                 {
-                    MessageBox.Show($"Endereço do contato  é muito longo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Endereço do contato  é muito longo", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
@@ -616,27 +646,27 @@ namespace ControleContatos
 
         public bool ValidarTelefone(int idUsuario, string idTelefone, int tipoTelefone, int ddd, string telefone)
         {
-            if (idUsuario == 0)
+            if (idUsuario < 1)
             {
-                MessageBox.Show("ID de usuário inválido", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("ID de usuário inválido", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             if (string.IsNullOrEmpty(idTelefone) || string.IsNullOrWhiteSpace(idTelefone))
             {
-                MessageBox.Show($"ID de telefone em branco ou vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"ID de telefone em branco ou vazio.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             if (idTelefone.Length != 14)
             {
-                MessageBox.Show($"ID de telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"ID de telefone inválido.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
             if (!idTelefone.All(char.IsDigit))
             {
-                MessageBox.Show($"ID de telefone inválido: {idTelefone}.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"ID de telefone inválido: {idTelefone}.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -654,7 +684,7 @@ namespace ControleContatos
 
                     if (countIdTelefone > 0)
                     {
-                        MessageBox.Show($"Já existe um telefone com o ID {idTelefone} .", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"Já existe um telefone com o ID {idTelefone} .", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return false;
                     }
                 }
@@ -662,49 +692,63 @@ namespace ControleContatos
 
                 if (tipoTelefone < 1 || tipoTelefone > 3)
                 {
-                    MessageBox.Show($"Tipo de telefone inválido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Tipo de telefone inválido.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                string dddTel = ddd.ToString();
+
+                if (string.IsNullOrWhiteSpace(dddTel) || string.IsNullOrEmpty(dddTel))
+                {
+                    MessageBox.Show($"DDD vazio ou em branco.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+
+                if (dddTel.Length != 2)
+                {
+                    MessageBox.Show($"DDD inválido: {dddTel}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 //if (ddd < 11 || ddd > 99)
                 //{
-                //    MessageBox.Show($"DDD inválido: {ddd}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //    MessageBox.Show($"DDD inválido: {ddd}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 //    return false;
                 //}
 
                 if (string.IsNullOrWhiteSpace(telefone) || string.IsNullOrEmpty(telefone))
                 {
-                    MessageBox.Show($"Número de telefone vazio ou em branco.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Número de telefone vazio ou em branco.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (telefone.Length < 3 || telefone.Length > 9)
                 {
-                    MessageBox.Show($"Número de telefone inválido: {telefone}.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Número de telefone inválido: {telefone}.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (tipoTelefone == 1 && telefone.Length < 9)
                 {
-                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (tipoTelefone == 2 && telefone.Length != 8)
                 {
-                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (tipoTelefone == 3 && (telefone.Length < 3 || telefone.Length > 9))
                 {
-                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (!telefone.All(char.IsDigit))
                 {
-                    MessageBox.Show($"Número de telefone inválido: {telefone}.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Número de telefone inválido: {telefone}.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 

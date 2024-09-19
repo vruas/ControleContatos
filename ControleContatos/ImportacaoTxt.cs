@@ -338,7 +338,7 @@ namespace ControleContatos
         // método para validar contato
         private bool ValidarContato(SqlCommand command, string linha)
         {
-            if (linha.Length > 92) //92
+            if (linha.Trim().Length > 92) //92
             {
                 throw new ValidacaoLinhaException("Linha de contato inválida: " + linha);
             }
@@ -357,7 +357,7 @@ namespace ControleContatos
             int idUsuario = int.Parse(linha.Substring(1, 10).Trim());
 
 
-            if (idUsuario == 0)
+            if (idUsuario < 1)
             {
                 throw new ValidacaoLinhaException("ID de usuário inválido: " + idUsuario);
             }
@@ -399,7 +399,12 @@ namespace ControleContatos
                 throw new ValidacaoLinhaException("Nome do contato inválido ou vazio");
             }
 
-            if (!nome.All(char.IsLetter))
+            if (nome.Contains("'"))
+            {
+                throw new ValidacaoLinhaException("Nome do contato inválido: " + nome);
+            }
+
+            if (!nome.All(char.IsLetter) && !nome.Any(char.IsWhiteSpace))
             {
                 throw new ValidacaoLinhaException("Nome do contato inválido: " + nome);
             }
@@ -438,9 +443,22 @@ namespace ControleContatos
                 throw new ValidacaoLinhaException("Endereço do contato inválido ou vazio");
             }
 
-            if (endereco.Length > 50)
+            if (endereco.Contains("'"))
             {
                 throw new ValidacaoLinhaException("Endereço do contato inválido: " + endereco);
+            }
+
+            if (!endereco.Any(char.IsLetter) &&
+                !endereco.Any(char.IsNumber) &&
+                !endereco.Any(char.IsPunctuation))
+            {
+                throw new ValidacaoLinhaException("Endereco do contato inválido " + endereco);
+            }
+
+
+            if (endereco.Length > 50)
+            {
+                throw new ValidacaoLinhaException("Endereço do contato é muito longo");
             }
 
             return true;
@@ -493,7 +511,7 @@ namespace ControleContatos
 
             int idUsuario = int.Parse(linha.Substring(1, 10).Trim());
 
-            if (idUsuario == 0)
+            if (idUsuario < 1)
             {
                 throw new ValidacaoLinhaException("ID de usuário inválido: " + idUsuario);
             }
@@ -532,7 +550,12 @@ namespace ControleContatos
                 throw new ValidacaoLinhaException("DDD de telefone inválido ou vazio");
             }
 
-            int ddd = int.Parse(dddTelefone);
+            if (dddTelefone.Length != 2)
+            {
+                throw new ValidacaoLinhaException("DDD de telefone inválido: " + dddTelefone);
+            }
+
+           
 
             //if (ddd < 11 || ddd > 99)
             //{

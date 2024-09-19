@@ -27,7 +27,16 @@ namespace ControleContatos
 
            buttonConcluirExpTXT.Enabled = false;
            buttonConcluirExpExcel.Enabled = false;
-            
+
+            dataGridViewExportaTXT.AllowUserToAddRows = false;
+            dataGridViewExportaExcel.AllowUserToAddRows = false;
+
+            // esconder coluna id_usuario dos grids
+
+            dataGridViewExportaTXT.Columns[0].Visible = false;
+            dataGridViewExportaExcel.Columns[0].Visible = false;
+
+
         }
 
         // método para exportar contatos para arquivo txt

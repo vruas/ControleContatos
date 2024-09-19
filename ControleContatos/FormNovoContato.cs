@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ControleContatos
@@ -49,6 +50,18 @@ namespace ControleContatos
             {
                 try
                 {
+                    if (textBoxDDDNovo.Text.Length != 2)
+                    {
+                        MessageBox.Show("DDD inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (textBoxTelefoneNovo.Text.Length < 3)
+                    {
+                        MessageBox.Show("Nímero de telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     // o id deve ser gerado automaticamente e deve ser igual a string datahorasminutossegundos
 
                     string newIdTelefone = DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -56,6 +69,26 @@ namespace ControleContatos
                     string tipoTelefone = comboBoxTipoNovo.Text;
                     string ddd = textBoxDDDNovo.Text;
                     string telefone = textBoxTelefoneNovo.Text;
+
+                    if (tipoTelefone == "Celular" && telefone.Length != 9)
+                    {
+                        MessageBox.Show("Celular inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (tipoTelefone == "Telefone" && telefone.Length != 8)
+                    {
+                        MessageBox.Show("Telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (tipoTelefone == "Emergência" && telefone.Length < 3 || telefone.Length > 9)
+                    {
+                        MessageBox.Show("Emergencial inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+
 
                     dtGridAddTelefone.Rows.Add(newIdTelefone, tipoTelefone, ddd, telefone);
 
@@ -73,7 +106,7 @@ namespace ControleContatos
             }
             else
             {
-                MessageBox.Show("Informe um telefone para adicionar.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Preencha todos os campos para adicionar um número de telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -85,6 +118,20 @@ namespace ControleContatos
             {
                 try
                 {
+                    if (textBoxDDDNovo.Text.Length != 2)
+                    {
+                        MessageBox.Show("DDD inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (textBoxTelefoneNovo.Text.Length < 3)
+                    {
+                        MessageBox.Show("Telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+
+
                     DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
                     if (index >= 0)
                     {
@@ -102,6 +149,24 @@ namespace ControleContatos
                             MessageBox.Show("Não houve alteração nos campos de Tipo, DDD e Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             return;
 
+                        }
+
+                        if (verificaValorTipo == "Celular" && verificaValorTelefone.Length != 9)
+                        {
+                            MessageBox.Show("Celular inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        if (verificaValorTipo == "Telefone" && verificaValorTelefone.Length != 8)
+                        {
+                            MessageBox.Show("Telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        if (verificaValorTipo == "Emergência" && verificaValorTelefone.Length < 3 || verificaValorTelefone.Length > 9)
+                        {
+                            MessageBox.Show("Emergencial inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
                         }
 
                         selectedRow.Cells[1].Value = comboBoxTipoNovo.Text;
@@ -127,7 +192,7 @@ namespace ControleContatos
             }
             else 
             { 
-                MessageBox.Show("Informe um telefone para editar.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Preencha todos os campos para editar um número de telefone..", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             }
 
@@ -166,11 +231,34 @@ namespace ControleContatos
         {
             if (!string.IsNullOrEmpty(textBoxNomeNovo.Text.Trim()) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text.Trim()))
             {
-                //if (dtGridAddTelefone.Rows.Count == 0)
-                //{
-                //    MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                //    return;
-                //}
+                if (!textBoxNomeNovo.Text.All(char.IsLetter) && !textBoxNomeNovo.Text.Any(char.IsWhiteSpace))
+                {
+                    MessageBox.Show("Nome inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (textBoxNomeNovo.Text.Contains("'"))
+                {
+                    MessageBox.Show("Nome inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (!textBoxEnderecoNovo.Text.Any(char.IsLetter) &&
+                    !textBoxEnderecoNovo.Text.Any(char.IsNumber) &&
+                    !textBoxEnderecoNovo.Text.Any(char.IsPunctuation))
+                {
+                    MessageBox.Show("Endereço inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (textBoxEnderecoNovo.Text.Contains("'"))
+                {
+                    MessageBox.Show("Endereço inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                    
+                   
+                
 
                 bool hasValues = false;
 
@@ -222,6 +310,9 @@ namespace ControleContatos
                             int tipoTelefone = Convert.ToInt32(valoresCombo[tipoTel]);
                             int ddd = Convert.ToInt32(row["DDD"]);
                             string telefone = Convert.ToString(row["Telefone"]);
+
+                            
+
 
                             telefones.Add((idTelefone, tipoTelefone, ddd, telefone));
                         }

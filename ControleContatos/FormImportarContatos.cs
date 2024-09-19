@@ -36,8 +36,16 @@ namespace ControleContatos
         {
             AtualizarGridImportacao();
 
+            dataGridViewImportarTxt.AllowUserToAddRows = false;
+            dataGridViewImportarExcel.AllowUserToAddRows = false;
+
             buttonConcluirImpTXT.Enabled = false;
             buttonConcluirImpExcel.Enabled = false;
+
+            // esconder coluna id_usuario dos grids
+
+            dataGridViewImportarTxt.Columns[0].Visible = false;
+            dataGridViewImportarExcel.Columns[0].Visible = false;
 
         }
 
