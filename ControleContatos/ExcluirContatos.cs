@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -127,7 +127,7 @@ namespace ControleContatos
                                 int count = Convert.ToInt32(cmd.ExecuteScalar());
                                 if (count == 1)
                                 {
-                                    MessageBox.Show("Não é possível excluir o último telefone do usuário.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show("Não é possível excluir o último telefone do usuário.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                     telefoneExlcuido = false;
                                     return;
 

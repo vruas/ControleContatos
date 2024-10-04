@@ -30,13 +30,11 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabExportarTxt = new System.Windows.Forms.TabPage();
-            this.buttonCancelarExpTXT = new System.Windows.Forms.Button();
             this.buttonConcluirExpTXT = new System.Windows.Forms.Button();
             this.buttonExportarTXT = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridViewExportaTXT = new System.Windows.Forms.DataGridView();
             this.tabExportarExcel = new System.Windows.Forms.TabPage();
-            this.buttonCancelarExpExcel = new System.Windows.Forms.Button();
             this.buttonConcluirExpExcel = new System.Windows.Forms.Button();
             this.buttonExportarExcel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -62,7 +60,6 @@
             // tabExportarTxt
             // 
             this.tabExportarTxt.BackColor = System.Drawing.Color.Silver;
-            this.tabExportarTxt.Controls.Add(this.buttonCancelarExpTXT);
             this.tabExportarTxt.Controls.Add(this.buttonConcluirExpTXT);
             this.tabExportarTxt.Controls.Add(this.buttonExportarTXT);
             this.tabExportarTxt.Controls.Add(this.label2);
@@ -75,31 +72,17 @@
             this.tabExportarTxt.TabIndex = 0;
             this.tabExportarTxt.Text = "Exportar para Texto";
             // 
-            // buttonCancelarExpTXT
-            // 
-            this.buttonCancelarExpTXT.BackColor = System.Drawing.Color.DarkGray;
-            this.buttonCancelarExpTXT.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonCancelarExpTXT.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCancelarExpTXT.ForeColor = System.Drawing.Color.Black;
-            this.buttonCancelarExpTXT.Location = new System.Drawing.Point(546, 414);
-            this.buttonCancelarExpTXT.Name = "buttonCancelarExpTXT";
-            this.buttonCancelarExpTXT.Size = new System.Drawing.Size(111, 48);
-            this.buttonCancelarExpTXT.TabIndex = 9;
-            this.buttonCancelarExpTXT.Text = "Cancelar";
-            this.buttonCancelarExpTXT.UseVisualStyleBackColor = false;
-            this.buttonCancelarExpTXT.Click += new System.EventHandler(this.buttonCancelarExpTXT_Click);
-            // 
             // buttonConcluirExpTXT
             // 
             this.buttonConcluirExpTXT.BackColor = System.Drawing.Color.DarkGray;
             this.buttonConcluirExpTXT.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonConcluirExpTXT.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonConcluirExpTXT.ForeColor = System.Drawing.Color.Black;
-            this.buttonConcluirExpTXT.Location = new System.Drawing.Point(672, 414);
+            this.buttonConcluirExpTXT.Location = new System.Drawing.Point(571, 365);
             this.buttonConcluirExpTXT.Name = "buttonConcluirExpTXT";
-            this.buttonConcluirExpTXT.Size = new System.Drawing.Size(111, 48);
+            this.buttonConcluirExpTXT.Size = new System.Drawing.Size(212, 48);
             this.buttonConcluirExpTXT.TabIndex = 9;
-            this.buttonConcluirExpTXT.Text = "Concluir";
+            this.buttonConcluirExpTXT.Text = "Voltar para o menu";
             this.buttonConcluirExpTXT.UseVisualStyleBackColor = false;
             this.buttonConcluirExpTXT.Click += new System.EventHandler(this.buttonConcluirExpTXT_Click);
             // 
@@ -142,7 +125,6 @@
             // tabExportarExcel
             // 
             this.tabExportarExcel.BackColor = System.Drawing.Color.Silver;
-            this.tabExportarExcel.Controls.Add(this.buttonCancelarExpExcel);
             this.tabExportarExcel.Controls.Add(this.buttonConcluirExpExcel);
             this.tabExportarExcel.Controls.Add(this.buttonExportarExcel);
             this.tabExportarExcel.Controls.Add(this.label1);
@@ -154,29 +136,16 @@
             this.tabExportarExcel.TabIndex = 1;
             this.tabExportarExcel.Text = "Exportar para Excel";
             // 
-            // buttonCancelarExpExcel
-            // 
-            this.buttonCancelarExpExcel.BackColor = System.Drawing.Color.DarkGray;
-            this.buttonCancelarExpExcel.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCancelarExpExcel.ForeColor = System.Drawing.Color.Black;
-            this.buttonCancelarExpExcel.Location = new System.Drawing.Point(546, 414);
-            this.buttonCancelarExpExcel.Name = "buttonCancelarExpExcel";
-            this.buttonCancelarExpExcel.Size = new System.Drawing.Size(111, 48);
-            this.buttonCancelarExpExcel.TabIndex = 10;
-            this.buttonCancelarExpExcel.Text = "Cancelar";
-            this.buttonCancelarExpExcel.UseVisualStyleBackColor = false;
-            this.buttonCancelarExpExcel.Click += new System.EventHandler(this.buttonCancelarExpExcel_Click);
-            // 
             // buttonConcluirExpExcel
             // 
             this.buttonConcluirExpExcel.BackColor = System.Drawing.Color.DarkGray;
             this.buttonConcluirExpExcel.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonConcluirExpExcel.ForeColor = System.Drawing.Color.Black;
-            this.buttonConcluirExpExcel.Location = new System.Drawing.Point(672, 414);
+            this.buttonConcluirExpExcel.Location = new System.Drawing.Point(571, 365);
             this.buttonConcluirExpExcel.Name = "buttonConcluirExpExcel";
-            this.buttonConcluirExpExcel.Size = new System.Drawing.Size(111, 48);
+            this.buttonConcluirExpExcel.Size = new System.Drawing.Size(212, 48);
             this.buttonConcluirExpExcel.TabIndex = 11;
-            this.buttonConcluirExpExcel.Text = "Concluir";
+            this.buttonConcluirExpExcel.Text = "Voltar para o menu";
             this.buttonConcluirExpExcel.UseVisualStyleBackColor = false;
             this.buttonConcluirExpExcel.Click += new System.EventHandler(this.buttonConcluirExpExcel_Click);
             // 
@@ -223,7 +192,7 @@
             this.Controls.Add(this.tabControl1);
             this.Name = "FormExportarContatos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormExportarContatos";
+            this.Text = "Exportar Contatos";
             this.Load += new System.EventHandler(this.FormExportarContatos_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabExportarTxt.ResumeLayout(false);
@@ -247,9 +216,7 @@
         private System.Windows.Forms.Button buttonExportarExcel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridViewExportaExcel;
-        private System.Windows.Forms.Button buttonCancelarExpTXT;
         private System.Windows.Forms.Button buttonConcluirExpTXT;
-        private System.Windows.Forms.Button buttonCancelarExpExcel;
         private System.Windows.Forms.Button buttonConcluirExpExcel;
     }
 }

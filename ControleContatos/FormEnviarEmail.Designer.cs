@@ -30,12 +30,12 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonCancelarEnvio = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxCPFSelecionado = new System.Windows.Forms.TextBox();
             this.textBoxEmailDestinatario = new System.Windows.Forms.TextBox();
-            this.buttonCancelarEnvio = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +65,17 @@
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Informe o e-mail do destinatário:";
+            // 
+            // buttonCancelarEnvio
+            // 
+            this.buttonCancelarEnvio.BackColor = System.Drawing.Color.DarkGray;
+            this.buttonCancelarEnvio.Location = new System.Drawing.Point(113, 161);
+            this.buttonCancelarEnvio.Name = "buttonCancelarEnvio";
+            this.buttonCancelarEnvio.Size = new System.Drawing.Size(113, 38);
+            this.buttonCancelarEnvio.TabIndex = 6;
+            this.buttonCancelarEnvio.Text = "Cancelar";
+            this.buttonCancelarEnvio.UseVisualStyleBackColor = false;
+            this.buttonCancelarEnvio.Click += new System.EventHandler(this.buttonCancelarEnvio_Click);
             // 
             // button1
             // 
@@ -102,6 +113,7 @@
             // 
             this.textBoxCPFSelecionado.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxCPFSelecionado.Location = new System.Drawing.Point(89, 51);
+            this.textBoxCPFSelecionado.MaxLength = 11;
             this.textBoxCPFSelecionado.Name = "textBoxCPFSelecionado";
             this.textBoxCPFSelecionado.Size = new System.Drawing.Size(137, 23);
             this.textBoxCPFSelecionado.TabIndex = 2;
@@ -114,17 +126,6 @@
             this.textBoxEmailDestinatario.Size = new System.Drawing.Size(234, 23);
             this.textBoxEmailDestinatario.TabIndex = 2;
             // 
-            // buttonCancelarEnvio
-            // 
-            this.buttonCancelarEnvio.BackColor = System.Drawing.Color.DarkGray;
-            this.buttonCancelarEnvio.Location = new System.Drawing.Point(113, 161);
-            this.buttonCancelarEnvio.Name = "buttonCancelarEnvio";
-            this.buttonCancelarEnvio.Size = new System.Drawing.Size(113, 38);
-            this.buttonCancelarEnvio.TabIndex = 6;
-            this.buttonCancelarEnvio.Text = "Cancelar";
-            this.buttonCancelarEnvio.UseVisualStyleBackColor = false;
-            this.buttonCancelarEnvio.Click += new System.EventHandler(this.buttonCancelarEnvio_Click);
-            // 
             // FormEnviarEmail
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -135,7 +136,7 @@
             this.Controls.Add(this.label1);
             this.Name = "FormEnviarEmail";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormEnviarEmail";
+            this.Text = "Enviar E-mail";
             this.Load += new System.EventHandler(this.FormEnviarEmail_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();

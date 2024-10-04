@@ -46,19 +46,32 @@ namespace ControleContatos
         private void buttonAdicionarTelefoneNovo_Click(object sender, EventArgs e)
         {
 
-            if (!string.IsNullOrEmpty(textBoxTelefoneNovo.Text) && !string.IsNullOrEmpty(textBoxDDDNovo.Text) && !string.IsNullOrEmpty(comboBoxTipoNovo.Text))
-            {
+            //if (!string.IsNullOrEmpty(textBoxTelefoneNovo.Text) && !string.IsNullOrEmpty(textBoxDDDNovo.Text) && !string.IsNullOrEmpty(comboBoxTipoNovo.Text))
+            //{
                 try
                 {
+                    if (string.IsNullOrEmpty(textBoxDDDNovo.Text))
+                    {
+                        MessageBox.Show("Preencha o campo DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(textBoxTelefoneNovo.Text))
+                    {
+                        MessageBox.Show("Preencha o campo Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+
                     if (textBoxDDDNovo.Text.Length != 2)
                     {
-                        MessageBox.Show("DDD inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("DDD inválido. O DDD deve conter 2 caracteres numéricos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     if (textBoxTelefoneNovo.Text.Length < 3)
                     {
-                        MessageBox.Show("Nímero de telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Telefone inválido. Telefones de qualquer tipo, devem ter pelo menos 3 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -72,19 +85,19 @@ namespace ControleContatos
 
                     if (tipoTelefone == "Celular" && telefone.Length != 9)
                     {
-                        MessageBox.Show("Celular inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Celular inválido. Celulares devem conter 9 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     if (tipoTelefone == "Telefone" && telefone.Length != 8)
                     {
-                        MessageBox.Show("Telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Telefone inválido. Telefones devem conter 8 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     if (tipoTelefone == "Emergência" && telefone.Length < 3 || telefone.Length > 9)
                     {
-                        MessageBox.Show("Emergencial inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Emergencial inválido. Telefones emergenciais devem conter pelo menos 3 caracteres.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -103,30 +116,42 @@ namespace ControleContatos
                 {
                     MessageBox.Show("Erro: " + ex.Message);
                 }
-            }
-            else
-            {
-                MessageBox.Show("Preencha todos os campos para adicionar um número de telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Preencha todos os campos para adicionar um número de telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //}
         }
 
         // botão para editar telefone novo no grid de telefones
 
         private void buttonEditarTelefoneNovo_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxTelefoneNovo.Text) && !string.IsNullOrEmpty(textBoxDDDNovo.Text) && !string.IsNullOrEmpty(comboBoxTipoNovo.Text))
-            {
+            //if (!string.IsNullOrEmpty(textBoxTelefoneNovo.Text) && !string.IsNullOrEmpty(textBoxDDDNovo.Text) && !string.IsNullOrEmpty(comboBoxTipoNovo.Text))
+            //{
                 try
                 {
+                    if (string.IsNullOrEmpty(textBoxDDDNovo.Text))
+                    {
+                        MessageBox.Show("Preencha o campo DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(textBoxTelefoneNovo.Text))
+                    {
+                        MessageBox.Show("Preencha o campo Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     if (textBoxDDDNovo.Text.Length != 2)
                     {
-                        MessageBox.Show("DDD inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("DDD inválido. O DDD deve conter 2 caracteres numéricos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     if (textBoxTelefoneNovo.Text.Length < 3)
                     {
-                        MessageBox.Show("Telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Telefone inválido. Telefones de qualquer tipo, devem ter pelo menos 3 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -153,19 +178,19 @@ namespace ControleContatos
 
                         if (verificaValorTipo == "Celular" && verificaValorTelefone.Length != 9)
                         {
-                            MessageBox.Show("Celular inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Celular inválido. Celulares devem conter 9 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
 
                         if (verificaValorTipo == "Telefone" && verificaValorTelefone.Length != 8)
                         {
-                            MessageBox.Show("Telefone inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Telefone inválido. Telefones devem conter 8 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
 
                         if (verificaValorTipo == "Emergência" && verificaValorTelefone.Length < 3 || verificaValorTelefone.Length > 9)
                         {
-                            MessageBox.Show("Emergencial inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Emergencial inválido. Telefones emergenciais devem conter pelo menos 3 caracteres.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
 
@@ -189,12 +214,12 @@ namespace ControleContatos
                 {
                     MessageBox.Show("Erro: " + ex.Message);
                 }
-            }
-            else 
-            { 
-                MessageBox.Show("Preencha todos os campos para editar um número de telefone..", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //}
+            //else 
+            //{ 
+            //    MessageBox.Show("Preencha todos os campos para editar um número de telefone..", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-            }
+            //}
 
         }
 
@@ -229,17 +254,37 @@ namespace ControleContatos
 
         private void buttonAdicionarContato_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxNomeNovo.Text.Trim()) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text.Trim()))
-            {
+            //if (!string.IsNullOrEmpty(textBoxNomeNovo.Text.Trim()) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text.Trim()))
+            //{
+
+                if (string.IsNullOrEmpty(textBoxNomeNovo.Text.Trim()))
+                {
+                    MessageBox.Show("Preencha o campo Nome.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(textBoxCPFNovo.Text))
+                {
+                    MessageBox.Show("Preencha o campo CPF.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(textBoxEnderecoNovo.Text.Trim()))
+                {
+                    MessageBox.Show("Preencha o campo Endereço.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
                 if (!textBoxNomeNovo.Text.All(char.IsLetter) && !textBoxNomeNovo.Text.Any(char.IsWhiteSpace))
                 {
-                    MessageBox.Show("Nome inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Nome inválido. O nome deve ser composto apenas por letras, qualquer outro carater é inválido", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 if (textBoxNomeNovo.Text.Contains("'"))
                 {
-                    MessageBox.Show("Nome inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Nome inválido. O nome não pode conter aspas", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -247,13 +292,13 @@ namespace ControleContatos
                     !textBoxEnderecoNovo.Text.Any(char.IsNumber) &&
                     !textBoxEnderecoNovo.Text.Any(char.IsPunctuation))
                 {
-                    MessageBox.Show("Endereço inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Endereço inválido. No endereço é permitido apenas letras números e pontuação", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 if (textBoxEnderecoNovo.Text.Contains("'"))
                 {
-                    MessageBox.Show("Endereço inválido.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Endereço inválido. O endereço não pode conter aspas", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                     
@@ -339,11 +384,11 @@ namespace ControleContatos
                 {
                     MessageBox.Show("Erro: " + ex.Message);
                 }
-            }
-            else
-            {
-                MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //}
         }
 
 
@@ -512,7 +557,7 @@ namespace ControleContatos
                 {
                     conn.Open();
 
-                    string sql = "SELECT id_tipo, tipo_tel FROM tipo_telefone";
+                    string sql = "SELECT id_tipo, tipo_tel FROM tipo_telefone WITH (nolock)";
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {

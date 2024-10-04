@@ -23,10 +23,30 @@ namespace ControleContatos
         // método para carregar o formulário e atualizar o grid de exportação
         private void FormExportarContatos_Load(object sender, EventArgs e)
         {
-           AtualizarGridExportacao();
+            dataGridViewExportaTXT.DataSource = listarContatos.GetContatos();
 
-           buttonConcluirExpTXT.Enabled = false;
-           buttonConcluirExpExcel.Enabled = false;
+            dataGridViewExportaTXT.Columns["nome"].HeaderText = "Nome";
+            dataGridViewExportaTXT.Columns["cpf"].HeaderText = "CPF";
+            dataGridViewExportaTXT.Columns["endereco"].HeaderText = "Endereço";
+            dataGridViewExportaTXT.Columns["id_telefone"].HeaderText = "ID Telefone";
+            dataGridViewExportaTXT.Columns["tipo_tel"].HeaderText = "Tipo";
+            dataGridViewExportaTXT.Columns["ddd_tel"].HeaderText = "DDD";
+            dataGridViewExportaTXT.Columns["telefone"].HeaderText = "Telefone";
+
+            dataGridViewExportaExcel.DataSource = listarContatos.GetContatos();
+
+            dataGridViewExportaExcel.Columns["nome"].HeaderText = "Nome";
+            dataGridViewExportaExcel.Columns["cpf"].HeaderText = "CPF";
+            dataGridViewExportaExcel.Columns["endereco"].HeaderText = "Endereço";
+            dataGridViewExportaExcel.Columns["id_telefone"].HeaderText = "ID Telefone";
+            dataGridViewExportaExcel.Columns["tipo_tel"].HeaderText = "Tipo";
+            dataGridViewExportaExcel.Columns["ddd_tel"].HeaderText = "DDD";
+            dataGridViewExportaExcel.Columns["telefone"].HeaderText = "Telefone";
+
+            AtualizarGridExportacao();
+
+           //buttonConcluirExpTXT.Enabled = false;
+           //buttonConcluirExpExcel.Enabled = false;
 
             dataGridViewExportaTXT.AllowUserToAddRows = false;
             dataGridViewExportaExcel.AllowUserToAddRows = false;
@@ -74,11 +94,11 @@ namespace ControleContatos
 
         // botão para cancelar a exportação de contatos para arquivo txt
 
-        private void buttonCancelarExpTXT_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            main.Show();
-        }
+        //private void buttonCancelarExpTXT_Click(object sender, EventArgs e)
+        //{
+        //    this.Close();
+        //    main.Show();
+        //}
 
         // botão para concluir a exportação de contatos para arquivo txt
         private void buttonConcluirExpTXT_Click(object sender, EventArgs e)
@@ -88,11 +108,11 @@ namespace ControleContatos
         }
 
         // botão para cancelar a exportação de contatos para arquivo excel
-        private void buttonCancelarExpExcel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-            main.Show();
-        }
+        //private void buttonCancelarExpExcel_Click(object sender, EventArgs e)
+        //{
+        //    this.Close();
+        //    main.Show();
+        //}
 
         // botão para concluir a exportação de contatos para arquivo excel
         private void buttonConcluirExpExcel_Click(object sender, EventArgs e)

@@ -39,10 +39,20 @@ namespace ControleContatos
                 DataTable dtContato = new DataTable();
                 DataTable dtTelefone = new DataTable();
 
+                var workbook = new XLWorkbook(caminhoArquivo);
+                var worksheetContato = workbook.Worksheet("Contatos");
+                var worksheetTelefone = workbook.Worksheet("Telefones");
+
                 try
                 {
 
                     CarregarDadosDoExcel(caminhoArquivo, dtContato, dtTelefone);
+
+                    if (!ValidaFormatoDasColunas(worksheetContato, worksheetTelefone))
+                    {
+                        MessageBox.Show("Formatação das colunas é inválida", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
                     if (ValidarDados(dtContato, dtTelefone))
                     {
@@ -67,23 +77,37 @@ namespace ControleContatos
                 DataTable dtContato = new DataTable();
                 DataTable dtTelefone = new DataTable();
 
+                var workbook = new XLWorkbook(caminhoArquivo);
+                var worksheetContato = workbook.Worksheet("Contatos");
+                var worksheetTelefone = workbook.Worksheet("Telefones");
+
                 try
                 {
                     CarregarDadosDoExcel(caminhoArquivo, dtContato, dtTelefone);
+
+                    if (!ValidaFormatoDasColunas(worksheetContato, worksheetTelefone))
+                    {
+                        MessageBox.Show("Formatação das colunas é inválida", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
                     if (ValidarDados(dtContato, dtTelefone))
                     {
                         InserirDadosNoBanco(dtContato, dtTelefone);
                     }
-                    else
-                    {
-                        MessageBox.Show("Erro ao importar dados", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
                 }
                 catch (COMException ex)
                 {
-                    MessageBox.Show($"Erro ao importar dados do arquivo Excel: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    if (ex.HResult == -2146232060)
+                    {
+                        MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Erro ao importar dados do arquivo Excel: {ex.Message}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+
+                    
                 }
 
             }
@@ -108,6 +132,69 @@ namespace ControleContatos
             }
         }
 
+        private bool ValidaFormatoDasColunas(IXLWorksheet worksheetContato, IXLWorksheet worksheetTelefone)
+        {
+            //if (worksheetContato.Column(1).Style.NumberFormat.Format != "0" ||
+            //    worksheetTelefone.Column(1).Style.NumberFormat.Format != "0" ||
+            //    worksheetTelefone.Column(3).Style.NumberFormat.Format != "@" ||
+            //    worksheetTelefone.Column(4).Style.NumberFormat.Format != "0")
+            //{
+            //    MessageBox.Show("Formatação das colunas inválida", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return false;
+            //}
+
+            //if (worksheetContato.Column(2).Style.NumberFormat.Format != "@" ||
+            //    worksheetContato.Column(3).Style.NumberFormat.Format != "@" ||
+            //    worksheetContato.Column(4).Style.NumberFormat.Format != "@" ||
+            //    worksheetTelefone.Column(2).Style.NumberFormat.Format != "0" ||
+            //    worksheetTelefone.Column(5).Style.NumberFormat.Format != "0")
+            //{
+            //    MessageBox.Show("Formatação das colunas inválida", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return false;
+            //}
+
+            //if (!worksheetContato.Column(1).Style.NumberFormat.Format = "0" ||
+            //    !worksheetContato.Column(2).Style.NumberFormat.Format = "@" ||
+            //    !worksheetContato.Column(3).Style.NumberFormat.Format = "@" ||
+            //    !worksheetContato.Column(4).Style.NumberFormat.Format = "@" ||
+            //    !worksheetTelefone.Column(1).Style.NumberFormat.Format = "0" ||
+            //    !worksheetTelefone.Column(2).Style.NumberFormat.Format = "@" ||
+            //    !worksheetTelefone.Column(3).Style.NumberFormat.Format = "@" ||
+            //    !worksheetTelefone.Column(4).Style.NumberFormat.Format = "0" ||
+            //    !worksheetTelefone.Column(5).Style.NumberFormat.Format = "@")
+            //{
+            //    MessageBox.Show("Formatação das colunas inválida", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //    return false;
+            //}
+
+            // Verificar se as formatações das colunas do worksheetContato são exatamente as criadas
+            bool isContatoFormatValid =
+                worksheetContato.Column(1).Style.NumberFormat.Format.Equals("0", StringComparison.OrdinalIgnoreCase) &&
+                worksheetContato.Column(2).Style.NumberFormat.Format.Equals("@", StringComparison.OrdinalIgnoreCase) &&
+                worksheetContato.Column(3).Style.NumberFormat.Format.Equals("@", StringComparison.OrdinalIgnoreCase) &&
+                worksheetContato.Column(4).Style.NumberFormat.Format.Equals("@", StringComparison.OrdinalIgnoreCase);
+
+            // Verificar se as formatações das colunas do worksheetTelefone são exatamente as criadas, com "Telefone" como texto
+            bool isTelefoneFormatValid =
+                worksheetTelefone.Column(1).Style.NumberFormat.Format.Equals("0", StringComparison.OrdinalIgnoreCase) &&
+                worksheetTelefone.Column(2).Style.NumberFormat.Format.Equals("@", StringComparison.OrdinalIgnoreCase) &&
+                worksheetTelefone.Column(3).Style.NumberFormat.Format.Equals("@", StringComparison.OrdinalIgnoreCase) &&
+                worksheetTelefone.Column(4).Style.NumberFormat.Format.Equals("0", StringComparison.OrdinalIgnoreCase) &&
+                worksheetTelefone.Column(5).Style.NumberFormat.Format.Equals("@", StringComparison.OrdinalIgnoreCase); // Alterado para texto
+
+            // Verificar se as formatações são inválidas
+            if (!isContatoFormatValid || !isTelefoneFormatValid)
+            {
+                
+                return false;
+            }
+
+            // Se todas as formatações forem válidas, continue
+            return true;
+
+
+        }
+
         private void CarregarDadosDoExcel(string caminhoArquivo, DataTable dtContato, DataTable dtTelefone)
         {
             try
@@ -117,6 +204,13 @@ namespace ControleContatos
                     var worksheetContato = workbook.Worksheet("Contatos");
                     var worksheetTelefone = workbook.Worksheet("Telefones");
 
+            
+                    //if (!ValidaFormatoDasColunas(worksheetContato, worksheetTelefone))
+                    //{
+                    //    return;
+                    //}
+
+                    // Definindo as colunas das DataTables
                     dtContato.Columns.Add("id_usuario", typeof(int));
                     dtContato.Columns.Add("nome", typeof(string));
                     dtContato.Columns.Add("cpf", typeof(string));
@@ -128,78 +222,94 @@ namespace ControleContatos
                     dtTelefone.Columns.Add("ddd_tel", typeof(int));
                     dtTelefone.Columns.Add("telefone", typeof(string));
 
+                    // Validação para contatos
                     foreach (var row in worksheetContato.RowsUsed().Skip(1))
                     {
-                        int idUsuario = 0;
+                        int idUsuario;
+                        string nome, cpf, endereco;
 
+                        // Validação do ID de usuário
                         if (!int.TryParse(row.Cell(1).GetValue<string>(), out idUsuario))
                         {
                             MessageBox.Show($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
-
-                            //throw new COMException($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}");
                         }
 
+                        // Validação do nome
+                        nome = row.Cell(2).GetValue<string>();
+                        if (string.IsNullOrWhiteSpace(nome))
+                        {
+                            MessageBox.Show("Nome inválido ou ausente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
 
+                        // Validação do CPF
+                        cpf = row.Cell(3).GetValue<string>();
+                        if (string.IsNullOrWhiteSpace(cpf))
+                        {
+                            MessageBox.Show("CPF inválido ou ausente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
 
-                        dtContato.Rows.Add(
-                            Convert.ToInt32(row.Cell(1).GetValue<string>()), // id_usuario (int)
-                            row.Cell(2).GetValue<string>(), // nome
-                            row.Cell(3).GetValue<string>(), // cpf
-                            row.Cell(4).GetValue<string>()  // endereco
-                        );
+                        // Validação do endereço
+                        endereco = row.Cell(4).GetValue<string>();
+                        if (string.IsNullOrWhiteSpace(endereco))
+                        {
+                            MessageBox.Show("Endereço inválido ou ausente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        // Adicionando linha à DataTable de contatos
+                        dtContato.Rows.Add(idUsuario, nome, cpf, endereco);
                     }
 
+                    // Validação para telefones
                     foreach (var row in worksheetTelefone.RowsUsed().Skip(1))
                     {
-                        int idUsuario = 0;
-                        int tipoTel = 0;
-                        int ddd = 0;
+                        int idUsuario, tipoTel = 0, ddd;
+                        string idTelefone, telefone, tipoTelStr;
 
+                        // Validação do ID de usuário
                         if (!int.TryParse(row.Cell(1).GetValue<string>(), out idUsuario))
                         {
-                            //MessageBox.Show($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            //return;
-
                             throw new COMException($"ID de usuário inválido: {row.Cell(1).GetValue<string>()}");
                         }
 
-                        string tipoTelStr = row.Cell(3).GetValue<string>();
-
-                        if (tipoTelStr == "Celular")
+                        // Validação do ID do telefone
+                        idTelefone = row.Cell(2).GetValue<string>();
+                        if (string.IsNullOrWhiteSpace(idTelefone))
                         {
-                            tipoTel = 1;
+                            MessageBox.Show("ID do telefone inválido ou ausente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
                         }
-                        else if (tipoTelStr == "Telefone")
-                        {
-                            tipoTel = 2;
-                        }
-                        else if (tipoTelStr == "Emergência")
-                        {
-                            tipoTel = 3;
-                        }
-                        //else
-                        //{
-                        //    MessageBox.Show($"Tipo de telefone inválido: {tipoTelStr}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                        //}
+                        // Validação do tipo de telefone
+                        tipoTelStr = row.Cell(3).GetValue<string>();
+                        if (tipoTelStr == "Celular") tipoTel = 1;
+                        else if (tipoTelStr == "Telefone") tipoTel = 2;
+                        else if (tipoTelStr == "Emergência") tipoTel = 3;
+                        else
+                        {
+                            MessageBox.Show($"Tipo de telefone inválido: {tipoTelStr}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
 
+                        // Validação do DDD
                         if (!int.TryParse(row.Cell(4).GetValue<string>(), out ddd))
                         {
-                            //MessageBox.Show($"DDD inválido: {row.Cell(4).GetValue<string>()}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            //return;
-
                             throw new COMException($"DDD inválido: {row.Cell(4).GetValue<string>()}");
-
                         }
 
-                        dtTelefone.Rows.Add(
-                            Convert.ToInt32(row.Cell(1).GetValue<string>()), // id_usuario (int)
-                            row.Cell(2).GetValue<string>(), // id_telefone (string)
-                            tipoTel, // tipo_tel (int)
-                            Convert.ToInt32(row.Cell(4).GetValue<string>()), // ddd_tel (int)
-                            row.Cell(5).GetValue<string>() // telefone
-                        );
+                        // Validação do telefone
+                        telefone = row.Cell(5).GetValue<string>();
+                        if (string.IsNullOrWhiteSpace(telefone))
+                        {
+                            MessageBox.Show("Telefone inválido ou ausente", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        // Adicionando linha à DataTable de telefones
+                        dtTelefone.Rows.Add(idUsuario, idTelefone, tipoTel, ddd, telefone);
                     }
                 }
             }
@@ -210,12 +320,15 @@ namespace ControleContatos
             }
         }
 
+
+
         private bool ValidarDados(DataTable dtContato, DataTable dtTelefone)
         {
             HashSet<int> idUsuariosContato = new HashSet<int>();
             HashSet<string> cpfs = new HashSet<string>();
             HashSet<string> idTelefones = new HashSet<string>();
 
+          
             // Verifica contatos
             foreach (DataRow contato in dtContato.Rows)
             {
@@ -256,6 +369,8 @@ namespace ControleContatos
                 {
                     return false;
                 }
+
+                return true;
             }
 
             // Verifica telefones
@@ -360,7 +475,7 @@ namespace ControleContatos
 
                         transaction.Commit();
 
-
+                        
 
                         MessageBox.Show("Dados importados com sucesso", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -728,21 +843,36 @@ namespace ControleContatos
                     return false;
                 }
 
+                string descricaoTipo = string.Empty;
+                
+                if (tipoTelefone == 1)
+                {
+                    descricaoTipo = "Celular";
+                }
+                else if (tipoTelefone == 2)
+                {
+                    descricaoTipo = "Telefone";
+                }
+                else if (tipoTelefone == 3)
+                {
+                    descricaoTipo = "Emergência";
+                }
+
                 if (tipoTelefone == 1 && telefone.Length < 9)
                 {
-                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {descricaoTipo}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (tipoTelefone == 2 && telefone.Length != 8)
                 {
-                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {descricaoTipo}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 
                 if (tipoTelefone == 3 && (telefone.Length < 3 || telefone.Length > 9))
                 {
-                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {tipoTelefone}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show($"Número de telefone {telefone} inválido para tipo: {descricaoTipo}", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return false;
                 }
 

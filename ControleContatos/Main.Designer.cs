@@ -156,7 +156,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Main";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Main";
+            this.Text = "Controle de Contatos";
             this.Load += new System.EventHandler(this.Main_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

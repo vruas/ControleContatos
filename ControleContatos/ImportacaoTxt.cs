@@ -225,11 +225,11 @@ namespace ControleContatos
 
                         // Transferência dos dados da tabela temporária para a tabela principal
                         command.CommandText = @"
-                    INSERT INTO contato (id_usuario, nome, cpf, endereco)
-                    SELECT id_usuario, nome, cpf, endereco FROM #contato_temp;
+                        INSERT INTO contato (id_usuario, nome, cpf, endereco)
+                        SELECT id_usuario, nome, cpf, endereco FROM #contato_temp;
 
-                    INSERT INTO num_telefone (id_usuario, id_telefone, tipo_tel, ddd_tel, telefone)
-                    SELECT id_usuario, id_telefone, tipo_tel, ddd_tel, telefone FROM #num_telefone_temp;";
+                        INSERT INTO num_telefone (id_usuario, id_telefone, tipo_tel, ddd_tel, telefone)
+                        SELECT id_usuario, id_telefone, tipo_tel, ddd_tel, telefone FROM #num_telefone_temp;";
                         command.ExecuteNonQuery();
 
                         transaction.Commit();
@@ -370,8 +370,10 @@ namespace ControleContatos
 
             if (count > 0)
             {
-                MessageBox.Show("O ID de usuário já existe no banco de dados. A importação não pode ser efetuada.");
-                return false;
+                //MessageBox.Show("O ID de usuário já existe no banco de dados. A importação não pode ser efetuada.");
+                //return false;
+
+                throw new ValidacaoLinhaException("O ID de usuário já existe no banco de dados. A importação não pode ser efetuada.");
             }
 
 

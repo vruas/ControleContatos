@@ -33,26 +33,30 @@ namespace ControleContatos
 
         }
 
-        // método para verificar se há algum registro no banco de dados, se tiver, libera o restante das funções
+        
+
+            // método para verificar se há algum registro no banco de dados, se tiver, libera o restante das funções
 
         private bool verificarRegistros()
         {
             string query = @"
                     SELECT 
-                    a.id_usuario, 
-                    a.nome, 
-                    a.cpf, 
-                    b.id_telefone,
-                    b.tipo_tel, 
-                    b.ddd_tel, 
-                    b.telefone, 
-                    a.endereco                        
-                FROM 
-                    contato a                        
-                INNER JOIN 
-                    num_telefone b ON a.id_usuario = b.id_usuario
-                WHERE b.id_telefone IS NOT NULL
-                ORDER BY a.id_usuario";
+                        a.id_usuario, 
+                        a.nome, 
+                        a.cpf, 
+                        b.id_telefone,
+                        b.tipo_tel, 
+                        b.ddd_tel, 
+                        b.telefone, 
+                        a.endereco                        
+                    FROM 
+                        contato a                       
+                    INNER JOIN 
+                        num_telefone b  ON a.id_usuario = b.id_usuario
+                    WHERE 
+                        b.id_telefone IS NOT NULL
+                    ORDER BY 
+                        a.id_usuario";
 
             try
             {
@@ -78,8 +82,21 @@ namespace ControleContatos
             }
             catch (Exception ex)
             {
-               
-                MessageBox.Show("Erro: " + ex.Message);
+                if (ex.HResult == -2146232060)
+                {
+                    MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    buttonNovoContato.Enabled = false;
+                    buttonContatos.Enabled = false;
+                    buttonExportarContatos.Enabled = false;
+                    buttonImportarContatos.Enabled = false;
+                }
+                else
+                {
+                    MessageBox.Show("Erro: " + ex.Message);
+                }
+
+                //MessageBox.Show("Erro: " + ex.Message);
             }
 
             return false;

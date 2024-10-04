@@ -42,12 +42,10 @@ namespace ControleContatos
                         {
                             //UpdateContato(nome, cpf, endereco);
 
-                            try
-                            {
                                 string sql = @"
-                            UPDATE contato
-                            SET nome = @nome, endereco = @endereco
-                            WHERE cpf = @cpf;";
+                                    UPDATE contato
+                                    SET nome = @nome, endereco = @endereco
+                                    WHERE cpf = @cpf;";
 
                                 using (SqlCommand cmd = new SqlCommand(sql, conn, transaction))
                                 {
@@ -62,13 +60,6 @@ namespace ControleContatos
                                     }
                                    
                                 }
-
-                            }
-                            catch (Exception ex)
-                            {
-
-                                throw new Exception("Erro ao atualizar usuário: " + ex.Message);
-                            }
                         }
 
                         foreach (var (idTelefone, tipoTelefone, ddd, telefone) in telefones)
@@ -125,7 +116,7 @@ namespace ControleContatos
                                         {
                                             queryExecutada = true;
                                         }
-                                        
+
                                     }
                                 }
                                 else
@@ -170,22 +161,33 @@ namespace ControleContatos
                         }
 
                         transaction.Commit();
-                        if (queryExecutada)
-                        {
-                            MessageBox.Show("Contato atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Nenhuma informação foi alterada.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            return;
-                        }
+                        //if (queryExecutada)
+                        //{
+                        //    MessageBox.Show("Contato atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            
+                        //}
+                        //else
+                        //{
+                        //    MessageBox.Show("Nenhuma alteração foi realizada.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            
+                        //}
+
 
 
                     }
                     catch (Exception ex)
                     {
-                        transaction.Rollback();
-                        throw new Exception("Erro ao atualizar contato: " + ex.Message);
+                        if (ex.HResult == -2146232060)
+                        {
+                            MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Erro ao atualizar contato: " + ex.Message);
+                        }
+
+                        
                     }
 
                     
@@ -195,6 +197,83 @@ namespace ControleContatos
             }
 
         }
+
+        public void ExcluirTelefone(List<string> telefonesRemovidos)
+        {
+            try
+            {
+
+                int count = 0;
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string verificaExistenciaTelefone = "SELECT COUNT(*) FROM num_telefone WHERE id_telefone = @idTelefone";
+                    using (SqlCommand cmdVerificaExistenciaTelefone = new SqlCommand(verificaExistenciaTelefone, conn))
+                    {
+                        foreach (var idTel in telefonesRemovidos)
+                        {
+                            if (idTel == null)
+                            {
+                                queryExecutada = false;
+                                return;
+                            }
+
+                            cmdVerificaExistenciaTelefone.Parameters.Clear();
+                            cmdVerificaExistenciaTelefone.Parameters.AddWithValue("@idTelefone", idTel);
+                            count = (int)cmdVerificaExistenciaTelefone.ExecuteScalar();
+
+                            
+                        }
+
+                        if (count > 0)
+                        {
+                            using (SqlTransaction transaction = conn.BeginTransaction())
+                            {
+                                try
+                                {
+                                    string query = "DELETE FROM num_telefone WHERE id_telefone = @idTelefone";
+
+                                    using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+                                    {
+                                        foreach (var idTelefone in telefonesRemovidos)
+                                        {
+                                            cmd.Parameters.Clear();
+                                            cmd.Parameters.AddWithValue("@idTelefone", idTelefone);
+                                            cmd.ExecuteNonQuery();
+                                            queryExecutada = true;
+                                        }
+                                    }
+
+                                    transaction.Commit();
+                                }
+                                catch (Exception ex)
+                                {
+                                    transaction.Rollback();
+                                    throw new Exception("Erro ao excluir telefone: " + ex.Message);
+                                }
+                            }
+                        }
+                    }
+
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.HResult == -2146232060)
+                {
+                    MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    throw new Exception("Erro ao excluir telefone: " + ex.Message);
+                }
+            }
+        }
+
+
 
 
 
@@ -413,7 +492,15 @@ namespace ControleContatos
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao pesquisar contato: " + ex.Message);
+                if (ex.HResult == -2146232060)
+                {
+                    MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                { 
+                    throw new Exception("Erro ao pesquisar contato: " + ex.Message);
+                
+                }
             }
 
         }
@@ -457,7 +544,14 @@ namespace ControleContatos
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao pesquisar telefones: " + ex.Message);
+                if (ex.HResult == -2146232060)
+                {
+                    MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    throw new Exception("Erro ao pesquisar telefones: " + ex.Message);
+                }
             }
 
             return telefonesCadastrados;

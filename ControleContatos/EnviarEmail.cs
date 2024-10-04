@@ -113,6 +113,13 @@ namespace ControleContatos
                         currentRow++;
                     }
 
+                    // Formatando as colunas da planilha de Contatos
+                    wsContatos.Column(1).Style.NumberFormat.Format = "0"; // Tipo numérico
+                    wsContatos.Column(2).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsContatos.Column(3).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsContatos.Column(4).Style.NumberFormat.Format = "@"; // Tipo texto
+
+
                     var wsTelefones = planilha.Worksheets.Add("Telefones");
 
                     wsTelefones.Cell(1, 1).Value = "ID Usuário";
@@ -132,6 +139,13 @@ namespace ControleContatos
                         wsTelefones.Cell(currentRow, 5).Value = telefoneData[4];
                         currentRow++;
                     }
+
+                    wsTelefones.Column(1).Style.NumberFormat.Format = "0"; // Tipo numérico
+                    wsTelefones.Column(2).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsTelefones.Column(3).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsTelefones.Column(4).Style.NumberFormat.Format = "0"; // Tipo numérico
+                    wsTelefones.Column(5).Style.NumberFormat.Format = "@"; // Tipo texto
+
 
                     planilha.SaveAs(caminhoCompleto);
                     wsContatos.Columns().AdjustToContents();
@@ -162,5 +176,7 @@ namespace ControleContatos
                 throw new Exception("Erro ao enviar e-mail", ex);
             }
         }
+
+
     }
 }

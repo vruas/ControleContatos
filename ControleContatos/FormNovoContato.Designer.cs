@@ -30,30 +30,32 @@
         {
             this.labelTitulo1 = new System.Windows.Forms.Label();
             this.groupBoxNovoContato = new System.Windows.Forms.GroupBox();
-            this.buttonAdicionarTelefoneNovo = new System.Windows.Forms.Button();
-            this.buttonRemoverTelefoneNovo = new System.Windows.Forms.Button();
-            this.comboBoxTipoNovo = new System.Windows.Forms.ComboBox();
-            this.textBoxDDDNovo = new System.Windows.Forms.MaskedTextBox();
-            this.buttonEditarTelefoneNovo = new System.Windows.Forms.Button();
-            this.textBoxTelefoneNovo = new System.Windows.Forms.MaskedTextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.labelNovoTelefone = new System.Windows.Forms.Label();
-            this.labelNovoDDD = new System.Windows.Forms.Label();
-            this.textBoxCPFNovo = new System.Windows.Forms.MaskedTextBox();
-            this.dataGridViewTelefoneNovo = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.textBoxNomeNovo = new System.Windows.Forms.TextBox();
-            this.textBoxEnderecoNovo = new System.Windows.Forms.TextBox();
             this.labelNovoEndereco = new System.Windows.Forms.Label();
+            this.textBoxCPFNovo = new System.Windows.Forms.MaskedTextBox();
             this.labelNovoCPF = new System.Windows.Forms.Label();
+            this.textBoxEnderecoNovo = new System.Windows.Forms.TextBox();
             this.labelNovoNome = new System.Windows.Forms.Label();
             this.buttonAdicionarContato = new System.Windows.Forms.Button();
             this.buttonCancelarNovo = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.comboBoxTipoNovo = new System.Windows.Forms.ComboBox();
+            this.labelNovoDDD = new System.Windows.Forms.Label();
+            this.buttonRemoverTelefoneNovo = new System.Windows.Forms.Button();
+            this.buttonAdicionarTelefoneNovo = new System.Windows.Forms.Button();
+            this.buttonEditarTelefoneNovo = new System.Windows.Forms.Button();
+            this.labelNovoTelefone = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxTelefoneNovo = new System.Windows.Forms.MaskedTextBox();
+            this.textBoxDDDNovo = new System.Windows.Forms.MaskedTextBox();
+            this.dataGridViewTelefoneNovo = new System.Windows.Forms.DataGridView();
             this.groupBoxNovoContato.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTelefoneNovo)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTelefoneNovo)).BeginInit();
             this.SuspendLayout();
             // 
             // labelTitulo1
@@ -70,6 +72,8 @@
             // 
             // groupBoxNovoContato
             // 
+            this.groupBoxNovoContato.Controls.Add(this.label3);
+            this.groupBoxNovoContato.Controls.Add(this.label2);
             this.groupBoxNovoContato.Controls.Add(this.groupBox2);
             this.groupBoxNovoContato.Controls.Add(this.buttonAdicionarContato);
             this.groupBoxNovoContato.Controls.Add(this.buttonCancelarNovo);
@@ -83,135 +87,46 @@
             this.groupBoxNovoContato.TabStop = false;
             this.groupBoxNovoContato.Text = "Preencha os campos abaixo";
             // 
-            // buttonAdicionarTelefoneNovo
+            // label3
             // 
-            this.buttonAdicionarTelefoneNovo.BackColor = System.Drawing.Color.Silver;
-            this.buttonAdicionarTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAdicionarTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAdicionarTelefoneNovo.Location = new System.Drawing.Point(338, 42);
-            this.buttonAdicionarTelefoneNovo.Name = "buttonAdicionarTelefoneNovo";
-            this.buttonAdicionarTelefoneNovo.Size = new System.Drawing.Size(184, 39);
-            this.buttonAdicionarTelefoneNovo.TabIndex = 3;
-            this.buttonAdicionarTelefoneNovo.Text = "Adicionar Telefone";
-            this.buttonAdicionarTelefoneNovo.UseVisualStyleBackColor = false;
-            this.buttonAdicionarTelefoneNovo.Click += new System.EventHandler(this.buttonAdicionarTelefoneNovo_Click);
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(538, 52);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(457, 16);
+            this.label3.TabIndex = 9;
+            this.label3.Text = " - Para editar/remover um telefone clique em uma célula preenchida";
             // 
-            // buttonRemoverTelefoneNovo
+            // label2
             // 
-            this.buttonRemoverTelefoneNovo.BackColor = System.Drawing.Color.Silver;
-            this.buttonRemoverTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonRemoverTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoverTelefoneNovo.Location = new System.Drawing.Point(338, 132);
-            this.buttonRemoverTelefoneNovo.Name = "buttonRemoverTelefoneNovo";
-            this.buttonRemoverTelefoneNovo.Size = new System.Drawing.Size(183, 39);
-            this.buttonRemoverTelefoneNovo.TabIndex = 3;
-            this.buttonRemoverTelefoneNovo.Text = "Remover Telefone";
-            this.buttonRemoverTelefoneNovo.UseVisualStyleBackColor = false;
-            this.buttonRemoverTelefoneNovo.Click += new System.EventHandler(this.buttonRemoverTelefoneNovo_Click);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(538, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(381, 16);
+            this.label2.TabIndex = 9;
+            this.label2.Text = " - Para adicionar um telefone clique em uma célula vazia";
             // 
-            // comboBoxTipoNovo
+            // groupBox2
             // 
-            this.comboBoxTipoNovo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTipoNovo.FormattingEnabled = true;
-            this.comboBoxTipoNovo.Location = new System.Drawing.Point(153, 42);
-            this.comboBoxTipoNovo.Name = "comboBoxTipoNovo";
-            this.comboBoxTipoNovo.Size = new System.Drawing.Size(121, 24);
-            this.comboBoxTipoNovo.TabIndex = 6;
-            this.comboBoxTipoNovo.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoNovo_SelectedIndexChanged);
-            // 
-            // textBoxDDDNovo
-            // 
-            this.textBoxDDDNovo.Location = new System.Drawing.Point(153, 81);
-            this.textBoxDDDNovo.Mask = "00";
-            this.textBoxDDDNovo.Name = "textBoxDDDNovo";
-            this.textBoxDDDNovo.Size = new System.Drawing.Size(23, 23);
-            this.textBoxDDDNovo.TabIndex = 5;
-            // 
-            // buttonEditarTelefoneNovo
-            // 
-            this.buttonEditarTelefoneNovo.BackColor = System.Drawing.Color.Silver;
-            this.buttonEditarTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonEditarTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditarTelefoneNovo.Location = new System.Drawing.Point(338, 87);
-            this.buttonEditarTelefoneNovo.Name = "buttonEditarTelefoneNovo";
-            this.buttonEditarTelefoneNovo.Size = new System.Drawing.Size(184, 39);
-            this.buttonEditarTelefoneNovo.TabIndex = 3;
-            this.buttonEditarTelefoneNovo.Text = "Editar Telefone";
-            this.buttonEditarTelefoneNovo.UseVisualStyleBackColor = false;
-            this.buttonEditarTelefoneNovo.Click += new System.EventHandler(this.buttonEditarTelefoneNovo_Click);
-            // 
-            // textBoxTelefoneNovo
-            // 
-            this.textBoxTelefoneNovo.Location = new System.Drawing.Point(153, 119);
-            this.textBoxTelefoneNovo.Mask = "000000000";
-            this.textBoxTelefoneNovo.Name = "textBoxTelefoneNovo";
-            this.textBoxTelefoneNovo.Size = new System.Drawing.Size(95, 23);
-            this.textBoxTelefoneNovo.TabIndex = 5;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(16, 122);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(69, 16);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Telefone:";
-            // 
-            // labelNovoTelefone
-            // 
-            this.labelNovoTelefone.AutoSize = true;
-            this.labelNovoTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelNovoTelefone.Location = new System.Drawing.Point(16, 45);
-            this.labelNovoTelefone.Name = "labelNovoTelefone";
-            this.labelNovoTelefone.Size = new System.Drawing.Size(121, 16);
-            this.labelNovoTelefone.TabIndex = 4;
-            this.labelNovoTelefone.Text = "Tipo de telefone:";
-            // 
-            // labelNovoDDD
-            // 
-            this.labelNovoDDD.AutoSize = true;
-            this.labelNovoDDD.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelNovoDDD.Location = new System.Drawing.Point(16, 84);
-            this.labelNovoDDD.Name = "labelNovoDDD";
-            this.labelNovoDDD.Size = new System.Drawing.Size(40, 16);
-            this.labelNovoDDD.TabIndex = 4;
-            this.labelNovoDDD.Text = "DDD:";
-            // 
-            // textBoxCPFNovo
-            // 
-            this.textBoxCPFNovo.Location = new System.Drawing.Point(153, 79);
-            this.textBoxCPFNovo.Mask = "00000000000";
-            this.textBoxCPFNovo.Name = "textBoxCPFNovo";
-            this.textBoxCPFNovo.Size = new System.Drawing.Size(119, 23);
-            this.textBoxCPFNovo.TabIndex = 3;
-            this.textBoxCPFNovo.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxCPFNovo_Validating);
-            // 
-            // dataGridViewTelefoneNovo
-            // 
-            this.dataGridViewTelefoneNovo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewTelefoneNovo.Location = new System.Drawing.Point(541, 22);
-            this.dataGridViewTelefoneNovo.Name = "dataGridViewTelefoneNovo";
-            this.dataGridViewTelefoneNovo.ReadOnly = true;
-            this.dataGridViewTelefoneNovo.RowHeadersWidth = 51;
-            this.dataGridViewTelefoneNovo.RowTemplate.Height = 24;
-            this.dataGridViewTelefoneNovo.Size = new System.Drawing.Size(601, 377);
-            this.dataGridViewTelefoneNovo.TabIndex = 0;
-            this.dataGridViewTelefoneNovo.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTelefoneNovo_CellClick);
+            this.groupBox2.Controls.Add(this.textBoxNomeNovo);
+            this.groupBox2.Controls.Add(this.labelNovoEndereco);
+            this.groupBox2.Controls.Add(this.textBoxCPFNovo);
+            this.groupBox2.Controls.Add(this.labelNovoCPF);
+            this.groupBox2.Controls.Add(this.textBoxEnderecoNovo);
+            this.groupBox2.Controls.Add(this.labelNovoNome);
+            this.groupBox2.Location = new System.Drawing.Point(7, 36);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(521, 154);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Usuário:";
             // 
             // textBoxNomeNovo
             // 
             this.textBoxNomeNovo.Location = new System.Drawing.Point(153, 40);
+            this.textBoxNomeNovo.MaxLength = 20;
             this.textBoxNomeNovo.Name = "textBoxNomeNovo";
-            this.textBoxNomeNovo.Size = new System.Drawing.Size(212, 23);
+            this.textBoxNomeNovo.Size = new System.Drawing.Size(230, 23);
             this.textBoxNomeNovo.TabIndex = 2;
-            // 
-            // textBoxEnderecoNovo
-            // 
-            this.textBoxEnderecoNovo.Location = new System.Drawing.Point(153, 118);
-            this.textBoxEnderecoNovo.Name = "textBoxEnderecoNovo";
-            this.textBoxEnderecoNovo.Size = new System.Drawing.Size(230, 23);
-            this.textBoxEnderecoNovo.TabIndex = 2;
             // 
             // labelNovoEndereco
             // 
@@ -223,6 +138,15 @@
             this.labelNovoEndereco.TabIndex = 1;
             this.labelNovoEndereco.Text = "Endereço:";
             // 
+            // textBoxCPFNovo
+            // 
+            this.textBoxCPFNovo.Location = new System.Drawing.Point(153, 79);
+            this.textBoxCPFNovo.Mask = "00000000000";
+            this.textBoxCPFNovo.Name = "textBoxCPFNovo";
+            this.textBoxCPFNovo.Size = new System.Drawing.Size(119, 23);
+            this.textBoxCPFNovo.TabIndex = 3;
+            this.textBoxCPFNovo.Validating += new System.ComponentModel.CancelEventHandler(this.textBoxCPFNovo_Validating);
+            // 
             // labelNovoCPF
             // 
             this.labelNovoCPF.AutoSize = true;
@@ -232,6 +156,14 @@
             this.labelNovoCPF.Size = new System.Drawing.Size(38, 16);
             this.labelNovoCPF.TabIndex = 1;
             this.labelNovoCPF.Text = "CPF:";
+            // 
+            // textBoxEnderecoNovo
+            // 
+            this.textBoxEnderecoNovo.Location = new System.Drawing.Point(153, 118);
+            this.textBoxEnderecoNovo.MaxLength = 50;
+            this.textBoxEnderecoNovo.Name = "textBoxEnderecoNovo";
+            this.textBoxEnderecoNovo.Size = new System.Drawing.Size(230, 23);
+            this.textBoxEnderecoNovo.TabIndex = 2;
             // 
             // labelNovoNome
             // 
@@ -289,20 +221,112 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Telefone(s) para contato:";
             // 
-            // groupBox2
+            // comboBoxTipoNovo
             // 
-            this.groupBox2.Controls.Add(this.textBoxNomeNovo);
-            this.groupBox2.Controls.Add(this.labelNovoEndereco);
-            this.groupBox2.Controls.Add(this.textBoxCPFNovo);
-            this.groupBox2.Controls.Add(this.labelNovoCPF);
-            this.groupBox2.Controls.Add(this.textBoxEnderecoNovo);
-            this.groupBox2.Controls.Add(this.labelNovoNome);
-            this.groupBox2.Location = new System.Drawing.Point(7, 36);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(521, 154);
-            this.groupBox2.TabIndex = 8;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Usuário:";
+            this.comboBoxTipoNovo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTipoNovo.FormattingEnabled = true;
+            this.comboBoxTipoNovo.Location = new System.Drawing.Point(153, 42);
+            this.comboBoxTipoNovo.Name = "comboBoxTipoNovo";
+            this.comboBoxTipoNovo.Size = new System.Drawing.Size(121, 24);
+            this.comboBoxTipoNovo.TabIndex = 6;
+            this.comboBoxTipoNovo.SelectedIndexChanged += new System.EventHandler(this.comboBoxTipoNovo_SelectedIndexChanged);
+            // 
+            // labelNovoDDD
+            // 
+            this.labelNovoDDD.AutoSize = true;
+            this.labelNovoDDD.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNovoDDD.Location = new System.Drawing.Point(16, 84);
+            this.labelNovoDDD.Name = "labelNovoDDD";
+            this.labelNovoDDD.Size = new System.Drawing.Size(40, 16);
+            this.labelNovoDDD.TabIndex = 4;
+            this.labelNovoDDD.Text = "DDD:";
+            // 
+            // buttonRemoverTelefoneNovo
+            // 
+            this.buttonRemoverTelefoneNovo.BackColor = System.Drawing.Color.Silver;
+            this.buttonRemoverTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonRemoverTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRemoverTelefoneNovo.Location = new System.Drawing.Point(338, 132);
+            this.buttonRemoverTelefoneNovo.Name = "buttonRemoverTelefoneNovo";
+            this.buttonRemoverTelefoneNovo.Size = new System.Drawing.Size(183, 39);
+            this.buttonRemoverTelefoneNovo.TabIndex = 3;
+            this.buttonRemoverTelefoneNovo.Text = "Remover Telefone";
+            this.buttonRemoverTelefoneNovo.UseVisualStyleBackColor = false;
+            this.buttonRemoverTelefoneNovo.Click += new System.EventHandler(this.buttonRemoverTelefoneNovo_Click);
+            // 
+            // buttonAdicionarTelefoneNovo
+            // 
+            this.buttonAdicionarTelefoneNovo.BackColor = System.Drawing.Color.Silver;
+            this.buttonAdicionarTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAdicionarTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAdicionarTelefoneNovo.Location = new System.Drawing.Point(338, 42);
+            this.buttonAdicionarTelefoneNovo.Name = "buttonAdicionarTelefoneNovo";
+            this.buttonAdicionarTelefoneNovo.Size = new System.Drawing.Size(184, 39);
+            this.buttonAdicionarTelefoneNovo.TabIndex = 3;
+            this.buttonAdicionarTelefoneNovo.Text = "Adicionar Telefone";
+            this.buttonAdicionarTelefoneNovo.UseVisualStyleBackColor = false;
+            this.buttonAdicionarTelefoneNovo.Click += new System.EventHandler(this.buttonAdicionarTelefoneNovo_Click);
+            // 
+            // buttonEditarTelefoneNovo
+            // 
+            this.buttonEditarTelefoneNovo.BackColor = System.Drawing.Color.Silver;
+            this.buttonEditarTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonEditarTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEditarTelefoneNovo.Location = new System.Drawing.Point(338, 87);
+            this.buttonEditarTelefoneNovo.Name = "buttonEditarTelefoneNovo";
+            this.buttonEditarTelefoneNovo.Size = new System.Drawing.Size(184, 39);
+            this.buttonEditarTelefoneNovo.TabIndex = 3;
+            this.buttonEditarTelefoneNovo.Text = "Editar Telefone";
+            this.buttonEditarTelefoneNovo.UseVisualStyleBackColor = false;
+            this.buttonEditarTelefoneNovo.Click += new System.EventHandler(this.buttonEditarTelefoneNovo_Click);
+            // 
+            // labelNovoTelefone
+            // 
+            this.labelNovoTelefone.AutoSize = true;
+            this.labelNovoTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelNovoTelefone.Location = new System.Drawing.Point(16, 45);
+            this.labelNovoTelefone.Name = "labelNovoTelefone";
+            this.labelNovoTelefone.Size = new System.Drawing.Size(121, 16);
+            this.labelNovoTelefone.TabIndex = 4;
+            this.labelNovoTelefone.Text = "Tipo de telefone:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(16, 122);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 16);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Telefone:";
+            // 
+            // textBoxTelefoneNovo
+            // 
+            this.textBoxTelefoneNovo.Location = new System.Drawing.Point(153, 119);
+            this.textBoxTelefoneNovo.Mask = "000000000";
+            this.textBoxTelefoneNovo.Name = "textBoxTelefoneNovo";
+            this.textBoxTelefoneNovo.Size = new System.Drawing.Size(119, 23);
+            this.textBoxTelefoneNovo.TabIndex = 5;
+            // 
+            // textBoxDDDNovo
+            // 
+            this.textBoxDDDNovo.Location = new System.Drawing.Point(153, 81);
+            this.textBoxDDDNovo.Mask = "00";
+            this.textBoxDDDNovo.Name = "textBoxDDDNovo";
+            this.textBoxDDDNovo.Size = new System.Drawing.Size(23, 23);
+            this.textBoxDDDNovo.TabIndex = 5;
+            // 
+            // dataGridViewTelefoneNovo
+            // 
+            this.dataGridViewTelefoneNovo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTelefoneNovo.Location = new System.Drawing.Point(541, 76);
+            this.dataGridViewTelefoneNovo.Name = "dataGridViewTelefoneNovo";
+            this.dataGridViewTelefoneNovo.ReadOnly = true;
+            this.dataGridViewTelefoneNovo.RowHeadersWidth = 51;
+            this.dataGridViewTelefoneNovo.RowTemplate.Height = 24;
+            this.dataGridViewTelefoneNovo.Size = new System.Drawing.Size(601, 323);
+            this.dataGridViewTelefoneNovo.TabIndex = 0;
+            this.dataGridViewTelefoneNovo.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTelefoneNovo_CellClick);
             // 
             // FormNovoContato
             // 
@@ -314,14 +338,15 @@
             this.Controls.Add(this.labelTitulo1);
             this.Name = "FormNovoContato";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FormNovoContato";
+            this.Text = "Novo Contato";
             this.Load += new System.EventHandler(this.FormNovoContato_Load);
             this.groupBoxNovoContato.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTelefoneNovo)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxNovoContato.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTelefoneNovo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -351,5 +376,7 @@
         private System.Windows.Forms.Button buttonCancelarNovo;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }

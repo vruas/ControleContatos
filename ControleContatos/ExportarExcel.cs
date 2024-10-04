@@ -119,7 +119,7 @@ namespace ControleContatos
 
                     var wsContatos = planilha.Worksheets.Add("Contatos");
 
-
+                    // Definindo o cabeçalho da planilha de Contatos
                     wsContatos.Cell(1, 1).Value = "ID Usuário";
                     wsContatos.Cell(1, 2).Value = "Nome";
                     wsContatos.Cell(1, 3).Value = "CPF";
@@ -136,10 +136,15 @@ namespace ControleContatos
                         currentRow++;
                     }
 
+                    // Formatando as colunas da planilha de Contatos
+                    wsContatos.Column(1).Style.NumberFormat.Format = "0"; // Tipo numérico
+                    wsContatos.Column(2).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsContatos.Column(3).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsContatos.Column(4).Style.NumberFormat.Format = "@"; // Tipo texto
 
                     var wsTelefones = planilha.Worksheets.Add("Telefones");
 
-
+                    // Definindo o cabeçalho da planilha de Telefones
                     wsTelefones.Cell(1, 1).Value = "ID Usuário";
                     wsTelefones.Cell(1, 2).Value = "ID Telefone";
                     wsTelefones.Cell(1, 3).Value = "Tipo Telefone";
@@ -158,18 +163,29 @@ namespace ControleContatos
                         currentRow++;
                     }
 
-                    planilha.SaveAs(caminhoCompleto);
+                    // Formatando as colunas da planilha de Telefones
+                    wsTelefones.Column(1).Style.NumberFormat.Format = "0"; // Tipo numérico
+                    wsTelefones.Column(2).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsTelefones.Column(3).Style.NumberFormat.Format = "@"; // Tipo texto
+                    wsTelefones.Column(4).Style.NumberFormat.Format = "0"; // Tipo numérico
+                    wsTelefones.Column(5).Style.NumberFormat.Format = "@"; // Tipo texto
+
+                    // Ajustando o tamanho das colunas
                     wsContatos.Columns().AdjustToContents();
+                    wsTelefones.Columns().AdjustToContents();
 
+                    // Salvando o arquivo Excel
+                    planilha.SaveAs(caminhoCompleto);
 
-                    //MessageBox.Show("Arquivo Excel exportado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Mensagem de sucesso
+                    // MessageBox.Show("Arquivo Excel exportado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    //if (escolha == 2) // enviar por e-mail
-                    //{
-                    //    string emailDestinatario = Prompt.ShowDialog("Digite o e-mail do destinatário", "E-mail destinatário");
-                    //    EnviarEmailOutlook(emailDestinatario, caminhoCompleto);
-                    //}
-
+                    // Opção de envio por e-mail (comentada)
+                    // if (escolha == 2) // enviar por e-mail
+                    // {
+                    //     string emailDestinatario = Prompt.ShowDialog("Digite o e-mail do destinatário", "E-mail destinatário");
+                    //     EnviarEmailOutlook(emailDestinatario, caminhoCompleto);
+                    // }
 
                 }
             }

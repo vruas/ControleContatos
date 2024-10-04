@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
 
 namespace ControleContatos
 {
@@ -13,37 +15,55 @@ namespace ControleContatos
             this.connectionString = connectionString;
         }
 
+        Main main = new Main();
+
         private int newId;
 
         // método para verificar se o CPF já está cadastrado no banco de dados
 
         public bool VerificaCPFExistente(string cpf)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                conn.Open();
-
-                string getCpfSql = "SELECT cpf FROM contato WHERE cpf = @cpf";
-
-                using (SqlCommand sqlCommand = new SqlCommand(getCpfSql, conn))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    sqlCommand.Parameters.AddWithValue("@cpf", cpf);
-                    var result = sqlCommand.ExecuteScalar();
-                    if (result != null)
-                    {
-                        // CPF já cadastrado
-                        return true;
-                    }
-                }
+                    conn.Open();
 
-                conn.Close();
+                    string getCpfSql = "SELECT cpf FROM contato WHERE cpf = @cpf";
+
+                    using (SqlCommand sqlCommand = new SqlCommand(getCpfSql, conn))
+                    {
+                        sqlCommand.Parameters.AddWithValue("@cpf", cpf);
+                        var result = sqlCommand.ExecuteScalar();
+                        if (result != null)
+                        {
+                            // CPF já cadastrado
+                            return true;
+                        }
+                    }
+
+
+                    conn.Close();
+                } 
+            }
+            catch (Exception ex)
+            {
+                if (ex.HResult == -2146232060)
+                {
+                    MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    throw new Exception("Erro ao verificar CPF: " + ex.Message);
+                }
+                
             }
 
             // CPF não encontrado
             return false;
         }
 
-
+        
 
 
         // método para adicionar novo contato
@@ -59,6 +79,7 @@ namespace ControleContatos
                 conn.Open();
                 using (SqlTransaction transaction = conn.BeginTransaction())
                 {
+                   
                     try
                     {
                         int userId = 0;
@@ -137,8 +158,16 @@ namespace ControleContatos
                     }
                     catch (Exception ex)
                     {
-                        transaction.Rollback();
-                        throw new Exception("Erro ao adicionar novo contato: " + ex.Message);
+                        if (ex.HResult == -2146232060)
+                        {
+                            MessageBox.Show("A agenda está em atualização. Por favor, tente novamente mais tarde.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                            throw new Exception("Erro ao adicionar novo contato: " + ex.Message);
+                        }
+                        
                     }
                 }
             }
