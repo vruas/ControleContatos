@@ -16,7 +16,7 @@ namespace ControleContatos
         int index;
         private string connectionString = @"Data Source=LAPTOP-QIJFUNJ0;Initial Catalog=master;Integrated Security=True";
         DataTable dtGridAddTelefone = new DataTable();
-        private NovoContato novoContato;
+        //private NovoContato novoContato;
 
 
         public FormNovoContato()
@@ -37,85 +37,84 @@ namespace ControleContatos
 
             dataGridViewTelefoneNovo.DataSource = dtGridAddTelefone;
 
-            buttonEditarTelefoneNovo.Enabled = false;
+            //buttonEditarTelefoneNovo.Enabled = false;
             buttonRemoverTelefoneNovo.Enabled = false;
         }
 
         // botão para adicionar telefone novo ao grid de telefones
 
-        private void buttonAdicionarTelefoneNovo_Click(object sender, EventArgs e)
+        private void AdicionarTelefone()
         {
-
             //if (!string.IsNullOrEmpty(textBoxTelefoneNovo.Text) && !string.IsNullOrEmpty(textBoxDDDNovo.Text) && !string.IsNullOrEmpty(comboBoxTipoNovo.Text))
             //{
-                try
+            try
+            {
+                if (string.IsNullOrEmpty(textBoxDDDNovo.Text))
                 {
-                    if (string.IsNullOrEmpty(textBoxDDDNovo.Text))
-                    {
-                        MessageBox.Show("Preencha o campo DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (string.IsNullOrEmpty(textBoxTelefoneNovo.Text))
-                    {
-                        MessageBox.Show("Preencha o campo Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-
-                    if (textBoxDDDNovo.Text.Length != 2)
-                    {
-                        MessageBox.Show("DDD inválido. O DDD deve conter 2 caracteres numéricos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (textBoxTelefoneNovo.Text.Length < 3)
-                    {
-                        MessageBox.Show("Telefone inválido. Telefones de qualquer tipo, devem ter pelo menos 3 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    // o id deve ser gerado automaticamente e deve ser igual a string datahorasminutossegundos
-
-                    string newIdTelefone = DateTime.Now.ToString("yyyyMMddHHmmss");
-
-                    string tipoTelefone = comboBoxTipoNovo.Text;
-                    string ddd = textBoxDDDNovo.Text;
-                    string telefone = textBoxTelefoneNovo.Text;
-
-                    if (tipoTelefone == "Celular" && telefone.Length != 9)
-                    {
-                        MessageBox.Show("Celular inválido. Celulares devem conter 9 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (tipoTelefone == "Telefone" && telefone.Length != 8)
-                    {
-                        MessageBox.Show("Telefone inválido. Telefones devem conter 8 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (tipoTelefone == "Emergência" && telefone.Length < 3 || telefone.Length > 9)
-                    {
-                        MessageBox.Show("Emergencial inválido. Telefones emergenciais devem conter pelo menos 3 caracteres.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-
-
-                    dtGridAddTelefone.Rows.Add(newIdTelefone, tipoTelefone, ddd, telefone);
-
-                    textBoxDDDNovo.Text = "";
-                    textBoxTelefoneNovo.Text = "";
-
-                   // mensagem de sucesso
-                    MessageBox.Show("Telefone adicionado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                    MessageBox.Show("Preencha o campo DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
-                catch (Exception ex)
+
+                if (string.IsNullOrEmpty(textBoxTelefoneNovo.Text))
                 {
-                    MessageBox.Show("Erro: " + ex.Message);
+                    MessageBox.Show("Preencha o campo Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+
+                if (textBoxDDDNovo.Text.Length != 2)
+                {
+                    MessageBox.Show("DDD inválido. O DDD deve conter 2 caracteres numéricos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (textBoxTelefoneNovo.Text.Length < 3)
+                {
+                    MessageBox.Show("Telefone inválido. Telefones de qualquer tipo, devem ter pelo menos 3 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // o id deve ser gerado automaticamente e deve ser igual a string datahorasminutossegundos
+
+                string newIdTelefone = DateTime.Now.ToString("yyyyMMddHHmmss");
+
+                string tipoTelefone = comboBoxTipoNovo.Text;
+                string ddd = textBoxDDDNovo.Text;
+                string telefone = textBoxTelefoneNovo.Text;
+
+                if (tipoTelefone == "Celular" && telefone.Length != 9)
+                {
+                    MessageBox.Show("Celular inválido. Celulares devem conter 9 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (tipoTelefone == "Telefone" && telefone.Length != 8)
+                {
+                    MessageBox.Show("Telefone inválido. Telefones devem conter 8 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (tipoTelefone == "Emergência" && telefone.Length < 3 || telefone.Length > 9)
+                {
+                    MessageBox.Show("Emergencial inválido. Telefones emergenciais devem conter pelo menos 3 caracteres.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+
+                dtGridAddTelefone.Rows.Add(newIdTelefone, tipoTelefone, ddd, telefone);
+
+                textBoxDDDNovo.Text = "";
+                textBoxTelefoneNovo.Text = "";
+
+                // mensagem de sucesso
+                MessageBox.Show("Telefone adicionado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
             //}
             //else
             //{
@@ -123,105 +122,118 @@ namespace ControleContatos
             //}
         }
 
-        // botão para editar telefone novo no grid de telefones
-
-        private void buttonEditarTelefoneNovo_Click(object sender, EventArgs e)
+        private void EditarTelefone()
         {
             //if (!string.IsNullOrEmpty(textBoxTelefoneNovo.Text) && !string.IsNullOrEmpty(textBoxDDDNovo.Text) && !string.IsNullOrEmpty(comboBoxTipoNovo.Text))
             //{
-                try
+            try
+            {
+                if (string.IsNullOrEmpty(textBoxDDDNovo.Text))
                 {
-                    if (string.IsNullOrEmpty(textBoxDDDNovo.Text))
-                    {
-                        MessageBox.Show("Preencha o campo DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (string.IsNullOrEmpty(textBoxTelefoneNovo.Text))
-                    {
-                        MessageBox.Show("Preencha o campo Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (textBoxDDDNovo.Text.Length != 2)
-                    {
-                        MessageBox.Show("DDD inválido. O DDD deve conter 2 caracteres numéricos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (textBoxTelefoneNovo.Text.Length < 3)
-                    {
-                        MessageBox.Show("Telefone inválido. Telefones de qualquer tipo, devem ter pelo menos 3 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-
-
-                    DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
-                    if (index >= 0)
-                    {
-                        string originalTipo = selectedRow.Cells[1].Value.ToString();
-                        string originalDDD = selectedRow.Cells[2].Value.ToString();
-                        string originalTelefone = selectedRow.Cells[3].Value.ToString();
-
-                        string verificaValorTipo = comboBoxTipoNovo.Text;
-                        string verificaValorDDD = textBoxDDDNovo.Text;
-                        string verificaValorTelefone = textBoxTelefoneNovo.Text;
-
-                        if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone && originalTipo == verificaValorTipo)
-                        {
-                            //throw new Exception("Não houve alteração nos campos de Tipo, DDD e Telefone.");
-                            MessageBox.Show("Não houve alteração nos campos de Tipo, DDD e Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            return;
-
-                        }
-
-                        if (verificaValorTipo == "Celular" && verificaValorTelefone.Length != 9)
-                        {
-                            MessageBox.Show("Celular inválido. Celulares devem conter 9 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        if (verificaValorTipo == "Telefone" && verificaValorTelefone.Length != 8)
-                        {
-                            MessageBox.Show("Telefone inválido. Telefones devem conter 8 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        if (verificaValorTipo == "Emergência" && verificaValorTelefone.Length < 3 || verificaValorTelefone.Length > 9)
-                        {
-                            MessageBox.Show("Emergencial inválido. Telefones emergenciais devem conter pelo menos 3 caracteres.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-
-                        selectedRow.Cells[1].Value = comboBoxTipoNovo.Text;
-                        selectedRow.Cells[2].Value = textBoxDDDNovo.Text;
-                        selectedRow.Cells[3].Value = textBoxTelefoneNovo.Text;
-                    }
-
-
-
-                    textBoxDDDNovo.Text = "";
-                    textBoxTelefoneNovo.Text = "";
-
-                    buttonAdicionarTelefoneNovo.Enabled = true;
-                    buttonEditarTelefoneNovo.Enabled = false;
-                    buttonRemoverTelefoneNovo.Enabled = false;
-
-                    MessageBox.Show("Telefone editado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Preencha o campo DDD.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
-                catch (Exception ex)
+
+                if (string.IsNullOrEmpty(textBoxTelefoneNovo.Text))
                 {
-                    MessageBox.Show("Erro: " + ex.Message);
+                    MessageBox.Show("Preencha o campo Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                if (textBoxDDDNovo.Text.Length != 2)
+                {
+                    MessageBox.Show("DDD inválido. O DDD deve conter 2 caracteres numéricos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (textBoxTelefoneNovo.Text.Length < 3)
+                {
+                    MessageBox.Show("Telefone inválido. Telefones de qualquer tipo, devem ter pelo menos 3 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+
+                DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
+                if (index >= 0)
+                {
+                    string originalTipo = selectedRow.Cells[1].Value.ToString();
+                    string originalDDD = selectedRow.Cells[2].Value.ToString();
+                    string originalTelefone = selectedRow.Cells[3].Value.ToString();
+
+                    string verificaValorTipo = comboBoxTipoNovo.Text;
+                    string verificaValorDDD = textBoxDDDNovo.Text;
+                    string verificaValorTelefone = textBoxTelefoneNovo.Text;
+
+                    if (originalDDD == verificaValorDDD && originalTelefone == verificaValorTelefone && originalTipo == verificaValorTipo)
+                    {
+                        //throw new Exception("Não houve alteração nos campos de Tipo, DDD e Telefone.");
+                        MessageBox.Show("Não houve alteração nos campos de Tipo, DDD e Telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+
+                    }
+
+                    if (verificaValorTipo == "Celular" && verificaValorTelefone.Length != 9)
+                    {
+                        MessageBox.Show("Celular inválido. Celulares devem conter 9 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (verificaValorTipo == "Telefone" && verificaValorTelefone.Length != 8)
+                    {
+                        MessageBox.Show("Telefone inválido. Telefones devem conter 8 dígitos", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (verificaValorTipo == "Emergência" && verificaValorTelefone.Length < 3 || verificaValorTelefone.Length > 9)
+                    {
+                        MessageBox.Show("Emergencial inválido. Telefones emergenciais devem conter pelo menos 3 caracteres.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    selectedRow.Cells[1].Value = comboBoxTipoNovo.Text;
+                    selectedRow.Cells[2].Value = textBoxDDDNovo.Text;
+                    selectedRow.Cells[3].Value = textBoxTelefoneNovo.Text;
+                }
+
+
+
+                textBoxDDDNovo.Text = "";
+                textBoxTelefoneNovo.Text = "";
+
+                buttonAdicionarEditarTelefoneNovo.Enabled = true;
+                //buttonEditarTelefoneNovo.Enabled = false;
+                buttonRemoverTelefoneNovo.Enabled = false;
+
+                MessageBox.Show("Telefone editado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro: " + ex.Message);
+            }
             //}
             //else 
             //{ 
             //    MessageBox.Show("Preencha todos os campos para editar um número de telefone..", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             //}
-
         }
+
+        private void buttonAdicionarEditarTelefoneNovo_Click(object sender, EventArgs e)
+        {
+            if (buttonAdicionarEditarTelefoneNovo.Text == "Adicionar Telefone")
+            {
+                AdicionarTelefone();
+                buttonAdicionarEditarTelefoneNovo.Text = "Adicionar Telefone";
+            }
+            else
+            {
+                EditarTelefone();
+                buttonAdicionarEditarTelefoneNovo.Text = "Adicionar Telefone";
+            }
+        }
+
+       
 
         // botão para remover telefone novo do grid de telefones
 
@@ -237,15 +249,18 @@ namespace ControleContatos
             else
             {
                 MessageBox.Show("Operação cancelada.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                buttonAdicionarEditarTelefoneNovo.Text = "Adicionar Telefone";
             }
 
             textBoxDDDNovo.Text = "";
             textBoxTelefoneNovo.Text = "";
             
             buttonAdicionarContato.Enabled = true;
-            buttonAdicionarTelefoneNovo.Enabled = true;
-            buttonEditarTelefoneNovo.Enabled = false;
+            buttonAdicionarEditarTelefoneNovo.Enabled = true;
+            //buttonEditarTelefoneNovo.Enabled = false;
             buttonRemoverTelefoneNovo.Enabled = false;
+
+            buttonAdicionarEditarTelefoneNovo.Text = "Adicionar Telefone";
 
         }
 
@@ -365,8 +380,8 @@ namespace ControleContatos
                         // Adiciona o contato com todos os telefones
                         novoContato.AdicionarContato(nome, cpf, endereco, telefones);
 
-                        buttonAdicionarTelefoneNovo.Enabled = true;
-                        buttonEditarTelefoneNovo.Enabled = false;
+                        buttonAdicionarEditarTelefoneNovo.Enabled = true;
+                        //buttonEditarTelefoneNovo.Enabled = false;
                         buttonRemoverTelefoneNovo.Enabled = false;
 
                         // Fecha o formulário após adicionar o contato
@@ -394,158 +409,7 @@ namespace ControleContatos
 
 
 
-        //private void buttonAdicionarContato_Click(object sender, EventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(textBoxNomeNovo.Text) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text))
-        //    {
-        //        string idTelefone = string.Empty;
-        //        string tipoTel = string.Empty;
-        //        int tipoTelefone = 0;
-        //        int ddd = 0;
-        //        string telefone = string.Empty;
-
-        //        int telefonesVerificados = 0;
-
-
-        //        if (dtGridAddTelefone.Rows.Count == 0)
-        //        {
-        //            MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //            return;
-        //        }
-        //        try
-        //        {
-        //            NovoContato novoContato = new NovoContato(connectionString);
-
-        //            string nome = textBoxNomeNovo.Text;
-        //            string cpf = textBoxCPFNovo.Text;
-        //            string endereco = textBoxEnderecoNovo.Text;
-
-        //            if (novoContato.VerificaCPFExistente(cpf) == false)
-        //            {
-
-        //                foreach (DataRow row in dtGridAddTelefone.Rows)
-        //                {
-        //                    idTelefone = Convert.ToString(row["ID Telefone"]);
-        //                    tipoTel = Convert.ToString(row["Tipo"]);
-        //                    tipoTelefone = Convert.ToInt32(valoresCombo[tipoTel]);
-        //                    ddd = Convert.ToInt32(row["DDD"]);
-        //                    telefone = Convert.ToString(row["Telefone"]);
-
-        //                    telefonesVerificados++;
-
-        //                }
-
-        //                foreach (DataRow row in dtGridAddTelefone.Rows)
-        //                {
-        //                    idTelefone = Convert.ToString(row["ID Telefone"]);
-        //                    tipoTel = Convert.ToString(row["Tipo"]);
-        //                    tipoTelefone = Convert.ToInt32(valoresCombo[tipoTel]);
-        //                    ddd = Convert.ToInt32(row["DDD"]);
-        //                    telefone = Convert.ToString(row["Telefone"]);
-
-
-        //                    novoContato.AdicionarContato(nome, cpf, endereco, idTelefone, tipoTelefone, ddd, telefone, telefonesVerificados);
-        //                }
-
-
-        //                buttonAdicionarTelefoneNovo.Enabled = true;
-        //                buttonEditarTelefoneNovo.Enabled = false;
-        //                buttonRemoverTelefoneNovo.Enabled = false;
-
-        //                // fecha o formulário após adicionar o contato
-
-        //                this.Close();
-
-        //                main.Show();
-
-
-
-        //                MessageBox.Show("Contato adicionado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("CPF já cadastrado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //                return;
-        //            }
-
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show("Erro: " + ex.Message);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //    }
-
-        //}
-
-        //private void buttonAdicionarContato_Click(object sender, EventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(textBoxNomeNovo.Text) && !string.IsNullOrEmpty(textBoxCPFNovo.Text) && !string.IsNullOrEmpty(textBoxEnderecoNovo.Text))
-        //    {
-        //        if (dtGridAddTelefone.Rows.Count == 0)
-        //        {
-        //            MessageBox.Show("Adicione pelo menos um telefone.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //            return;
-        //        }
-        //        try
-        //        {
-        //            NovoContato novoContato = new NovoContato(connectionString);
-
-        //            string nome = textBoxNomeNovo.Text;
-        //            string cpf = textBoxCPFNovo.Text;
-        //            string endereco = textBoxEnderecoNovo.Text;
-
-        //            if (novoContato.VerificaCPFExistente(cpf) == false)
-        //            {
-        //                // Lista para armazenar os telefones a serem inseridos
-        //                List<(string idTelefone, int tipoTelefone, int ddd, string telefone)> telefones = new List<(string idTelefone, int tipoTelefone, int ddd, string telefone)>();
-
-        //                foreach (DataGridViewRow row in dtGridAddTelefone.Rows)
-        //                {
-        //                    if (row.IsNewRow) continue; // Ignorar a linha de inserção
-
-        //                    string idTelefone = Convert.ToString(row.Cells["ID Telefone"].Value);
-        //                    string tipoTel = Convert.ToString(row.Cells["Tipo"].Value);
-        //                    int tipoTelefone = Convert.ToInt32(valoresCombo[tipoTel]);
-        //                    int ddd = Convert.ToInt32(row.Cells["DDD"].Value);
-        //                    string telefone = Convert.ToString(row.Cells["Telefone"].Value);
-
-        //                    telefones.Add((idTelefone, tipoTelefone, ddd, telefone));
-        //                }
-
-        //                // Chama o método de adicionar contato com a lista de telefones
-        //                novoContato.AdicionarContato(nome, cpf, endereco, telefones);
-
-        //                buttonAdicionarTelefoneNovo.Enabled = true;
-        //                buttonEditarTelefoneNovo.Enabled = false;
-        //                buttonRemoverTelefoneNovo.Enabled = false;
-
-        //                // Fecha o formulário após adicionar o contato
-        //                this.Close();
-        //                main.Show();
-
-        //                MessageBox.Show("Contato adicionado com sucesso.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("CPF já cadastrado.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //                return;
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            MessageBox.Show("Erro: " + ex.Message);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Preencha todos os campos obrigatórios.", "Atenção", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        //    }
-        //}
-
+        
 
 
         // método para carregar a lista de tipos de telefone no combobox
@@ -611,25 +475,33 @@ namespace ControleContatos
             {
                 DataGridViewCell selectedCell = dataGridViewTelefoneNovo.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
-                if (string.IsNullOrEmpty(selectedCell.Value?.ToString()))
+                bool isCellEmpty = string.IsNullOrEmpty(selectedCell.Value?.ToString());
+
+                if (isCellEmpty)
                 {
-                    buttonAdicionarTelefoneNovo.Enabled = true;
-                    buttonEditarTelefoneNovo.Enabled = false;
+                    buttonAdicionarEditarTelefoneNovo.Text = "Adicionar Telefone";
                     buttonRemoverTelefoneNovo.Enabled = false;
+
+                    index = e.RowIndex;
+                    DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
+                    comboBoxTipoNovo.Text = selectedRow.Cells[1].Value.ToString();
+                    textBoxDDDNovo.Text = selectedRow.Cells[2].Value.ToString();
+                    textBoxTelefoneNovo.Text = selectedRow.Cells[3].Value.ToString();
                 }
                 else
                 {
-                    buttonAdicionarTelefoneNovo.Enabled = false;
-                    buttonEditarTelefoneNovo.Enabled = true;
+                    buttonAdicionarEditarTelefoneNovo.Text = "Editar Telefone";
                     buttonRemoverTelefoneNovo.Enabled = true;
-                }
-                
 
-                index = e.RowIndex;
-                DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
-                comboBoxTipoNovo.Text = selectedRow.Cells[1].Value.ToString();
-                textBoxDDDNovo.Text = selectedRow.Cells[2].Value.ToString();
-                textBoxTelefoneNovo.Text = selectedRow.Cells[3].Value.ToString();
+                    index = e.RowIndex;
+                    DataGridViewRow selectedRow = dataGridViewTelefoneNovo.Rows[index];
+                    comboBoxTipoNovo.Text = selectedRow.Cells[1].Value.ToString();
+                    textBoxDDDNovo.Text = selectedRow.Cells[2].Value.ToString();
+                    textBoxTelefoneNovo.Text = selectedRow.Cells[3].Value.ToString();
+                }
+
+
+               
 
                
                
@@ -706,5 +578,7 @@ namespace ControleContatos
             this.Close();
             main.Show();
         }
+
+        
     }
 }

@@ -57,7 +57,6 @@
             this.textBoxDDDEditar = new System.Windows.Forms.MaskedTextBox();
             this.buttonRemoverTelefoneEditar = new System.Windows.Forms.Button();
             this.textBoxIdTelefoneEditar = new System.Windows.Forms.MaskedTextBox();
-            this.buttonEditarTelefone = new System.Windows.Forms.Button();
             this.buttonAdicionarTelefoneEditar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxTipoEditar = new System.Windows.Forms.ComboBox();
@@ -375,7 +374,6 @@
             this.groupBox2.Controls.Add(this.textBoxDDDEditar);
             this.groupBox2.Controls.Add(this.buttonRemoverTelefoneEditar);
             this.groupBox2.Controls.Add(this.textBoxIdTelefoneEditar);
-            this.groupBox2.Controls.Add(this.buttonEditarTelefone);
             this.groupBox2.Controls.Add(this.buttonAdicionarTelefoneEditar);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.comboBoxTipoEditar);
@@ -421,7 +419,7 @@
             this.buttonRemoverTelefoneEditar.BackColor = System.Drawing.Color.Silver;
             this.buttonRemoverTelefoneEditar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonRemoverTelefoneEditar.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoverTelefoneEditar.Location = new System.Drawing.Point(363, 123);
+            this.buttonRemoverTelefoneEditar.Location = new System.Drawing.Point(368, 100);
             this.buttonRemoverTelefoneEditar.Name = "buttonRemoverTelefoneEditar";
             this.buttonRemoverTelefoneEditar.Size = new System.Drawing.Size(162, 37);
             this.buttonRemoverTelefoneEditar.TabIndex = 3;
@@ -438,25 +436,12 @@
             this.textBoxIdTelefoneEditar.Size = new System.Drawing.Size(121, 23);
             this.textBoxIdTelefoneEditar.TabIndex = 7;
             // 
-            // buttonEditarTelefone
-            // 
-            this.buttonEditarTelefone.BackColor = System.Drawing.Color.Silver;
-            this.buttonEditarTelefone.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonEditarTelefone.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditarTelefone.Location = new System.Drawing.Point(363, 80);
-            this.buttonEditarTelefone.Name = "buttonEditarTelefone";
-            this.buttonEditarTelefone.Size = new System.Drawing.Size(162, 37);
-            this.buttonEditarTelefone.TabIndex = 3;
-            this.buttonEditarTelefone.Text = "Editar Telefone";
-            this.buttonEditarTelefone.UseVisualStyleBackColor = false;
-            this.buttonEditarTelefone.Click += new System.EventHandler(this.buttonEditarTelefone_Click);
-            // 
             // buttonAdicionarTelefoneEditar
             // 
             this.buttonAdicionarTelefoneEditar.BackColor = System.Drawing.Color.Silver;
             this.buttonAdicionarTelefoneEditar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonAdicionarTelefoneEditar.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAdicionarTelefoneEditar.Location = new System.Drawing.Point(363, 37);
+            this.buttonAdicionarTelefoneEditar.Location = new System.Drawing.Point(368, 58);
             this.buttonAdicionarTelefoneEditar.Name = "buttonAdicionarTelefoneEditar";
             this.buttonAdicionarTelefoneEditar.Size = new System.Drawing.Size(162, 37);
             this.buttonAdicionarTelefoneEditar.TabIndex = 3;
@@ -661,7 +646,6 @@
         private System.Windows.Forms.GroupBox groupBoxNovoContato;
         private System.Windows.Forms.Button buttonAdicionarTelefoneEditar;
         private System.Windows.Forms.Button buttonRemoverTelefoneEditar;
-        private System.Windows.Forms.Button buttonEditarTelefone;
         private System.Windows.Forms.ComboBox comboBoxTipoEditar;
         private System.Windows.Forms.MaskedTextBox textBoxDDDEditar;
         private System.Windows.Forms.MaskedTextBox textBoxTelefoneEditar;

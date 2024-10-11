@@ -45,8 +45,7 @@
             this.comboBoxTipoNovo = new System.Windows.Forms.ComboBox();
             this.labelNovoDDD = new System.Windows.Forms.Label();
             this.buttonRemoverTelefoneNovo = new System.Windows.Forms.Button();
-            this.buttonAdicionarTelefoneNovo = new System.Windows.Forms.Button();
-            this.buttonEditarTelefoneNovo = new System.Windows.Forms.Button();
+            this.buttonAdicionarEditarTelefoneNovo = new System.Windows.Forms.Button();
             this.labelNovoTelefone = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxTelefoneNovo = new System.Windows.Forms.MaskedTextBox();
@@ -208,8 +207,7 @@
             this.groupBox1.Controls.Add(this.comboBoxTipoNovo);
             this.groupBox1.Controls.Add(this.labelNovoDDD);
             this.groupBox1.Controls.Add(this.buttonRemoverTelefoneNovo);
-            this.groupBox1.Controls.Add(this.buttonAdicionarTelefoneNovo);
-            this.groupBox1.Controls.Add(this.buttonEditarTelefoneNovo);
+            this.groupBox1.Controls.Add(this.buttonAdicionarEditarTelefoneNovo);
             this.groupBox1.Controls.Add(this.labelNovoTelefone);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.textBoxTelefoneNovo);
@@ -246,39 +244,26 @@
             this.buttonRemoverTelefoneNovo.BackColor = System.Drawing.Color.Silver;
             this.buttonRemoverTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonRemoverTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoverTelefoneNovo.Location = new System.Drawing.Point(338, 132);
+            this.buttonRemoverTelefoneNovo.Location = new System.Drawing.Point(354, 106);
             this.buttonRemoverTelefoneNovo.Name = "buttonRemoverTelefoneNovo";
-            this.buttonRemoverTelefoneNovo.Size = new System.Drawing.Size(183, 39);
+            this.buttonRemoverTelefoneNovo.Size = new System.Drawing.Size(167, 39);
             this.buttonRemoverTelefoneNovo.TabIndex = 3;
             this.buttonRemoverTelefoneNovo.Text = "Remover Telefone";
             this.buttonRemoverTelefoneNovo.UseVisualStyleBackColor = false;
             this.buttonRemoverTelefoneNovo.Click += new System.EventHandler(this.buttonRemoverTelefoneNovo_Click);
             // 
-            // buttonAdicionarTelefoneNovo
+            // buttonAdicionarEditarTelefoneNovo
             // 
-            this.buttonAdicionarTelefoneNovo.BackColor = System.Drawing.Color.Silver;
-            this.buttonAdicionarTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonAdicionarTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAdicionarTelefoneNovo.Location = new System.Drawing.Point(338, 42);
-            this.buttonAdicionarTelefoneNovo.Name = "buttonAdicionarTelefoneNovo";
-            this.buttonAdicionarTelefoneNovo.Size = new System.Drawing.Size(184, 39);
-            this.buttonAdicionarTelefoneNovo.TabIndex = 3;
-            this.buttonAdicionarTelefoneNovo.Text = "Adicionar Telefone";
-            this.buttonAdicionarTelefoneNovo.UseVisualStyleBackColor = false;
-            this.buttonAdicionarTelefoneNovo.Click += new System.EventHandler(this.buttonAdicionarTelefoneNovo_Click);
-            // 
-            // buttonEditarTelefoneNovo
-            // 
-            this.buttonEditarTelefoneNovo.BackColor = System.Drawing.Color.Silver;
-            this.buttonEditarTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.buttonEditarTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditarTelefoneNovo.Location = new System.Drawing.Point(338, 87);
-            this.buttonEditarTelefoneNovo.Name = "buttonEditarTelefoneNovo";
-            this.buttonEditarTelefoneNovo.Size = new System.Drawing.Size(184, 39);
-            this.buttonEditarTelefoneNovo.TabIndex = 3;
-            this.buttonEditarTelefoneNovo.Text = "Editar Telefone";
-            this.buttonEditarTelefoneNovo.UseVisualStyleBackColor = false;
-            this.buttonEditarTelefoneNovo.Click += new System.EventHandler(this.buttonEditarTelefoneNovo_Click);
+            this.buttonAdicionarEditarTelefoneNovo.BackColor = System.Drawing.Color.Silver;
+            this.buttonAdicionarEditarTelefoneNovo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.buttonAdicionarEditarTelefoneNovo.Font = new System.Drawing.Font("Verdana", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAdicionarEditarTelefoneNovo.Location = new System.Drawing.Point(354, 61);
+            this.buttonAdicionarEditarTelefoneNovo.Name = "buttonAdicionarEditarTelefoneNovo";
+            this.buttonAdicionarEditarTelefoneNovo.Size = new System.Drawing.Size(167, 39);
+            this.buttonAdicionarEditarTelefoneNovo.TabIndex = 3;
+            this.buttonAdicionarEditarTelefoneNovo.Text = "Adicionar Telefone";
+            this.buttonAdicionarEditarTelefoneNovo.UseVisualStyleBackColor = false;
+            this.buttonAdicionarEditarTelefoneNovo.Click += new System.EventHandler(this.buttonAdicionarEditarTelefoneNovo_Click);
             // 
             // labelNovoTelefone
             // 
@@ -370,9 +355,8 @@
         private System.Windows.Forms.Label labelNovoTelefone;
         private System.Windows.Forms.Label labelNovoDDD;
         private System.Windows.Forms.Button buttonAdicionarContato;
-        private System.Windows.Forms.Button buttonAdicionarTelefoneNovo;
+        private System.Windows.Forms.Button buttonAdicionarEditarTelefoneNovo;
         private System.Windows.Forms.Button buttonRemoverTelefoneNovo;
-        private System.Windows.Forms.Button buttonEditarTelefoneNovo;
         private System.Windows.Forms.Button buttonCancelarNovo;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
